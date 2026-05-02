@@ -7,12 +7,12 @@
 \contentsline {chapter}{\numberline {1}Introduction}{1}{}%
 \contentsline {chapter}{\numberline {2}Model}{6}{}%
 \contentsline {section}{\numberline {2.1}Introduction}{6}{}%
-\contentsline {section}{\numberline {2.2}Dynamics}{8}{}%
+\contentsline {section}{\numberline {2.2}Dynamics}{7}{}%
 \contentsline {paragraph}{Steiner's theorem and inertia aggregation.}{11}{}%
-\contentsline {subsection}{\numberline {2.2.1}For the base frame}{12}{}%
-\contentsline {subsection}{\numberline {2.2.2}For each chain}{13}{}%
-\contentsline {subsection}{\numberline {2.2.3}State-space formulation}{14}{}%
-\contentsline {subsubsection}{General State-Space Form for the Chain Bodies}{15}{}%
+\contentsline {subsection}{\numberline {2.2.1}For the base frame}{13}{}%
+\contentsline {subsection}{\numberline {2.2.2}For each chain}{14}{}%
+\contentsline {subsection}{\numberline {2.2.3}State-space formulation}{15}{}%
+\contentsline {subsubsection}{General State-Space Form for the Chain Bodies}{17}{}%
 \contentsline {chapter}{Conclusion}{19}{}%
 \contentsline {chapter}{\numberline {A}Full-State Space Model}{21}{}%
 \contentsline {section}{\numberline {A.1}State-Space Equations for the Wafer Chain}{21}{}%

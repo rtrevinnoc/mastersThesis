@@ -10,44 +10,44 @@ A level-1 auxiliary file: conclusion.aux
 The style file: amsplain.bst
 A level-1 auxiliary file: apendice1.aux
 Database file #1: ../bibliografia.bib
-You've used 4 entries,
+You've used 5 entries,
             2213 wiz_defined-function locations,
-            538 strings with 4926 characters,
-and the built_in function-call counts, 1154 in all, are:
-= -- 100
-> -- 39
+            545 strings with 5117 characters,
+and the built_in function-call counts, 1366 in all, are:
+= -- 120
+> -- 46
 < -- 0
-+ -- 16
-- -- 12
-* -- 99
-:= -- 191
-add.period$ -- 4
-call.type$ -- 4
-change.case$ -- 18
++ -- 19
+- -- 14
+* -- 112
+:= -- 231
+add.period$ -- 5
+call.type$ -- 5
+change.case$ -- 22
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 45
-empty$ -- 108
-format.name$ -- 12
-if$ -- 232
+cite$ -- 5
+duplicate$ -- 57
+empty$ -- 127
+format.name$ -- 14
+if$ -- 275
 int.to.chr$ -- 0
-int.to.str$ -- 4
-missing$ -- 9
-newline$ -- 22
-num.names$ -- 8
-pop$ -- 24
+int.to.str$ -- 5
+missing$ -- 10
+newline$ -- 25
+num.names$ -- 10
+pop$ -- 28
 preamble$ -- 1
-purify$ -- 14
+purify$ -- 17
 quote$ -- 0
-skip$ -- 22
+skip$ -- 28
 stack$ -- 0
-substring$ -- 88
-swap$ -- 4
+substring$ -- 93
+swap$ -- 5
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 14
+type$ -- 18
 warning$ -- 0
-while$ -- 13
-width$ -- 5
-write$ -- 42
+while$ -- 15
+width$ -- 6
+write$ -- 53
