@@ -1,0 +1,22 @@
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{1}
+
+\bibitem{Al-Rawashdeh2022_Caracterization}
+Yazan~M. Al-Rawashdeh, Mohammad~Al Janaideh, and Marcel Heertjes, \emph{On characterization of a generic lithography machine in a multi-directional space}, Mechanism and Machine Theory \textbf{170} (2022), 104638.
+
+\bibitem{Butler2011_PositionControl}
+Hans Butler, \emph{Position control in lithographic equipment [applications of control]}, IEEE Control Systems Magazine \textbf{31} (2011), no.~5, 28--47.
+
+\bibitem{Ginsberg1984_AdvancedDynamics}
+Jerry~H. Ginsberg, \emph{Advanced engineering dynamics}, Cambridge University Press, 2 1984.
+
+\bibitem{Schmidt2012_UltraPrecision}
+Robert-H.~Munnig Schmidt, \emph{Ultra-precision engineering in lithographic exposure equipment for the semiconductor industry}, Philosophical Transactions of the Royal Society A \textbf{370} (2012), 3950--3972.
+
+\end{thebibliography}

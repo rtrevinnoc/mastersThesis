@@ -1,0 +1,199 @@
+% ------------------------------------------------------------------------
+% Thesis template ++++ Liñan, September 2005 ************
+% ------------------------------------------------------------------------
+\documentclass[12pt,letterpaper,openright]{report}%twoside, (two-sided printing)
+\usepackage[centertags,sumlimits]{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{newlfont}
+\usepackage{thesismc} %Thesis Style ONLY FOR MASTERS *********************
+%\usepackage{thesisphd}\phd %Thesis Style ONLY FOR PHD **************
+\usepackage{Xtocinc} %Include Table of Contents as the first entry in TOC
+\usepackage{graphicx} %allows adding .eps graphics files
+\usepackage{psfrag} %allows modifying eps graphics in latex with the \psfrag{tag}{replacement} command
+\usepackage{float}  %arranges to leave graphics and tables where they were inserted
+\usepackage[subnum]{cases} % SUBEQUATIONS
+\usepackage{fontspec}
+\usepackage{algorithm}
+\usepackage{algpseudocode} % or algorithmic, but algpseudocode is better for \State, \If, etc.
+\usepackage{booktabs}      % Fixes \toprule, \midrule, \bottomrule
+\usepackage{cancel}       % Fixes \cancelto
+\usepackage[super]{natbib}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing,patterns,arrows.meta,calc,positioning}
+
+% THEOREM, EQUATION FORMAT, ETC ---------------------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}[thm]{Proposition}
+\newtheorem{assumption}{Assumption}[section]
+%
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{remark}{Note}[section]
+%
+\numberwithin{equation}{section}
+%%% counters ---------------------------------------------------------------
+\renewcommand{\theequation}{\thesection.\arabic{equation}}%equation numbering
+\renewcommand{\thetable}{\thesection.\arabic{table}}%table numbering
+\renewcommand{\thefigure}{\thechapter.\arabic{figure}}%figure numbering
+% MATHEMATICAL SYMBOLS -----------------------------------------------------------
+\newcommand{\A}{{\cal A}}
+\newcommand{\h}{{\cal H}}
+\newcommand{\s}{{\cal S}}
+\newcommand{\W}{{\cal W}}
+\newcommand{\BH}{\mathbf B(\cal H)}
+\newcommand{\KH}{\cal  K(\cal H)}
+\newcommand{\Real}{\mathbb R}
+\newcommand{\Complex}{\mathbb C}
+\newcommand{\Field}{\mathbb F}
+\newcommand{\RPlus}{[0,\infty)}
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\essnorm}[1]{\norm{#1}_{\text{\rm\normalshape ess}}}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\seq}[1]{\left<#1\right>}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\RE}{\operatorname{Re}}
+\newcommand{\IM}{\operatorname{Im}}
+\newcommand{\Poly}{{\cal{P}}(E)}
+\newcommand{\EssD}{{\cal{D}}}
+%%% HEADERS -------------------------------------------------------
+\def\baselinestretch{1}
+\def\appendixname{Appendix}
+\def\refname{References}
+\def\contentsname{Table of Contents}
+\def\listfigurename{List of Figures}
+\def\listtablename{List of Tables}
+\def\figurename{Figure}
+\def\tablename{Table}
+\def\chaptername{Chapter}
+\def\bibname{Bibliography}
+\def\abstractname{Abstract}
+\def\partname{Part}
+\def\indexname{Index}
+\def\@keywordheading{Keywords: }
+\def\proofname{\textbf{Proof}}
+% LINE SPACING -----------------------------------------------------------
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]%
+           {\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}%
+                           {2.0 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{\defbaselineskip}}
+%%%%%%% ---- MARGINS --------
+\oddsidemargin 0.5cm \evensidemargin 0.5cm \textwidth 17.2cm
+\textheight 22.8cm \topmargin -0.3cm \headsep 0.2cm
+
+%%%%%%% ---- COLOR PALETTE --------
+\definecolor{mnnwInk}     {HTML}{0A0A0A}
+\definecolor{mnnwSignal}  {HTML}{0A84FF}
+\definecolor{mnnwHair}    {HTML}{C9C9C9}
+\definecolor{mnnwMute}    {HTML}{6F6F6F}
+\definecolor{reticleFill} {HTML}{DCE6F7}  % light blue (reticle, j=1)
+\definecolor{reticleEdge} {HTML}{4F6F9F}
+\definecolor{reticleFlex} {HTML}{EEF3FB}  % flex couplings, lighter
+\definecolor{waferFill}   {HTML}{F5DCDC}  % light red (wafer, j=3)
+\definecolor{waferEdge}   {HTML}{9F4F4F}
+\definecolor{waferFlex}   {HTML}{FBEEEE}
+\definecolor{opticsFill}  {HTML}{E7DCF5}  % light purple (optics, j=2)
+\definecolor{opticsEdge}  {HTML}{6F4F9F}
+\definecolor{opticsFlex}  {HTML}{F3EEFB}
+\definecolor{frameFill}   {HTML}{D9E8D2}  % light green (frames F1,F2)
+\definecolor{frameEdge}   {HTML}{4F7F3F}
+\definecolor{lensFill}    {HTML}{EEEEEE}
+
+% --- Spring/damper pics --------------------------------------------------
+\tikzset{
+  hdamper/.pic={
+    \draw[line width=0.5pt, mnnwInk] (-0.45,0)            -- (-0.18,0);
+    \draw[line width=0.5pt, mnnwInk] (-0.18,-0.11) rectangle (0.18,0.11);
+    \draw[line width=0.5pt, mnnwInk] (0,-0.11)            -- (0,0.11);
+    \draw[line width=0.5pt, mnnwInk] (0.18,0)             -- (0.45,0);
+  },
+  vdamper/.pic={
+    \draw[line width=0.5pt, mnnwInk] (0,-0.45)            -- (0,-0.18);
+    \draw[line width=0.5pt, mnnwInk] (-0.11,-0.18) rectangle (0.11,0.18);
+    \draw[line width=0.5pt, mnnwInk] (-0.11,0)            -- (0.11,0);
+    \draw[line width=0.5pt, mnnwInk] (0,0.18)             -- (0,0.45);
+  },
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% THESIS DATA:
+
+\title{Yield-Aware Data-Driven Higher-Order Trajectory Generation for Silicon Wafer Stages}
+\author{Roberto Treviño Cervantes}
+\fifthreader{1915003}% <-- ENROLLMENT NUMBER
+\supervisor{Dr. Juan Angel Rodriguez Liñan} % Thesis advisor
+\firstreader{Dr. Nombre Del Co-Director} % Co-advisor (only if assigned)
+
+\secondreader{Dr. Nombre Del Revisor Interno} %1st internal reviewer
+\thirdreader{Dr. Nombre Del Revisor Interno} %2nd internal reviewer (PhD only)
+\fourthreader{Dr. Nombre Del Revisor Interno} %3rd internal reviewer or 2nd External (PhD only)
+
+\examiner{Dr. Nombre Del Revisor Externo} %1st external reviewer
+\submitdate{Octubre 2026} %Defense date
+
+% ------------------------------------------------------------------------
+%\include{portada}
+%\nobib %Do not show bibliography
+%\draft %Draft version
+%\nofront %Without the preface
+%\permissionfalse
+\dedicate{A ... por su apoyo ... ETC}
+%\nolistoftables \nolistoffigures \msc
+%\copyrightyear{2005}
+%\convocation{Enero}{2004}
+
+% -----DO NOT DELETE-----------------------------------------------------------
+{
+\typeout{:?0000} % Don't bother with over/under-full boxes
+\beforepreface
+\typeout{:?1111} % Process All Errors from Here on
+}
+% ------------------------------------------------------------------------
+%\setcounter{page}{1} %start of page counter
+%\tableofcontents
+% ------------------------------------------------------------------------
+{ \typeout{Agradecimientos}
+\include{agradecimiento}
+}
+% ------------------------------------------------------------------------
+{ \typeout{Abstract}
+\include{resumen}
+}
+% ------------------------------------------------------------------------
+{ \typeout{Notation}
+\include{notation}
+}% ------------------------------------------------------------------------
+\afterpreface
+\def\baselinestretch{1}
+\setlinespacing{1.2} % spacing
+\setlength{\parskip}{0.4cm}
+
+% ----- INSERT THE THESIS CHAPTERS -------------------------------
+\include{cap01}
+\include{cap02}
+\include{conclusion} %adds conclusions
+% ------------------------------------------------------------------------
+% BIBLIOGRAPHY:
+\setlinespacing{0.70} %spacing
+\bibliographystyle{amsplain} %bibliography style
+%\setcounter{page}{xx} %restarts counter at page xx
+\bibliography{bibliografia} %directly in the folder
+%\bibliography{C:/Users/User1/Desktop/tesis/Latexf\string~1/folderbib/bibliografia} %path of a special folder
+% ------------------------------------------------------------------------
+% Appendices:
+\setlinespacing{0.60} %spacing
+\appendix %adds appendices
+\include{apendice1} %chapter appendix1
+% ------------------------------------------------------------------------
+\end{document}
