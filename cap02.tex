@@ -51,15 +51,15 @@
 
 As we established before, the accurate relative positioning between the reticle and the wafer is crucial for \textit{step-and-scan} machines to produce functional ICs. To analyze these positioning requirements in a multi-body framework, Al-Rawashdeh et al \cite{Al-Rawashdeh2022_Caracterization} propose modeling the lithography scanner as a combination of three open-loop serial chains: the reticle chain ($j=1$, blue), the optics chain ($j=2$, purple), and the wafer chain ($j=3$, red), the latter being of primary interest for the \textit{step-and-scan} motion problem studied here.
 
-The base frame is serves as the common structural root for all three chains. In the reticle chain, a dual-stage architecture is employed to satisfy the competing requirements for travel range and precision. The long-stroke motor (LS) of the planar moving-coil type\cite{tissingh2023improving} consisting of four coil actuators arranged in a platform shape which thus facilitates large-range travel (of at least 300mm) with moderate micrometer accuracy in 6-DOF. However, being directly mounted to the base frame, it is inherently susceptible to vibrations propagated from the rest of the machine.
+The base frame serves as the common structural root for all three chains. In the reticle chain, a dual-stage architecture is employed to satisfy the competing requirements for travel range and precision. The long-stroke motor (LS) of the planar moving-coil type\cite{tissingh2023improving} consisting of four coil actuators arranged in a platform shape which thus facilitates large-range travel (of at least 300mm) with moderate micrometer accuracy in 6-DOF. However, being directly mounted to the base frame, it is inherently susceptible to vibrations propagated from the rest of the machine.
 
-To achieve nanometric tracking accuracy, a short-stroke motor (SS) is appended to the long-stroke carrier. Since travel in this stage is minimal, it is realized with Lorentz actuators which provide contact-free, high-bandwidth positioning. Given that the Lorentz force depends entirely on the current within the actuator and is independent of the stators motion, it effectively decouples the end-effector from the base frame disturbances through magnetic suspension. To minimize linearity errors and optimize force transfer the long-stroke stage carrying the stator must maintain the optimal magnetic gap to the magnets of the rest of the short-stroke actuator.
+To achieve nanometric tracking accuracy, a short-stroke motor (SS) is appended to the long-stroke carrier. Since travel in this stage is limited up to 1mm, it is realized with Lorentz actuators which provide contact-free, high-bandwidth positioning. Given that the Lorentz force depends entirely on the current within the actuator and is independent of the stator's motion, it effectively decouples the end-effector from the base frame disturbances through magnetic suspension\cite{Butler2011_PositionControl}. To minimize linearity errors and optimize force transfer the long-stroke stage carrying the stator must maintain the optimal magnetic gap to the magnets of the rest of the short-stroke actuator. This arrangement is replicated for the wafer chain.
 
-%A base frame is used as the central connection for each of the three chains in the machine. Starting with the reticle chain, a Long-Stroke motor of the planar moving-coil type, consisting of four actuators that each consist of three current-carrying coils allow movement in 6-DOF of a platform. Naturally, as the Long-Stroke motor is directly on top of the base frame it is susceptible to the vibrations transmitted from the rest of the chains.
+The optics chain is attached to the base frame through a metrology frame which is in turn supported by pneumatic vibration isolators\cite{Butler2011_PositionControl}. While the optics box includes adaptive optics with active elements, it is reduced in this framework to a single lens element. This allows the model to focus on machine compliance and minimizing structural vibration transfer rather than involving active optical control\cite{Al-Rawashdeh2022_Caracterization}.
 
-%Given the throughput requirements, the Long-Stroke motor must be able to cover a distance of at least 300mm with moderate micrometer accuracy. Therefore, to allow fine positioning an arrangement of a second actuator is appended to allow nanometer corrections, corresponding to the type of Lorentz actuators, which naturally decouple the vibrations from the base-frame through magnetic suspension since the force on the stage depends only on the current in the actuator, independently of the stator motion \cite{Butler2011_PositionControl}. Thus the Long-Stroke motor carries the stator part of the Short-Stroke motor keeping it close to the magnets so as to avoid introducing linearity errors.
+The physical connections between these stages, which constitute the primary transmission path for vibration, are represented by lumped-parameter spring-damper systems, according to the Kelvin-Voigt model. As its proponents state, this low-fidelity modeling choice is sufficient to study the dynamics between the multiple bodies during \textit{step-and-scan} motion\cite{Al-Rawashdeh2022_Caracterization}.
 
-Figure \ref{fig:litho_model_full} illustrates the structural topology and hierarchical arrangement within each chain. Horizontal Kelvin–Voigt elements $(K_{i,j},C_{i,j})$ couple each stage laterally to the fixed structural reference depicted as a solid line in the color of the corresponding chain; in particular, elements $(K_1,C_1)$ provide passive vibration isolation between $\mathcal{F}_0\!\rightarrow\!\mathcal{F}_1$ through the solid green line that extends the base frame ($i=1$) into the coupling to the first body ($i=2$) in any $j$ chain. The in-plane deviations $f_{i,j}$ represented by the horizontal blue double-headed arrows measure the relative displacement between each body. The dashed vertical centerline represents the nominal reference for $f^0_{i,j}$ when all relative coordinates are zero.
+Figure \ref{fig:litho_model_full} illustrates the structural topology and hierarchical arrangement within each chain. Horizontal Kelvin–Voigt elements $(K_{i,j},C_{i,j})$ couple each stage laterally to the fixed structural reference depicted as a solid line in the color of the corresponding chain; in particular, elements $(K_1,C_1)$ provide passive vibration isolation between $\mathcal{F}_0\!\rightarrow\!\mathcal{F}_1$ through the solid green line that extends the base frame ($i=1$) into the coupling to the first body ($i=2$) in any $j$ chain. The in-plane deviations $f_{i,j}$ represented by the horizontal blue double-headed arrows measure the relative displacement between each body. The dashed vertical centerline represents the nominal reference for $f^0_{i,j}$, when all relative coordinates are zero.
 
 \begin{figure}[htbp]
 \centering
@@ -326,17 +326,19 @@ Figure \ref{fig:litho_model_full} illustrates the structural topology and hierar
 
 \section{Dynamics}
 
-The full 6-DOF model is here restricted to in-plane motions. The generalized coordinate used to describe the configuration of the $i$th stage within the $j$th chain is
+% Two distinct joint types arise: \emph{actuated} stages ($i \in \{2,4\}$), which are driven by servo motors and carry a near-infinite effective stiffness that keeps $f_{i_j}$ locked to the nominal reference; and \emph{flex} stages ($i \in \{3,5,7\}$), which are passive compliant connections whose stiffness $K_{i_j}$ and damping $C_{i_j}$ are physical material properties of the mechanical coupling.
+
+The full 6-DOF model is here restricted to in-plane motions\cite{Al-Rawashdeh2023_Trajectories,Dong2023_SCurve}, since rotations about the $x$ and $y$ axis, as well as translation on $z$ are used mainly for focusing. The generalized coordinate used to describe the configuration of the $i$th stage within the $j$th chain is
 \begin{equation}
-    q_{i_j} = \begin{bmatrix} f_{i_j} \\ \theta_{z_{i_j}} \end{bmatrix} \in \mathbb{R}^{3\times1},
+    q_{i_j} = \begin{bmatrix} f_{i_j} \\ \theta_{z_{i_j}} \end{bmatrix} \in \mathbb{R}^{3\times1}
 \end{equation}
-where $f_{i_j} = [f_{x,i_j},\, f_{y,i_j}]^T \in \mathbb{R}^{2}$ collects the in-plane translational displacements of stage $i$ \emph{relative to its parent body} in chain $j$, and $\theta_{z_{i_j}} \in \mathbb{R}$ is the corresponding rotation about the out-of-plane $z$-axis. The joints between bodies within a chain are modeled as a low-mass Kelvin--Voigt element — a parallel spring-damper system \cite{Al-Rawashdeh2022_Caracterization}. Two distinct joint types arise: \emph{actuated} stages ($i \in \{2,4,6\}$), which are driven by servo motors and carry a near-infinite effective stiffness that keeps $f_{i_j}$ locked to the commanded trajectory; and \emph{flex} stages ($i \in \{3,5,7\}$), which are passive compliant connections whose stiffness $K_{i_j}$ and damping $C_{i_j}$ are physical material properties of the mechanical coupling. The associated generalized mass-inertia matrix for each body is
+where $f_{i_j} = [f_{x,i_j},\, f_{y,i_j}]^T \in \mathbb{R}^{2}$ collects the in-plane translational displacements of stage $i$ relative to its parent body in chain $j$, and $\theta_{z_{i_j}} \in \mathbb{R}$ is the corresponding rotation about the out-of-plane $z$-axis. The joints between bodies within a chain are modeled using a spring-damper system \cite{Al-Rawashdeh2022_Caracterization}. The associated generalized mass-inertia matrix for each body is
 \begin{equation}
-    M_{i_j} = \begin{bmatrix} m_{i_j}\,\mathbf{I}_2 & 0 \\ 0 & I_{z_{i_j}} \end{bmatrix} \in \mathbb{R}^{3\times3},
+    M_{i_j} = \begin{bmatrix} m_{i_j}\,\mathbf{I}_2 & 0 \\ 0 & I_{z_{i_j}} \end{bmatrix} \in \mathbb{R}^{3\times3}
 \end{equation}
 and the generalized stiffness and damping matrices $K_{i_j},\, C_{i_j} \in \mathbb{R}^{3\times3}$ are block-diagonal, with a $2\times2$ translational block and a scalar rotational entry.
 
-In order to recover the absolute (inertial-frame) position $f^{0}_{i_j}$ of body $i$ from its relative joint coordinates, one accumulates the relative displacements along the chain from the floor frame $\mathcal{F}_{0}$. For bodies with $i \geq 2$ on any chain $j \in \{1,2,3\}$:
+The absolute position $f^{0}_{i_j}$ of body $i$ is expressed as the recursive sum of its relative displacement from its parent body along the chain from the floor frame $\mathcal{F}_{0}$. Thus, for bodies with $i \geq 2$ on any chain $j \in \{1,2,3\}$:
 \begin{equation} \label{eq:frameref}
     f^{0}_{i_j} = f^{0}_{(i-1)_j} + f_{i_j}
 \end{equation}
@@ -346,7 +348,7 @@ Since the rotation about the $z$-axis is a scalar, the angular position recurren
     \theta^{0}_{z_{i_j}} = \theta^{0}_{z_{(i-1)_j}} + \theta_{z_{i_j}}
 \end{equation}
 
-The translational velocity expression appears as:
+From this, the translational velocity expression appears as:
 \begin{equation}
     \dot{f}^{0}_{i_j} = \dot{f}^{0}_{(i-1)_j} + \dot{f}_{i_j} + \omega_{(i-1)_j}
     \times
@@ -385,7 +387,7 @@ Since we are concerned with planar movements in this work, we restrict the angul
     \omega_{(i-1)_j} = \dot{\theta}^{0}_{z_{(i-1)_j}}\,\hat{z} \notag
 \end{equation}
 
-We substitute the cross-products as matrix-vector products using the skew-symmetric matrix. In \cite{Al-Rawashdeh2022_Caracterization}, it appears as:
+We substitute the cross-products as matrix-vector products using the skew-symmetric matrix. In the 6-DOF model\cite{Al-Rawashdeh2022_Caracterization}, it appears as:
 \begin{equation}
     [\omega]
     =
@@ -396,7 +398,7 @@ We substitute the cross-products as matrix-vector products using the skew-symmet
     \end{bmatrix}
     \notag
 \end{equation}
-Clearly, here we can set $\omega_x = 0$ and $\omega_y = 0$, thus $\omega = [0,\, 0,\, \dot{\theta}_z]^T$ the matrix becomes:
+Clearly, here we can set $\omega_x = 0$ and $\omega_y = 0$, thus $\omega = [0,\, 0,\, \dot{\theta}_z]^T$ and the matrix becomes:
 \begin{equation}
     [\omega]
     =

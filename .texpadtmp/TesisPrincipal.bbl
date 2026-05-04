@@ -7,11 +7,17 @@
 \providecommand{\href}[2]{#2}
 \begin{thebibliography}{1}
 
+\bibitem{Al-Rawashdeh2023_Trajectories}
+Yazan~M. Al-Rawashdeh, Mohammad Al~Janaideh, and Marcel~F. Heertjes, \emph{Kinodynamic generation of wafer scanners trajectories used in semiconductor manufacturing}, IEEE Transactions on Automation Science and Engineering \textbf{20} (2023), no.~1, 718--732.
+
 \bibitem{Al-Rawashdeh2022_Caracterization}
 Yazan~M. Al-Rawashdeh, Mohammad~Al Janaideh, and Marcel Heertjes, \emph{On characterization of a generic lithography machine in a multi-directional space}, Mechanism and Machine Theory \textbf{170} (2022), 104638.
 
 \bibitem{Butler2011_PositionControl}
 Hans Butler, \emph{Position control in lithographic equipment [applications of control]}, IEEE Control Systems Magazine \textbf{31} (2011), no.~5, 28--47.
+
+\bibitem{Dong2023_SCurve}
+Yue Dong, Yu~Wan, Shuo Song, and Li~Li, \emph{Lithographic stepping trajectory planning for residual vibration suppression: An asymmetric s-curve method}, 2023 International Workshop on Advanced Patterning Solutions (IWAPS), 2023, pp.~1--5.
 
 \bibitem{Ginsberg1984_AdvancedDynamics}
 Jerry~H. Ginsberg, \emph{Advanced engineering dynamics}, Cambridge University Press, 2 1984.
