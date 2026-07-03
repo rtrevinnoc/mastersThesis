@@ -13,6 +13,11 @@
 \contentsline {subsection}{\numberline {2.2.2}For each chain}{14}{}%
 \contentsline {subsection}{\numberline {2.2.3}State-space formulation}{15}{}%
 \contentsline {subsubsection}{General State-Space Form for the Chain Bodies}{16}{}%
-\contentsline {chapter}{Conclusion}{20}{}%
-\contentsline {chapter}{\numberline {A}Full-State Space Model}{22}{}%
-\contentsline {section}{\numberline {A.1}State-Space Equations for the Wafer Chain}{22}{}%
+\contentsline {chapter}{\numberline {3}Control Objectives}{20}{}%
+\contentsline {section}{\numberline {3.1}Introduction}{20}{}%
+\contentsline {chapter}{\numberline {4}Methodology}{21}{}%
+\contentsline {section}{\numberline {4.1}Introduction}{21}{}%
+\contentsline {section}{\numberline {4.2}Simulation}{21}{}%
+\contentsline {chapter}{Conclusion}{27}{}%
+\contentsline {chapter}{\numberline {A}Full-State Space Model}{29}{}%
+\contentsline {section}{\numberline {A.1}State-Space Equations for the Wafer Chain}{29}{}%

@@ -1,10 +1,10 @@
 \def\baselinestretch{1}
 
-\chapter{Model}
+\chapter{Model}\label{ch:model}
 
 \def\baselinestretch{1.66}
 
-\section{Introduction}
+\section{Introduction}\label{sec:model_introduction}
 
 % --- Spring/damper pics --------------------------------------------------
 % Long-form damper: cylinder body + protruding piston rod, total length 2L.
@@ -324,7 +324,7 @@ Figure \ref{fig:litho_model_full} illustrates the structural topology and hierar
 \label{fig:litho_model_full}
 \end{figure}
 
-\section{Dynamics}
+\section{Dynamics}\label{sec:model_dynamics}
 
 % Two distinct joint types arise: \emph{actuated} stages ($i \in \{2,4\}$), which are driven by servo motors and carry a near-infinite effective stiffness that keeps $f_{i_j}$ locked to the nominal reference; and \emph{flex} stages ($i \in \{3,5,7\}$), which are passive compliant connections whose stiffness $K_{i_j}$ and damping $C_{i_j}$ are physical material properties of the mechanical coupling.
 
@@ -495,7 +495,7 @@ The parallel axis (Steiner's) theorem states that the moment of inertia of a rig
 \begin{equation} \label{eq:steiner}
     I_z = \tilde{I}_z + m\,\|f\|^2,
 \end{equation}
-where $\tilde{I}_z$ is the body's own moment of inertia about the $z$-axis through its CoG, $m$ is its mass, and $\|f\|^2 = f_x^2 + f_y^2$ is the squared in-plane distance between the two parallel axes. In a serial chain, the inertia of every downstream body must be shifted to the frame of the current body using \eqref{eq:steiner}. Following \cite{Al-Rawashdeh2022_Caracterization} (Algorithm~1 therein), the aggregated inertia for the $j$th chain is computed recursively from the end-effector inward. In the planar restriction, the full $3\times3$ inertia matrix of the original algorithm reduces to a scalar $z$-axis inertia:
+where $\tilde{I}_z$ is the body's own moment of inertia about the $z$-axis through its CoG, $m$ is its mass, and $\|f\|^2 = f_x^2 + f_y^2$ is the squared in-plane distance between the two parallel axes. In a serial chain, the inertia of every downstream body must be shifted to the frame of the current body using \eqref{eq:steiner}. Following the characterization article\cite{Al-Rawashdeh2022_Caracterization} (Algorithm~1 therein), the aggregated inertia for the $j$th chain is computed recursively from the end-effector inward. In the planar restriction, the full $3\times3$ inertia matrix of the original algorithm reduces to a scalar $z$-axis inertia:
 
 \begin{algorithm}[H]
 \caption{Planar inertia aggregation for the $j$th chain — planar reduction of Algorithm~1 in \cite{Al-Rawashdeh2022_Caracterization}}

@@ -2,3 +2,6 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Lumped mass-spring-damper system of the three chains vertically stacked on the common base frame}}{8}{}%
 \addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Screenshot of the MuJoCo simulation in the midst of the scanning motion, showing the wafer and the optics chain under the metrology frame}}{25}{}%
+\addvspace {10\p@ }

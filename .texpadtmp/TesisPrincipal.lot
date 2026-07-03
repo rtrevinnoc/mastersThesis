@@ -2,3 +2,10 @@
 \addvspace {10\p@ }
 \contentsline {table}{\numberline {2.2.1}{\ignorespaces State-space mapping for the global concatenated system vector}}{17}{}%
 \addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.2.1}{\ignorespaces Mapping of MuJoCo XML bodies to the model components}}{22}{}%
+\contentsline {table}{\numberline {4.2.2}{\ignorespaces MuJoCo XML tag functions in the scanner simulation}}{23}{}%
+\contentsline {table}{\numberline {4.2.3}{\ignorespaces Wafer chain stiffness ($K$) and damping ($C$) parameters}}{23}{}%
+\contentsline {table}{\numberline {4.2.4}{\ignorespaces Reticle chain stiffness ($K$) and damping ($C$) parameters}}{24}{}%
+\contentsline {table}{\numberline {4.2.5}{\ignorespaces Optics chain stiffness ($K$) and damping ($C$) parameters}}{24}{}%
+\addvspace {10\p@ }
