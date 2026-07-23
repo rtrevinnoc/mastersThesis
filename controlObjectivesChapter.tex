@@ -6,4 +6,57 @@
 
 \section{Introduction}\label{sec:control_introduction}
 
-As we established before, the accurate relative positioning between the reticle and the wafer is crucial for \textit{step-and-scan} machines to produce functional ICs. To analyze these positioning requirements in a multi-body framework, Al-Rawashdeh et al \cite{Al-Rawashdeh2022_Caracterization} propose modeling the lithography scanner as a combination of three open-loop serial chains: the reticle chain ($j=1$, blue), the optics chain ($j=2$, purple), and the wafer chain ($j=3$, red), the latter being of primary interest for the \textit{step-and-scan} motion problem studied here.
+Chapter \ref{ch:introduction} identified overlay and throughput as the two commercial drivers of scanner design, and Chapter \ref{ch:model} developed the multi-body model through which the machine structure responds to the commanded motion. This chapter translates those drivers into the quantitative objectives that any candidate reference trajectory must satisfy. Three elements are established: the synchronization error between the wafer and reticle stages, the filtered metrics through which the industry evaluates that error during exposure, and the formal statement of the optimization problem addressed by this thesis.
+
+\section{Synchronization Error}\label{sec:control_synchronization}
+
+During the scanning exposure, the projection optics image the reticle onto the wafer with a demagnification factor $\alpha = 0.25$. The image of the reticle pattern is stationary on the wafer surface only if the wafer follows the reticle motion scaled by $\alpha$ at every instant. What degrades the printed pattern is therefore not the individual tracking error of either stage, but their scaled difference. Let $r_w(t)$ and $r_r(t)$ denote the reference positions of the wafer and reticle stages along the scanning direction, and $y_w(t)$, $y_r(t)$ their measured positions. The \textit{synchronization error} is defined as \cite{Butler2011_PositionControl}
+\begin{equation}
+    e_{syn}(t) = \big(y_w(t) - r_w(t)\big) - \alpha \big(y_r(t) - r_r(t)\big).
+    \label{eq:esyn}
+\end{equation}
+A common-mode disturbance that displaces both stages consistently with the projection ratio leaves $e_{syn}$ unaffected; conversely, any differential motion between the chains --- such as the lightly damped end-effector resonance of the reticle chain identified in Chapter \ref{ch:model} --- appears directly in $e_{syn}$ and is transferred to the printed image.
+
+\section{Exposure Metrics: MA and MSD}\label{sec:control_ma_msd}
+
+The photoresist does not respond to the instantaneous value of $e_{syn}$ but to its aggregate effect over the time a given point of the wafer spends inside the illumination slit. Industry practice therefore evaluates the synchronization error through two moving-window filters matched to the exposure time $t_{exp}$ of one point on the wafer \cite{Butler2011_PositionControl}. With $N$ samples inside the window, the \textbf{moving average}
+\begin{equation}
+    \mathrm{MA}(t_k) = \frac{1}{N}\sum_{n=0}^{N-1} e_{syn}(t_{k-n})
+    \label{eq:ma}
+\end{equation}
+measures the mean displacement of the image during exposure and manifests as \textit{overlay} error: a rigid misplacement of the printed feature with respect to the previous layer. The \textbf{moving standard deviation}
+\begin{equation}
+    \mathrm{MSD}(t_k) = \sqrt{\frac{1}{N}\sum_{n=0}^{N-1} \Big(e_{syn}(t_{k-n}) - \mathrm{MA}(t_k)\Big)^{2}}
+    \label{eq:msd}
+\end{equation}
+measures the smearing of the aerial image around that mean position and manifests as \textit{fading}: a loss of contrast that widens and blurs the printed feature.
+
+For the 38\,nm half-pitch process considered throughout this work, the specifications adopted are
+\begin{equation}
+    \mathrm{MA} \in [-1.25,\ +2]\ \mathrm{nm}, \qquad \mathrm{MSD} \leq 7\ \mathrm{nm},
+    \label{eq:ma_msd_spec}
+\end{equation}
+evaluated at every instant of every exposure window \cite{Butler2011_PositionControl}. These bounds must be met while the stage sustains the scanning velocity, immediately after a step transient whose settling budget is below 10\,ms; every additional millisecond spent waiting for the error to decay reduces the throughput of the machine.
+
+\section{Problem Statement}\label{sec:control_problem}
+
+The reference trajectories studied here are fourth-order profiles, parameterized by the kinematic bounds $(v_{\max}, a_{\max}, j_{\max}, s_{\max})$ on velocity, acceleration, jerk, and snap. These four scalars determine both the duration of the motion --- and hence the throughput in wafers per hour --- and the spectral content of the excitation injected into the machine structure, and hence the synchronization error during exposure.
+
+Conventional trajectory design evaluates candidate parameters against servo-mechanical metrics: settling time, peak error, or the MA/MSD bounds of \eqref{eq:ma_msd_spec}. Such metrics declare a die good or bad, but say nothing about the \textit{morphology} of the failures that accumulate across the wafer. Wafer fabs routinely exploit the converse relationship: the spatial pattern of failing dies --- the wafer \textit{fingerprint} --- is used to diagnose which process step caused an observed defect, an inverse problem well established in industry \cite{Lam2015_Fingerprint}. The forward direction, however, remains open: no published methodology predicts, from a given set of trajectory parameters, the defect pattern they will produce, nor uses that prediction as the cost function during trajectory optimization. This thesis addresses precisely that forward direction.
+
+To quantify the yield impact of a candidate trajectory, the defect map produced under that trajectory is classified by a convolutional neural network trained on industrial wafer maps, which estimates a probability $P_c$ for each defect morphology class $c$. The cost assigned to the trajectory is the expected yield loss
+\begin{equation}
+    \mathcal{J} = \sum_{c \in \mathcal{C}} w_c P_c,
+    \label{eq:cost}
+\end{equation}
+where $w_c$ is the economic weight of class $c$ \cite{Kim2017_Market, Kim2019_Productivity, Yang2018_Yield} and $\mathcal{C}$ is restricted to the classes plausibly caused by scanner motion --- \textit{none}, \textit{scratch}, \textit{edge-local}, and \textit{random}. The remaining classes of the taxonomy (center, donut, edge-ring, near-full) originate in etching, cleaning, and deposition steps, and their activation by a simulated map would indicate a modeling error rather than a trajectory effect; this restriction is used as a validation criterion for the trajectory-to-defect mapping in Chapter \ref{ch:experiments}.
+
+The optimization problem is then stated as
+\begin{equation}
+    \min_{(v_{\max},\, a_{\max},\, j_{\max},\, s_{\max})} \ \mathcal{J}
+    \qquad \text{subject to} \qquad T_{wafer} \leq T_{budget},
+    \label{eq:problem}
+\end{equation}
+where $T_{wafer}$ is the total motion time per wafer implied by the trajectory parameters and $T_{budget}$ is the cycle-time budget corresponding to the target throughput. The hypothesis of this work is that \eqref{eq:problem} can be solved with a data-driven cost of the form \eqref{eq:cost}, producing trajectory parameters that trade throughput against expected yield rather than against servo metrics alone.
+
+%%% ----------------------------------------------------------------------

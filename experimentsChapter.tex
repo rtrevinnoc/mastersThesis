@@ -1,0 +1,361 @@
+\def\baselinestretch{1}
+
+\chapter{Experiments and Results}\label{ch:experiments}
+
+\def\baselinestretch{1.66}
+
+\section{Introduction}\label{sec:experiments_introduction}
+
+This chapter reports the experimental campaign carried out over the simulation framework of Chapter \ref{ch:methodology}. Experiment 1 validates the simulated machine against the published Case 1 study it derives from, establishing the dynamic behavior of the plant without fine stages. Experiment 2 trains and evaluates the convolutional network on the WM-811K dataset, establishing the classifier half of the pipeline. Experiment 3 connects the two: it verifies that disturbances injected into the simulation produce wafer-map signatures the CNN can react to, and that sweeping the kinematic bounds $(v_{\max}, a_{\max}, j_{\max}, s_{\max})$ shifts the exposure error --- and therefore the defect map --- reproducibly. Experiment 4 climbs the control ladder of Section \ref{sec:methodology_control}: lag-compensation feedforward, fine-stage PI, and the nonlinear HIGS loop, quantifying the contribution of each. Experiment 5 is the central demonstration of the thesis premise: as the settling budget shrinks, trajectory-induced failures emerge as a spatially structured, scanner-plausible pattern, and the yield-aware cost traces the throughput--yield transition. Experiment 6 runs the optimization scenarios E3 and E4, comparing the conventional servo cost against the CNN cost inside the same particle-swarm search over the exact snap-bounded profile family. Experiment 7 crosses profile order with controller quality, quantifying whether trajectory smoothness matters when the controller is poor and how much it is worth when the controller is good. A closing secondary study evaluates the recurrent surrogate model. All results reported below are outputs of the actual scripts and trained models of this project; where a result falls short of the criterion set in Chapter \ref{ch:control_objectives}, this is stated and analyzed rather than omitted.
+
+\section{Experiment 1: Reproduction of the Case 1 Study}\label{sec:exp_case1}
+
+The first experiment reproduces Case 1 of the characterization study by Al-Rawashdeh et al.\ \cite{Al-Rawashdeh2022_Caracterization}: planar step-and-scan motion of the wafer and reticle chains \textit{without} fine stages, under the collocated PID-plus-feedforward controller of Section \ref{sec:methodology_control}. The purpose is twofold: to verify that the simulation reproduces the qualitative conclusions of the reference study, and to quantify how far a coarse-only machine falls from the exposure specifications, which motivates everything that follows.
+
+The reduced two-body-per-chain model is integrated over a four-die exposure sequence (dies of $32 \times 32$\,mm$^2$ in one row, snake pattern) with the baseline trajectory parameters $v_{w,scan} = 0.8$\,m/s, $a_{w,\max} = 20$\,m/s$^2$, $j_{\max} = 1600$\,m/s$^3$: the scan profile lasts 145\,ms with a constant-velocity cruise between 52.5 and 92.5\,ms, each step takes 82.2\,ms, and the whole sequence spans 1.727\,s. The reticle moves at $3.2$\,m/s with $a_{r,\max} = 80$\,m/s$^2$ in the opposite direction. Figure \ref{fig:exp1_trajectories} shows the commanded references, and Figure \ref{fig:exp1_tracking} the resulting tracking and synchronization errors with the exposure windows highlighted.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{case1_fig12_trajectories.png}
+    \caption{Commanded step-and-scan references for the wafer stage ($x$: stepping, $y$: scanning) over the four-die sequence.}
+    \label{fig:exp1_trajectories}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{case1_tracking_errors.png}
+    \caption{Wafer, reticle, and synchronization errors during the four-die sequence. Shaded bands mark the exposure windows.}
+    \label{fig:exp1_tracking}
+\end{figure}
+
+The dynamic structure of the simulated machine matches the reference study. The wafer chain exhibits its two-mass resonance at 190.3\,Hz with a well-damped coupling ($\zeta = 0.70$), while the reticle chain resonates at 131.4\,Hz with $\zeta = 0.044$: the reticle end-effector is lightly damped, and non-collocated feedback through this coupling is unstable, which forces the collocated architecture and leaves the coupling lag uncompensated. During the acceleration ramps this lag reaches its quasi-static value $\Delta = m_e a / K$: $15.9$\,\textmu m for the wafer end-effector ($10.7$\,kg at $20$\,m/s$^2$) and $133.5$\,\textmu m for the reticle end-effector ($10.54$\,kg at $80$\,m/s$^2$), leaving a net quasi-static synchronization error of about $-17.4$\,\textmu m during the ramps (Figure \ref{fig:exp1_velocity_lag}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{case1_velocity_lag.png}
+    \caption{Stage velocities and spring-coupling lag during the scan. The reticle end-effector, four times faster and an order of magnitude more softly coupled, dominates the synchronization error.}
+    \label{fig:exp1_velocity_lag}
+\end{figure}
+
+Inside the exposure windows --- where only the residual oscillation of the lightly damped reticle mode remains --- the performance indices evaluate to
+\begin{equation}
+    \mathrm{MA}_{syn} \in [-985.3,\ +985.2]\ \mathrm{nm}, \qquad
+    \max \mathrm{MSD}_{syn} = 427.8\ \mathrm{nm},
+    \label{eq:exp1_ma_msd}
+\end{equation}
+against the specifications $\mathrm{MA} \in [-1.25, +2]$\,nm and $\mathrm{MSD} \leq 7$\,nm of Chapter \ref{ch:control_objectives}. Figure \ref{fig:exp1_ma_msd} shows both indices over the sequence and Figure \ref{fig:exp1_zoom} the detail of the first exposure window.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{case1_fig14_ma_msd.png}
+    \caption{MA and MSD performance indices of the synchronization error over the four-die sequence.}
+    \label{fig:exp1_ma_msd}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{case1_exposure_zoom.png}
+    \caption{Detail of the first exposure window: synchronization error, MA, MSD, and coupling lag.}
+    \label{fig:exp1_zoom}
+\end{figure}
+
+The conclusion of the experiment is the same as that of the reference study: a machine without fine stages misses the exposure specification by nearly three orders of magnitude, with the error dominated by the residual 131\,Hz oscillation of the reticle end-effector excited during the acceleration ramps. This is the error mechanism that trajectory shaping acts upon --- gentler kinematic bounds inject less energy at the resonance --- and the mechanism that the remaining experiments quantify at the wafer-map level.
+
+\section{Experiment 2: CNN Training and Evaluation on WM-811K}\label{sec:exp_cnn}
+
+The second experiment trains the classifier of Section \ref{sec:methodology_cnn} and evaluates it on held-out data. Of the 811{,}457 maps in WM-811K, the 172{,}950 maps carrying a failure label are used; the stratified 80/20 split leaves 34{,}590 maps for evaluation, never seen during training.
+
+The network reaches an overall hold-out accuracy of \textbf{96.88\,\%} with a macro-averaged F1 score of 0.77. Table \ref{tab:exp2_metrics} reports the per-class precision, recall, and F1, and Figure \ref{fig:exp2_confmat} the row-normalized confusion matrix.
+
+\begin{table}[htbp]
+\centering
+\caption{Per-class evaluation of the CNN on the WM-811K hold-out set (34{,}590 maps).}
+\label{tab:exp2_metrics}
+\begin{tabular}{lcccc}
+\toprule
+Class & Precision & Recall & F1 & Support \\
+\midrule
+none      & 0.98 & 1.00 & 0.99 & 29{,}486 \\
+Center    & 0.95 & 0.90 & 0.92 & 859 \\
+Donut     & 0.85 & 0.84 & 0.85 & 111 \\
+Edge-Loc  & 0.87 & 0.75 & 0.80 & 1{,}038 \\
+Edge-Ring & 0.94 & 0.99 & 0.97 & 1{,}936 \\
+Loc       & 0.76 & 0.63 & 0.69 & 718 \\
+Near-full & 0.96 & 0.80 & 0.87 & 30 \\
+Random    & 0.87 & 0.76 & 0.81 & 173 \\
+Scratch   & 0.00 & 0.00 & 0.00 & 239 \\
+\midrule
+accuracy  & \multicolumn{4}{c}{0.9688} \\
+macro avg & 0.80 & 0.74 & 0.77 & 34{,}590 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{confusion_matrix.png}
+    \caption{Row-normalized confusion matrix of the CNN on the WM-811K hold-out set.}
+    \label{fig:exp2_confmat}
+\end{figure}
+
+The matrix is strongly diagonal for eight of the nine classes. The exception is \textit{Scratch}, whose recall is zero: with 239 test samples against 29{,}486 \textit{none} samples, the cross-entropy objective is dominated by the majority classes and the network learns to absorb the thin-line morphology into neighboring classes. This is a known consequence of the severe class imbalance of WM-811K and matters here because \textit{Scratch} is one of the four scanner-plausible classes. Mitigation --- class-weighted loss, oversampling, or focal loss --- is deliberately deferred: it modifies only the training recipe of Experiment 2 and leaves the rest of the pipeline unchanged.
+
+\section{Experiment 3: Trajectory-to-Defect Pipeline}\label{sec:exp_pipeline}
+
+The third experiment exercises the full bridge of Section \ref{sec:methodology_cnn} over the complete 300\,mm wafer (49 dies of $32\times32$\,mm$^2$) in the full MuJoCo model. Two campaigns are run: disturbance injection at fixed trajectory parameters, and a sweep of the kinematic bounds at fixed (zero) disturbance. Both campaigns operate under Case 1 control (long-stroke tracking only); Experiment 4 then upgrades the controller, and Experiments 5 and 6 run on top of the upgraded configuration.
+
+A practical observation conditions both campaigns. In the Case 1 machine, the exposure-window MSD of the synchronization error sits between 45 and 390\,\textmu m depending on the trajectory --- four orders of magnitude above the 7\,nm specification, consistently with Experiment 4's ladder baseline. An absolute threshold at the specification therefore marks every die of every wafer as failing and produces saturated, uninformative maps. Both campaigns consequently use criteria referenced to the unperturbed baseline of the same machine: what is measured is the \textit{relative} effect of the disturbance or of the trajectory parameters, not compliance with a specification that this machine configuration cannot reach.
+
+\subsection{Disturbance signatures}\label{sec:exp_perturb}
+
+Three disturbance types are injected as forces on the wafer end-effector while the baseline trajectory runs: broadband force noise on both axes (floor \textit{vibration}), a sustained bias force active while scanning dies near the wafer edge (\textit{drift}), and a sustained bias force active while scanning a single die column (\textit{scratch}). For every die, the synchronization error during the central third of the scan --- the constant-velocity cruise that contains the exposure --- is reduced to its mean and its maximum moving standard deviation. A die is marked as failing when its mean shifts by more than 100\,nm with respect to the same die in the unperturbed run, or when its MSD exceeds twice the baseline median; both criteria are immune to the constant geometric offset of the absolute coordinates. The resulting maps are classified by the CNN of Experiment 2.
+
+This campaign uses a finer die grid than the sweep --- $16\times16$\,mm$^2$ dies, 241 per wafer --- so that line- and point-like patterns retain their morphology after resizing to the CNN input. Table \ref{tab:exp3_perturb} and Figure \ref{fig:exp3_perturb_maps} present the results.
+
+\begin{table}[htbp]
+\centering
+\caption{Disturbance-injection campaign over 241 dies. Expected class refers to the scanner-plausible morphology the disturbance emulates.}
+\label{tab:exp3_perturb}
+\begin{tabular}{lcccc}
+\toprule
+Disturbance & Failing dies & Spatial pattern & Expected class & CNN prediction \\
+\midrule
+none        & 0/241   & clean wafer     & none      & none (97.2\,\%) \\
+vibration   & 114/241 & scattered       & Random    & Center (88.6\,\%) \\
+drift       & 100/241 & outer ring      & Edge-Ring / Edge-Loc & Donut (99.9\,\%) \\
+scratch     & 15/241  & one die column  & Scratch   & Loc (63.1\,\%) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tabular}{cccc}
+    \includegraphics[width=0.22\textwidth]{perturb_map_none.png} &
+    \includegraphics[width=0.22\textwidth]{perturb_map_vibration.png} &
+    \includegraphics[width=0.22\textwidth]{perturb_map_drift.png} &
+    \includegraphics[width=0.22\textwidth]{perturb_map_scratch.png} \\
+    (a) none & (b) vibration & (c) drift & (d) scratch \\
+    \end{tabular}
+    \caption{Simulated wafer maps under the four disturbance conditions (yellow: failing dies, blue: passing dies). The spatial signatures --- clean, scattered, ring, line --- correspond to the injected disturbances.}
+    \label{fig:exp3_perturb_maps}
+\end{figure}
+
+The spatial half of the pipeline behaves as designed: the unperturbed wafer is clean and each disturbance produces a failing-die population of the expected shape and location --- scattered dies under force noise, an outer ring under the edge bias, and a single 15-die column under the column bias. The classification half is only partially aligned with the scanner-plausible target classes. The clean wafer is correctly assigned to \textit{none}, satisfying the first requirement of the validation criterion. The remaining assignments land on morphological neighbors rather than on the intended classes: the ring is read as \textit{Donut} --- a defensible reading, since the drift band covers an annulus wider than the one-die rim that characterizes \textit{Edge-Ring} in WM-811K --- the column is read as \textit{Loc}, the closest available class given that the classifier's \textit{Scratch} recall is zero (Experiment 2), and the scattered pattern, at a density of 47\,\% of the wafer, is absorbed into \textit{Center} rather than \textit{Random}. These deviations trace back to the classifier's minority-class weakness and to the density of the injected failures, not to the simulation half of the pipeline; they are taken up in the discussion of Section \ref{sec:exp_discussion}.
+
+\subsection{Kinematic-bound sweep}\label{sec:exp_sweep}
+
+The second campaign fixes the disturbances at zero and sweeps the kinematic bounds around the baseline $(0.8\ \mathrm{m/s},\ 20\ \mathrm{m/s^2},\ 1600\ \mathrm{m/s^3},\ 10^5\ \mathrm{m/s^4})$: one aggressive configuration raises all four bounds, and four configurations relax one bound at a time; a conservative configuration relaxes all four. For every die the maximum moving-window MSD of the synchronization error during the scan is computed, a die fails when it exceeds the scaled threshold (the baseline median, 152\,\textmu m), and the map is classified by the CNN; the cost is the total probability assigned to the scanner-plausible defect classes.
+
+Table \ref{tab:exp3_sweep} summarizes the seven configurations. The median exposure MSD responds reproducibly to every kinematic bound, and monotonically to the force-shaping ones: raising all bounds multiplies it by 2.5 (152 to 388\,\textmu m), while halving the acceleration or quartering the jerk reduces it to 87 and 52\,\textmu m respectively, with the conservative configuration reaching 45\,\textmu m. The velocity bound behaves differently on the frictionless plant: halving $v$ leaves the median slightly \textit{higher} (160\,\textmu m) and fails 44 of 49 dies, because the exposure window of a point on the wafer scales as $1/v$ --- a slower scan integrates more of the decaying post-ramp transient into every die's MSD. Aggressiveness in the force-shaping bounds $(a, j)$ injects more transient; slowness in $v$ exposes each point to it for longer; the optimizer of Experiment 6 must balance the two, and indeed settles above the baseline velocity. Tightening the snap bound by a factor of ten changes nothing --- profile duration and every error statistic are bit-for-bit identical to the baseline. This experiment is in fact what exposed the implementation property documented in Section \ref{sec:methodology_trajectories}: the polynomial generator's snap is implied by the ramp duration, so the $s_{\max}$ parameter is inert and the effective search space of all optimization experiments is $(v_{\max}, a_{\max}, j_{\max})$. Since the runs are deterministic, repeated execution reproduces these values exactly, satisfying the reproducibility half of the validation criterion.
+
+\begin{table}[htbp]
+\centering
+\caption{Kinematic-bound sweep over the full 49-die wafer. $T_{scan}$ is the duration of one scan profile; the failure threshold is the baseline median MSD (152\,\textmu m); cost is the total CNN probability of the scanner-plausible defect classes.}
+\label{tab:exp3_sweep}
+\setlength{\tabcolsep}{0.14cm}
+\begin{tabular}{lcccccccc}
+\toprule
+Config & $v$ & $a$ & $j$ & $s$ & $T_{scan}$ & med.\ MSD & Failing & CNN top class \\
+ & [m/s] & [m/s$^2$] & [m/s$^3$] & [m/s$^4$] & [ms] & [\textmu m] & dies & (prob.) \\
+\midrule
+Aggressive   & 1.2 & 40 & 5000 & $5\times10^5$ & 102.7 & 388 & 49/49 & Center (1.000) \\
+Baseline     & 0.8 & 20 & 1600 & $10^5$        & 145.0 & 152 & 24/49 & Center (0.973) \\
+Tighter snap & 0.8 & 20 & 1600 & $10^4$        & 145.0 & 152 & 24/49 & Center (0.973) \\
+Half velocity& 0.4 & 20 & 1600 & $10^5$        & 145.0 & 160 & 44/49 & Center (1.000) \\
+Half accel.  & 0.8 & 10 & 1600 & $10^5$        & 212.5 & 87  & 1/49  & none (0.991) \\
+Quarter jerk & 0.8 & 20 & 400  & $10^5$        & 504.0 & 52  & 1/49  & none (0.991) \\
+Conservative & 0.2 & 5  & 200  & $5\times10^3$ & 290.0 & 45  & 1/49  & none (0.991) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tabular}{ccc}
+    \includegraphics[width=0.28\textwidth]{sweep_map_aggressive.png} &
+    \includegraphics[width=0.28\textwidth]{sweep_map_baseline.png} &
+    \includegraphics[width=0.28\textwidth]{sweep_map_conservative.png} \\
+    (a) aggressive & (b) baseline & (c) conservative \\
+    \end{tabular}
+    \caption{Simulated wafer maps under the scaled MSD criterion for three points of the sweep (yellow: failing dies, blue: passing dies). The failing-die population collapses from full-wafer to a single die as the kinematic bounds are relaxed.}
+    \label{fig:exp3_sweep_maps}
+\end{figure}
+
+The wafer maps (Figure \ref{fig:exp3_sweep_maps}) and their classification expose a property of the cost function that matters for the optimization stage. Configurations that pass have $P_{none} = 0.991$ and a residual defect-class cost of 0.0056; but the saturated maps of the aggressive and baseline configurations concentrate essentially all probability in \textit{Center} --- a class outside the scanner-plausible subset --- so the cost restricted to plausible classes evaluates to zero exactly where the wafer is worst. A dense, wafer-wide failure pattern has no thin-line or scattered morphology left for the CNN to recognize. For the optimizer of Eq.\ \eqref{eq:problem} this dictates either complementing the cost with the $1 - P_{none}$ term or penalizing any activation of the non-plausible classes as an out-of-domain signal; both preserve the CNN as the cost backbone while removing the blind spot.
+
+\section{Experiment 4: Climbing the Control Ladder}\label{sec:exp_ladder}
+
+The pipeline experiments above ran under Case 1 control, where the exposure error is millimetre-scale and the failure thresholds had to be scaled accordingly. This experiment adds, one at a time, the mechanisms of Section \ref{sec:methodology_control} that make fourth-order trajectories trackable, and measures the contribution of each on the baseline trajectory over a four-die row in the full simulation model. Table \ref{tab:exp4_ladder} reports the cruise-window indices of the offset-corrected synchronization error; Figure \ref{fig:exp4_ladder} shows the error traces.
+
+\begin{table}[htbp]
+\centering
+\caption{Controller ladder on the baseline trajectory (cruise-window indices of $e_{syn}$, worst die).}
+\label{tab:exp4_ladder}
+\begin{tabular}{lcc}
+\toprule
+Configuration & max $|\mathrm{MA}|$ & max MSD \\
+\midrule
+Case 1: long-stroke PID only          & 737.9\,\textmu m & 33.9\,\textmu m \\
+Case 2: + lag-compensation FF          & 180.9\,\textmu m & 11.0\,\textmu m \\
+Case 3a: + fine-stage PI               & 2.50\,\textmu m  & 0.22\,\textmu m \\
+Case 3b: + fine-stage HIGS             & 2.14\,\textmu m  & 0.27\,\textmu m \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{controllers_esyn.png}
+    \caption{Synchronization error during one scan under the four control configurations. Shaded band: cruise (exposure) segment.}
+    \label{fig:exp4_ladder}
+\end{figure}
+
+Three observations follow. First, the identified lag feedforward reduces the exposure-window MA by a factor of four: on the frictionless plant the dominant Case 1 error is the acceleration-proportional lag of the chain --- servo deflection plus coupling stretch, largest on the reticle chain at $80$\,m/s$^2$ --- and its quasi-static part is cancelled open-loop by commanding the long stroke ahead of the reference (Eq.\ \eqref{eq:lag_ff}); what survives the fit is the \textit{dynamic} part, the decaying ringing of the flexible couplings after each ramp, which no quasi-static feedforward can represent. Second, the fine-stage loops attack exactly that transient and reduce the exposure MSD by a further factor of 40--50 (11.0\,\textmu m to 0.22--0.27\,\textmu m), a combined improvement of $345\times$ on MA and $157\times$ on MSD over Case 1; the residual MA of 2.1--2.5\,\textmu m is the tail of the post-ramp transient still decaying at cruise entry, and it is bounded by the fine loop's authority --- the fine-stage actuator's velocity loop places its command-following pole at $K_P/K_V = 100$\,rad/s, and gain beyond $k_p \approx 60$--$80$ destabilizes the loop against the flexible-chain modes. Third, at their respective stability-boundary tunings the linear PI and the nonlinear HIGS loop perform within 25\,\% of each other on this metric (HIGS is 14\,\% better on MA, PI 25\,\% better on MSD), although the HIGS element sustains an integrator frequency two orders of magnitude above the PI's equivalent before destabilizing --- its documented phase advantage expressed as usable gain; the regime where that advantage becomes decisive, overshoot-constrained settling, is not isolated by the present cruise-tracking metric. The nanometre specifications themselves remain out of reach by three further orders of magnitude, and the remaining gap is now attributable to the fine stage rather than to the plant model: the reference machine reaches its nanometre synchronization band with a purpose-designed fine positioning stage whose resonances sit at 2\,kHz and whose actuator mounts are essentially rigid ($10^{12}$\,N/m in the published parameter set \cite{Al-Rawashdeh2022_Caracterization}), five orders stiffer than the $10^7$\,N/m servo of this generic replication. All subsequent experiments therefore run under Case 3b and reference their thresholds to its baseline, studying the \textit{relative} effect of trajectory parameters at the error scale this plant provides --- now sub-micrometre rather than the millimetre scale of the uncorrected plant.
+
+\section{Experiment 5: The Throughput--Yield Transition}\label{sec:exp_transition}
+
+A deterministic trajectory stresses every die almost identically, so sweeping its parameters mainly moves the \textit{count} of failing dies (Experiment 3). Spatially structured, mechanism-bearing patterns can only arise where dies genuinely experience different dynamics. This experiment isolates the strongest such mechanism in the step-and-scan cycle: the settling budget $t_{step}$ between motions. Exposure of each die begins immediately after the preceding step, so any residual transient at scan entry is part of the exposed error; dies whose preceding step is atypical --- above all the row-change dies at the wafer edge, whose repositioning move spans the difference in row length on a circular wafer --- enter the scan with a larger residual. As $t_{step}$ shrinks (raising throughput), those dies should fail first, producing a scanner-plausible edge pattern that emerges from the motion profile itself, with no injected disturbances. Demonstrating this is demonstrating the central premise of the thesis: that trajectory aggressiveness maps to defect morphology, not merely to an error norm.
+
+The experiment runs the baseline trajectory under Case 3b control on the 241-die wafer, sweeping $t_{step}$ from 200 to 120\,ms at a fixed failure threshold (twice the median exposure MSD of the 200\,ms run, 1.37\,\textmu m on the corrected plant). Two spatial statistics are tracked besides the failing count: the \textit{row-change enrichment} (the failure rate among post-row-change dies relative to the wafer average) and the \textit{scan-order index} (mean scan position of the failing dies, normalized so 1.0 is uniform and values below 1 indicate that early-scanned dies fail).
+
+\begin{table}[htbp]
+\centering
+\caption{Throughput--yield transition under decreasing settling budget (baseline trajectory, Case 3b, 241 dies).}
+\label{tab:exp5_transition}
+\begin{tabular}{ccccccc}
+\toprule
+$t_{step}$ & Failing & Row-change & Scan-order & CNN class & $\mathcal{J}_{map}$ & $T_{wafer}$ \\
+ & dies & enrichment & index & & & \\
+\midrule
+200\,ms & 0/241   & ---   & ---  & none (97.2\,\%)   & 0.041 & 78.3\,s \\
+190\,ms & 0/241   & ---   & ---  & none (97.2\,\%)   & 0.041 & 75.9\,s \\
+180\,ms & 8/241   & \textbf{15.1} & 0.94 & none (97.4\,\%) & 0.037 & 73.5\,s \\
+170\,ms & 8/241   & 15.1  & 0.94 & none (97.4\,\%)   & 0.037 & 71.1\,s \\
+160\,ms & 8/241   & 15.1  & 0.94 & none (97.4\,\%)   & 0.037 & 68.7\,s \\
+150\,ms & 107/241 & 1.13  & 0.54 & Loc (75.2\,\%)    & 1.999 & 66.3\,s \\
+120\,ms & 232/241 & 0.52  & 1.00 & Center (100\,\%)  & 2.000 & 59.0\,s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tabular}{cccc}
+    \includegraphics[width=0.22\textwidth]{transition_map_200ms.png} &
+    \includegraphics[width=0.22\textwidth]{transition_map_180ms.png} &
+    \includegraphics[width=0.22\textwidth]{transition_map_150ms.png} &
+    \includegraphics[width=0.22\textwidth]{transition_map_120ms.png} \\
+    (a) 200\,ms & (b) 180\,ms & (c) 150\,ms & (d) 120\,ms \\
+    \end{tabular}
+    \caption{Wafer maps across the throughput--yield transition. At 180\,ms the first failures form an edge cluster at the row-change dies; at 150\,ms a scan-order-correlated band covers the early-scanned half of the wafer; by 120\,ms failure is near-total.}
+    \label{fig:exp5_transition_maps}
+\end{figure}
+
+The results (Table \ref{tab:exp5_transition}, Figure \ref{fig:exp5_transition_maps}) confirm the mechanism precisely at the transition onset. At $t_{step} = 180$\,ms the first eight failures appear with a row-change enrichment of \textbf{15.1}: every one of them is a die scanned immediately after a row change, clustering along one edge of the wafer --- visually an \textit{Edge-Loc} morphology in the WM-811K taxonomy, produced purely by the motion profile. The onset is a plateau, not a knife edge: the same eight-die cluster holds unchanged from 180 down to 160\,ms, and the wafer-wide collapse occurs between 160 and 150\,ms. Deeper into the transition the structure changes character: at 150\,ms nearly half the wafer fails in a band covering the \textit{early-scanned} rows (scan-order index 0.54), a fingerprint of a slowly decaying startup transient interacting with the shortened settling budget; by 120\,ms failure is near-total. The wafer cycle time falls from 78.3 to 59.0\,s across the sweep, making the throughput--yield trade explicit: between 190 and 150\,ms of settling budget, a 13\,\% cycle-time gain costs the wafer 44\,\% of its dies.
+
+Two observations qualify the classifier's part. The eight-die edge cluster at the onset is below the CNN's sensitivity (it still reports \textit{none} at 97.4\,\%, and the cost even dips slightly --- a reminder that the cost is a probability, not a die count); the mid-transition band at 150\,ms is read as \textit{Loc}, and the saturated maps beyond it as \textit{Center} --- classes that the corrected cost \eqref{eq:cost_corrected} prices at its maximum as out-of-domain signals instead of at zero. The informative segment of the cost curve --- exactly as anticipated --- is the transition region, and it is there that the optimizer of Experiment 6 operates.
+
+\section{Experiment 6: Optimization Scenarios E3 and E4}\label{sec:exp_pso}
+
+The final experiment runs the particle swarm of Section \ref{sec:methodology_pso} twice over the same plant, controller (Case 3b), settling budget ($t_{step} = 150$\,ms, inside the transition region), threshold, and throughput constraint ($T_{budget} = 15$\,s per 49-die wafer, $\beta = 4$), changing only the cost: scenario E3 minimizes the conventional servo cost (wafer-average exposure MSD normalized by the threshold), and scenario E4 minimizes the yield-aware CNN cost \eqref{eq:cost_corrected}. The search runs over the exact fifteen-segment profile family, so all four bounds --- including $s_{\max}$ --- are live dimensions. Six particles run for eight iterations (48 full-wafer simulations per scenario), with one particle seeded at the baseline trajectory.
+
+\begin{table}[htbp]
+\centering
+\caption{Optimization scenarios under identical constraints, exact snap-bounded generator. Failing dies and $\mathcal{J}_{map}$ are evaluated on the optimizer's own best candidate.}
+\label{tab:exp6_pso}
+\setlength{\tabcolsep}{0.12cm}
+\begin{tabular}{lcccccccc}
+\toprule
+Scenario & $v$ [m/s] & $a$ [m/s$^2$] & $j$ [m/s$^3$] & $s$ [m/s$^4$] & Failing & CNN class & $\mathcal{J}_{map}$ & $T_{wafer}$ \\
+\midrule
+Baseline (seed) & 0.80 & 20.0 & 1600 & $10^5$          & 4/49 & none & 0.038 & 15.2\,s \\
+E3: servo cost  & 1.50 & 40.5 & 1512 & $5\times10^5$   & 0/49 & none & 0.043 & 14.8\,s \\
+E4: CNN cost    & 1.22 & 38.6 & 2589 & $3.9\times10^5$ & 3/49 & none & 0.026 & 13.5\,s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both searches converge, and both dominate the baseline seed --- which, under the exact generator's longer scan profile, slightly exceeds the throughput budget and carries four failing dies (Table \ref{tab:exp6_pso}). The servo cost drives the velocity to the \textit{upper bound of the search box}: on the frictionless plant, raising $v$ both shortens the point-exposure window (lowering every die's MSD, the reversal documented in Experiment 3) and shortens the scan, so no interior trade-off remains within the admissible box and the search settles at $v = 1.5$\,m/s with the throughput budget inactive. Its reward mechanism is worth scrutiny --- a shorter integration window lowers MSD for reasons whose photolithographic side effects (dose, imaging) lie outside the model.
+
+The CNN cost run exposes the cost's calibration properties more sharply than any previous experiment: its returned optimum is \textit{not clean}. A map with three failing dies scores $\mathcal{J}_{map} = 0.026$, below the 0.043 of a perfectly clean map and the 0.038 of the four-die baseline map, so the swarm actively converges onto slightly-imperfect wafers --- real WM-811K wafers labelled \textit{none} typically carry a few scattered failing dies, and the network scores similarity to that training distribution rather than the die count. On the uncorrected plant this preference merely produced flatness across clean maps; on the corrected plant, where the optimizer can reach many clean candidates, it inverts the ranking at the top of the search. The E4 optimum is 9\,\% faster than the servo optimum (13.5 vs.\ 14.8\,s) and trades three dies for that speed --- a trade a calibrated yield cost would have to price explicitly rather than reward. Both observations point to the same refinement: probability calibration of $P_{none}$ plus a small die-count regularizer, giving the cost a slope on the clean plateau and aligning it with monotone yield. With that pass, the demonstrated machinery --- swarm, exact profile family, full-wafer evaluation, CNN pricing --- is positioned to evaluate the dominance claim of hypothesis H3 on the yield--throughput plane. The cost-evaluation history of both runs is archived with the experiment scripts.
+
+\section{Experiment 7: Does Trajectory Smoothness Matter Without a Good Controller?}\label{sec:exp_order}
+
+The premise of higher-order trajectory design is that bounding deeper derivatives injects less energy into the structure. A fair question is whether that refinement survives contact with a mediocre controller: if the tracking error is dominated by servo lag, does smoothing the reference accomplish anything at all? This experiment crosses the profile order --- acceleration-bounded (second order), jerk-bounded (third), and snap-bounded (fourth, exact fifteen-segment generator, plus a tight-snap variant at $s_{\max} = 2\times10^4$\,m/s$^4$) --- with the two ends of the controller ladder: bare collocated PID (Case 1) and feedforward plus fine-stage HIGS (Case 3b). All profiles run at the same kinematic bounds $(0.8, 20, 1600)$ on the four-die row.
+
+\begin{table}[htbp]
+\centering
+\caption{Profile order $\times$ controller. Cruise indices of $e_{syn}$ (worst die); full-scan MSD includes the post-step entry transient.}
+\label{tab:exp7_order}
+\setlength{\tabcolsep}{0.14cm}
+\begin{tabular}{llcccc}
+\toprule
+Profile & Controller & $T_{scan}$ & cruise max$|$MA$|$ & cruise max MSD & full-scan MSD \\
+\midrule
+2nd order & Case 1  & 132.5\,ms & 834\,\textmu m & 54.9\,\textmu m & 293\,\textmu m \\
+3rd order & Case 1  & 145.0\,ms & 946\,\textmu m & 36.1\,\textmu m & 198\,\textmu m \\
+4th order & Case 1  & 160.8\,ms & 1001\,\textmu m & 26.3\,\textmu m & 105\,\textmu m \\
+4th, tight snap & Case 1 & 208.6\,ms & 749\,\textmu m & 12.5\,\textmu m & 67\,\textmu m \\
+\midrule
+2nd order & Case 3b & 132.5\,ms & 8.38\,\textmu m & 6.84\,\textmu m & 10.6\,\textmu m \\
+3rd order & Case 3b & 145.0\,ms & 2.94\,\textmu m & 0.90\,\textmu m & 1.6\,\textmu m \\
+4th order & Case 3b & 160.8\,ms & 1.33\,\textmu m & 0.18\,\textmu m & 1.7\,\textmu m \\
+4th, tight snap & Case 3b & 208.6\,ms & \textbf{0.33}\,\textmu m & \textbf{0.046}\,\textmu m & 1.8\,\textmu m \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{order_comparison_esyn.png}
+    \caption{Synchronization error during one scan for the four profile orders, under bare PID (top) and under the full controller ladder (bottom). Note the vertical scales.}
+    \label{fig:exp7_order}
+\end{figure}
+
+The answer is layered (Table \ref{tab:exp7_order}, Figure \ref{fig:exp7_order}). \textbf{Under the bare PID, trajectory order reaches the exposure only through the transients.} The cruise MA sits at 0.75--1.0\,mm for every order --- it is the slowly decaying tail of the acceleration transient, which the collocated loop cannot reject, and reference smoothness does not remove it within the cruise window. Order does shape how much transient there is to decay: the cruise MSD improves monotonically with smoothness, $54.9 \rightarrow 36.1 \rightarrow 26.3 \rightarrow 12.5$\,\textmu m from second order to tight snap ($4.4\times$), and the full-scan MSD follows the same ordering ($293 \rightarrow 67$\,\textmu m); the reduction is real but the exposure error remains dominated by what the controller leaves behind.
+
+\textbf{Under the full ladder, trajectory order is worth more than an order of magnitude.} With the feedforward removing the quasi-static lag and the HIGS loop suppressing what lies within its bandwidth, the cruise MSD falls $6.84 \rightarrow 0.90 \rightarrow 0.18$\,\textmu m from second to fourth order --- a $38\times$ improvement attributable to the profile alone, at identical kinematic bounds. The interpretation is classical and now quantified for this plant: the fine loop handles the error components inside its bandwidth, and the profile order determines how much excitation exists \textit{beyond} it; smoothing the reference and improving the controller are complements, not substitutes. Two further readings matter for the optimizer. First, smoothness has a throughput price --- $T_{scan}$ grows 21\,\% from second to fourth order at the same bounds, and a further 30\,\% for the tight-snap variant --- so profile order participates in the same throughput--yield trade as the kinematic bounds themselves. Second, the tight-snap variant is now the \textit{most} accurate configuration (cruise MSD 46\,nm, MA 0.33\,\textmu m --- the closest any configuration of this plant comes to the nanometre specifications), but its full-scan MSD is no better than the moderate profile's (1.8 vs.\ 1.7\,\textmu m, both set by the post-step entry transient) and it spends 30\,\% more scan time. Accuracy inside the cruise keeps improving with smoothness, while the settling-dominated component saturates at the closed loop's floor and the throughput cost grows without bound: the optimum in the snap dimension is therefore interior once throughput enters the cost --- precisely the trade the optimizer of Experiment 6 is built to resolve.
+
+\section{A Recurrent Surrogate Model (Secondary Study)}\label{sec:exp_surrogate}
+
+This closing study is deliberately \textit{secondary}: the main line of the thesis --- trajectory generation, control, defect mapping, CNN cost, and optimization --- does not depend on it, and Experiment 6 runs its optimization against the full simulation directly. The recurrent surrogate of Section \ref{sec:methodology_surrogate}, trained on 100 randomized simulation runs ($\approx 1.6$ million samples), is evaluated in two roles: as a fast predictor of the exposure indices for individual candidate trajectories, and as the inner evaluation of a grid search over the kinematic bounds.
+
+Table \ref{tab:exp4_lstm} shows the surrogate's predictions for three trajectories of decreasing aggressiveness, after retraining on the corrected plant. The predicted indices decrease monotonically --- by a factor of 30 on MA and 45 on MSD between the baseline and the slowest candidate --- reproducing the ordering observed in the full simulation. Their absolute scale, however, inherits the constant geometric offset present in the synchronization-error signal on which the surrogate was trained, so the predictions are meaningful for \textit{ranking} candidates rather than for verifying absolute compliance; all three candidates are correctly rejected against the nanometre thresholds.
+
+\begin{table}[htbp]
+\centering
+\caption{Surrogate predictions of the exposure indices for three candidate trajectories.}
+\label{tab:exp4_lstm}
+\begin{tabular}{ccccccc}
+\toprule
+$v_{\max}$ [m/s] & $a_{\max}$ [m/s$^2$] & $j_{\max}$ [m/s$^3$] & $s_{\max}$ [m/s$^4$] & $\max|\mathrm{MA}|$ & $\max \mathrm{MSD}$ & Verdict \\
+\midrule
+0.80 & 20.0 & 1600 & $10^5$ & 31.5\,mm  & 5.26\,mm  & FAIL \\
+0.10 & 1.0  & 100  & $10^4$ & 2.28\,mm  & 0.46\,mm  & FAIL \\
+0.01 & 0.1  & 1    & 10     & 1.09\,mm  & 0.118\,mm & FAIL \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The grid search evaluates 450 configurations over $v \in [0.01, 0.5]$\,m/s, $a \in [0.1, 10]$\,m/s$^2$, $j \in \{500, 1000, 2000\}$\,m/s$^3$, $s \in \{10^4, 5\times10^4, 10^5\}$\,m/s$^4$, accepting a candidate only if the predicted indices satisfy the nanometre specifications. The search terminates without finding any feasible candidate and reports that the sub-nanometre regime is unreachable for the Case 1 machine, recommending the spring-compensation or fine-stage configurations of the reference study. This negative result is consistent with Experiment 1 and with the sweep of Experiment 3: in a coarse-only machine, no admissible trajectory can suppress the reticle-coupling error to nanometre level, since the dominant error term is structural rather than kinematic.
+
+\subsection{Is a recurrent surrogate the right tool?}\label{sec:exp_surrogate_critique}
+
+The results above prompt a question that the thesis should answer explicitly rather than assume: does a learned sequence model make sense for this plant at all?
+
+For the Case 1 configuration as simulated, the honest answer is that it is not \textit{necessary}. The plant is linear time-invariant --- linear Kelvin--Voigt couplings, linear PID feedback, linear feedforward --- so the map from the reference kinematics to the synchronization error is an exact, known LTI operator. It can be evaluated by directly integrating the reduced two-body model (seconds per candidate, Experiment 1) or captured without error by a fitted low-order transfer function, with no training data and full interpretability. A GRU trained on one hundred randomized runs approximates something that, in this regime, can be computed exactly; its only measured advantage is evaluation speed against the \textit{full} MuJoCo model, not against the reduced model that suffices for Case 1. The training data also transferred a defect into the surrogate: the synchronization-error signal it learned from contains the constant geometric offset of the absolute coordinates, which is why the predictions of Table \ref{tab:exp4_lstm} rank correctly but carry a meaningless absolute scale.
+
+The recurrent surrogate earns its place under three conditions that define the continuation of this work, none of which holds in the linear baseline but all of which appear in the target configurations. First, \textit{nonlinearity}: the actuator saturation ($5\times10^4$\,N) engaged by aggressive transients, and above all the nonlinear feedback structures planned for the fine-stage configurations (reset elements and hybrid integrator--gain systems \cite{Heertjes2025_NonlinearControl}), break the LTI shortcut --- there is then no exact transfer function to fit, and a learned dynamic model becomes a legitimate system-identification tool. Second, \textit{cost amortization}: when the evaluation plant is the full multi-body simulation over a complete 241-die wafer (minutes per candidate, Experiment 3) inside a population-based optimizer issuing thousands of evaluations, a millisecond surrogate changes what is computationally feasible. Third, \textit{inter-segment memory}: the recurrent state carries transients across the scan--step--scan sequence, an effect that static regressions over $(v_{\max}, a_{\max}, j_{\max}, s_{\max})$ cannot represent and that grows in importance as settling budgets shrink.
+
+Three concrete amendments follow for the next iteration of the surrogate: retrain on the offset-corrected error signal, so that absolute predictions become meaningful against the MA/MSD thresholds; report ranking fidelity (for example rank correlation against full-simulation sweeps) as the primary metric, since ranking is what the optimizer consumes; and benchmark against the LTI baseline on Case 1, so that the surrogate's added value is demonstrated where it exists --- the nonlinear, full-model configurations --- rather than presumed everywhere.
+
+\section{Discussion}\label{sec:exp_discussion}
+
+Read against the evaluation scenarios of the thesis proposal --- E1: third-order baseline, E2: fourth-order baseline, E3: optimization under a servo cost, E4: optimization under the CNN cost --- the experiments above complete E2, E3, and E4: the trajectory generator, the validated plant, the controller ladder up to the nonlinear HIGS loop, the trained classifier, the trajectory-to-map bridge, and two full optimization runs differing only in their cost. E1 remains open, and deliberately so: a fair third-versus-fourth-order comparison requires the exact fifteen-segment snap-limited generator (Section \ref{sec:methodology_trajectories}) so that both profile orders are represented by their true shapes rather than by polynomial approximations.
+
+Of the validation criterion, three elements are now satisfied: unperturbed operation maps to the \textit{none} class; the cost input shifts monotonically and reproducibly under parameter sweeps; and --- the strongest result of the campaign --- spatially structured, scanner-plausible morphology emerges from the motion profile itself, with the transition onset of Experiment 5 concentrating its first failures at the row-change dies with fifteen-fold enrichment, an \textit{Edge-Loc} pattern requiring no injected disturbance.
+
+The class-level half of the criterion --- that motion-induced failures be \textit{classified} into the scanner-plausible classes --- is met only partially, and every failure mode observed points at the classifier rather than at the simulation half of the pipeline. The scratch-shaped disturbance cannot be recognized as \textit{Scratch} while the classifier's recall for that class is zero (Experiment 2), so the 15-die column falls to \textit{Loc}; dense scattered patterns are absorbed into \textit{Center}; the drift annulus is read as \textit{Donut}; the eight-die Edge-Loc onset of Experiment 5 sits below the classifier's sensitivity; and Experiment 6 showed the optimizer converging onto a slightly-imperfect wafer because the classifier scores it as more \textit{none}-like than a clean one. The refinement list is correspondingly concrete and bounded: rebalanced training for the minority classes, probability calibration on clean and near-clean maps, and a die-count regularizer in the cost. On the trajectory side the exact generators are now in place, and Experiment 7 showed that profile order is worth well over an order of magnitude of exposure error under a capable controller, with the snap trade-off resolved by throughput rather than by accuracy alone. On the plant side, the corrections adopted in this iteration --- error-velocity servo damping on the frictionless guideways, balance-mass cancellation of the actuator reactions, and consistently paired error sampling --- brought the exposure error from the millimetre scale to the sub-micrometre scale; the remaining three orders of magnitude to the nanometre specifications belong to the fine positioning stage, which in the reference machine is a purpose-designed 2\,kHz subsystem rather than the bandwidth-limited generic servo modelled here. None of these items changes the architecture validated here: generate, track, map, classify, price, and optimize --- the loop is closed and runs end to end.
+
+%%% ----------------------------------------------------------------------

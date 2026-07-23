@@ -8,48 +8,49 @@ A level-1 auxiliary file: introChapter.aux
 A level-1 auxiliary file: modelChapter.aux
 A level-1 auxiliary file: controlObjectivesChapter.aux
 A level-1 auxiliary file: methodologyChapter.aux
+A level-1 auxiliary file: experimentsChapter.aux
 A level-1 auxiliary file: conclusion.aux
 The style file: amsplain.bst
 A level-1 auxiliary file: apendice1.aux
 Database file #1: bibliografia.bib
-You've used 8 entries,
+You've used 17 entries,
             2213 wiz_defined-function locations,
-            566 strings with 5803 characters,
-and the built_in function-call counts, 2631 in all, are:
-= -- 238
-> -- 105
-< -- 0
-+ -- 42
-- -- 34
-* -- 209
-:= -- 421
-add.period$ -- 8
-call.type$ -- 8
-change.case$ -- 41
+            635 strings with 9138 characters,
+and the built_in function-call counts, 8088 in all, are:
+= -- 687
+> -- 588
+< -- 2
++ -- 236
+- -- 216
+* -- 730
+:= -- 1334
+add.period$ -- 17
+call.type$ -- 17
+change.case$ -- 158
 chr.to.int$ -- 0
-cite$ -- 8
-duplicate$ -- 110
-empty$ -- 232
-format.name$ -- 34
-if$ -- 557
+cite$ -- 17
+duplicate$ -- 264
+empty$ -- 514
+format.name$ -- 216
+if$ -- 1641
 int.to.chr$ -- 0
-int.to.str$ -- 8
-missing$ -- 16
-newline$ -- 34
-num.names$ -- 16
-pop$ -- 52
+int.to.str$ -- 17
+missing$ -- 32
+newline$ -- 61
+num.names$ -- 36
+pop$ -- 185
 preamble$ -- 1
-purify$ -- 33
+purify$ -- 141
 quote$ -- 0
-skip$ -- 74
+skip$ -- 198
 stack$ -- 0
-substring$ -- 181
-swap$ -- 22
-text.length$ -- 0
+substring$ -- 397
+swap$ -- 73
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 30
+type$ -- 66
 warning$ -- 0
-while$ -- 27
-width$ -- 9
-write$ -- 81
+while$ -- 58
+width$ -- 19
+write$ -- 165

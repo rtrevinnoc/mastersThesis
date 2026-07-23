@@ -2,17 +2,36 @@
 \def\baselinestretch{1.0}
 \setlinespacing{1.4}
 
-El termino {\em caotico} es asignado a la clase de dinamicas
-en sistemas fisicos y matematicos deterministicos cuyo
-historial en el tiempo tiene una sensible dependencia a las
-condiciones iniciales. Este tipo de dinamica se presenta
-frecuentemente en la naturaleza en los sistemas dinamicos no
-lineales. La sensibilidad a las condiciones iniciales que
-presentan estas dinamicas es causa de impredictabilidad, tal
-como en los modelos climaticos, por lo cual es deseable en muchas
-ocasiones eliminar las dinamicas caoticas con la finalidad de
-trabajar con sistemas cuyas trayectorias no sean tan sensibles a
-pequenas
-variaciones en las condiciones iniciales o en los parametros...\\
+Step-and-scan photolithography scanners expose the layers of an integrated
+circuit by sweeping a reticle and a silicon wafer through a projection slit in
+opposite directions, synchronized to nanometre-level accuracy. The reference
+trajectories that command these motions determine how much energy is injected
+into the poorly damped structural modes of the machine, and therefore how large
+the residual synchronization error is during exposure. Trajectory design is
+conventionally evaluated through servo-mechanical metrics --- settling time,
+tracking error, and the moving average (MA) and moving standard deviation (MSD)
+of the synchronization error --- none of which describes the morphology of the
+defects that those errors ultimately imprint on the wafer.
+
+This work proposes a yield-aware framework for optimizing the kinematic bounds
+$(v_{\max}, a_{\max}, j_{\max}, s_{\max})$ of fourth-order (snap-limited)
+reference trajectories. A planar multi-body model of a generic lithography
+machine, comprising the reticle, optics, and wafer chains coupled through
+Kelvin--Voigt elements, is implemented as a simulation in the MuJoCo physics
+engine and validated against the characterization study it derives from. The
+synchronization error produced during scanning is transformed into a simulated
+wafer defect map, which a convolutional neural network (CNN) trained on the
+industrial WM-811K dataset (172{,}950 labelled wafer maps, 96.88\,\% hold-out
+accuracy) classifies into nine defect morphologies. The probability
+distribution estimated by the CNN, restricted to the classes plausibly caused
+by scanner motion, defines a cost function that links trajectory parameters
+directly to expected yield, closing the loop for data-driven trajectory
+optimization under a throughput constraint. A recurrent surrogate model trained
+on randomized simulation runs accelerates the evaluation of candidate
+trajectories during the search.
+
+\textbf{Keywords:} photolithography, step-and-scan, trajectory generation,
+fourth-order profiles, multi-body dynamics, convolutional neural networks,
+wafer maps, yield.
 
 % ----------------------------------------------------------------------

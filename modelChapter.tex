@@ -572,12 +572,12 @@ Only the boundary term $- K_2(f^0_1 - f^0_2) - C_2(\dot{f}^0_1 - \dot{f}^0_2)$ s
         + {}^0\bar{C}_1\,\dot{f}_1
         + {}^0\bar{K}_1\,f_1
         - \sum_{j=1}^{3}\left\{
-            {}^0\bar{C}_{2_j}\,\dot{f}_{2_j} + {}^0\bar{K}_{2_j}\,f_{2_j}
+            {}^0\hat{C}_{2_j}\,\dot{f}_{2_j} + {}^0\hat{K}_{2_j}\,f_{2_j}
         \right\}
         &= u^0_{1}
     \end{split}
 \end{align}
-where $m_0 = m_{1} + \sum_{j=1}^{3}\!\left(m^j_{B} + \sum_{i=2}^{N_j} m_{i_j}\right)$ is the total system mass, and the stiffness and damping matrices denote the $2\times2$ translational block.
+where $m_0 = m_{1} + \sum_{j=1}^{3}\!\left(m^j_{B} + \sum_{i=2}^{N_j} m_{i_j}\right)$ is the total system mass, and the stiffness and damping matrices denote the $2\times2$ translational block. Following \cite{Al-Rawashdeh2022_Caracterization}, ${}^0\bar{K}_1 = {}^0K_1$ and ${}^0\bar{C}_1 = {}^0C_1$, while the hatted chain couplings are ${}^0\hat{C}_{2_j} = {}^0C_{2_j}$ and ${}^0\hat{K}_{2_j} = {}^0K_{2_j} + {}^0C_{2_j}[\omega_1]$; the accents are defined in general in \eqref{eq:accented} below.
 
 By the exact same cancellation argument applied to the moment balance about the $z$-axis — the moment exerted by the spring connecting body $i$ to body $i-1$ is $-K_{i_j}\,\theta_{z_{i_j}}$, so internal moments cancel identically — the rotational equation of the base frame is:
 \begin{align} \label{eq:baseframerot}
@@ -586,13 +586,13 @@ By the exact same cancellation argument applied to the moment balance about the 
         + {}^0\bar{C}_1\,\dot{\theta}_{z_1}
         + {}^0\bar{K}_1\,\theta_{z_1}
         - \sum_{j=1}^{3}\left\{
-            {}^0\bar{C}_{2_j}\,\dot{\theta}_{z_{2_j}}
-            + {}^0\bar{K}_{2_j}\,\theta_{z_{2_j}}
+            {}^0\hat{C}_{2_j}\,\dot{\theta}_{z_{2_j}}
+            + {}^0\hat{K}_{2_j}\,\theta_{z_{2_j}}
         \right\}
         &= \tau^0_{1}
     \end{split}
 \end{align}
-where $I_{z_0} = I_{z_1} + \sum_{j=1}^{3}\!\left(I^j_{z_B} + \sum_{i=2}^{N_j} I_{z_{i_j}}\right)$ is the total moment of inertia of the system about the $z$-axis, ${}^0\bar{C}_{i_j}$ and ${}^0\bar{K}_{i_j}$ are the scalar rotational damping and stiffness of the joint connecting body $i$ to its predecessor in chain $j$, and $\tau^0_1$ is the net applied torque on the base frame.
+where $I_{z_0} = I_{z_1} + \sum_{j=1}^{3}\!\left(I^j_{z_B} + \sum_{i=2}^{N_j} I_{z_{i_j}}\right)$ is the total moment of inertia of the system about the $z$-axis, ${}^0\bar{C}_{i_j}$ and ${}^0\bar{K}_{i_j}$ (and their hatted counterparts, which coincide with them for the scalar rotational entries) are the scalar rotational damping and stiffness of the joint connecting body $i$ to its predecessor in chain $j$, and $\tau^0_1$ is the net applied torque on the base frame.
 
 \subsection{For each chain}
 
@@ -603,7 +603,7 @@ Recalling \eqref{eq:forceeq} and \eqref{eq:torqueeq_expanded}, for the first bod
         + {}^0\bar{C}_{2_j}\,\dot{f}_{2_j}
         + {}^0\bar{K}_{2_j}\,f_{2_j}
         - \left\{
-            {}^0\bar{C}_{3_j}\,\dot{f}_{3_j} + {}^0\bar{K}_{3_j}\,f_{3_j}
+            {}^0\hat{C}_{3_j}\,\dot{f}_{3_j} + {}^0\hat{K}_{3_j}\,f_{3_j}
         \right\}
         = u^0_{2_j}
 \end{equation}
@@ -612,8 +612,8 @@ and the rotational equation is:
         I_{z_{2_j}}\ddot{\theta}^{0}_{z_{2_j}}
         + {}^0\bar{C}_{2_j}\,\dot{\theta}_{z_{2_j}}
         + {}^0\bar{K}_{2_j}\,\theta_{z_{2_j}}
-        - {}^0\bar{C}_{3_j}\,\dot{\theta}_{z_{3_j}}
-        - {}^0\bar{K}_{3_j}\,\theta_{z_{3_j}}
+        - {}^0\hat{C}_{3_j}\,\dot{\theta}_{z_{3_j}}
+        - {}^0\hat{K}_{3_j}\,\theta_{z_{3_j}}
         = \tau^0_{2_j}
 \end{equation}
 
@@ -625,7 +625,7 @@ For bodies $3\leq i< N_j$, the same structure holds with bodies $2, \dots, i-1$ 
         + {}^0\bar{K}_{i_j}\,f_{i_j}
         -
         \left\{
-            {}^0\bar{C}_{(i+1)_j}\,\dot{f}_{(i+1)_j} + {}^0\bar{K}_{(i+1)_j}\,f_{(i+1)_j}
+            {}^0\hat{C}_{(i+1)_j}\,\dot{f}_{(i+1)_j} + {}^0\hat{K}_{(i+1)_j}\,f_{(i+1)_j}
         \right\}
         = u^0_{i_j}
 \end{equation}
@@ -634,8 +634,8 @@ and the rotational equation is:
         I_{z_{i_j}}\ddot{\theta}^{0}_{z_{i_j}}
         + {}^0\bar{C}_{i_j}\,\dot{\theta}_{z_{i_j}}
         + {}^0\bar{K}_{i_j}\,\theta_{z_{i_j}}
-        - {}^0\bar{C}_{(i+1)_j}\,\dot{\theta}_{z_{(i+1)_j}}
-        - {}^0\bar{K}_{(i+1)_j}\,\theta_{z_{(i+1)_j}}
+        - {}^0\hat{C}_{(i+1)_j}\,\dot{\theta}_{z_{(i+1)_j}}
+        - {}^0\hat{K}_{(i+1)_j}\,\theta_{z_{(i+1)_j}}
         = \tau^0_{i_j}
 \end{equation}
 
@@ -653,6 +653,20 @@ Finally, for body $i = N_j$ (the end effector), there is no subsequent body in t
         + {}^0\bar{K}_{{N_j}_j}\,\theta_{z_{{N_j}_j}}
         = 0
 \end{equation}
+
+\subsection{Accented matrices and the nominal condition}
+
+Following Appendix~A of \cite{Al-Rawashdeh2022_Caracterization}, the accented matrices appearing in the equations above are not merely rotated joint matrices: they absorb the rotational cross-terms of \eqref{eq:acc_expanded} into effective damping and stiffness. With $[\omega]$ the planar skew form of \eqref{eq:skew} and $B_{i_j} = [\dot{\omega}_{i_j}] + [\omega_{i_j}]^2$:
+\begin{align}
+    \bar{m}_{i_j} &= \sum_{k=i}^{N_j} m_{k_j} \notag \\
+    {}^0\bar{C}_{i_j} &= {}^0C_{i_j} + 2m_{i_j}\,[\omega_{(i-1)_j}] \notag \\
+    {}^0\bar{K}_{i_j} &= {}^0K_{i_j} + {}^0C_{i_j}\,[\omega_{(i-1)_j}] + m_{i_j}\,B_{(i-1)_j} \label{eq:accented} \\
+    {}^0\hat{C}_{(i+1)_j} &= {}^0C_{(i+1)_j} \notag \\
+    {}^0\hat{K}_{(i+1)_j} &= {}^0K_{(i+1)_j} + {}^0C_{(i+1)_j}\,[\omega_{i_j}] \notag
+\end{align}
+The bar thus marks the matrices acting on the body's \emph{own} joint coordinates, which collect the Coriolis ($2m[\omega]$), damper-convection ($C[\omega]$), and Euler--centripetal ($mB$) contributions, while the hat marks the coupling to the \emph{downstream} joint coordinates, which inherits only the convective damper term: the damper reacts to the inertial velocity $\dot{f} + [\omega]f$ of \eqref{eq:vel_expanded}, so part of its force is proportional to position and migrates into the effective stiffness. The scalar rotational entries admit no such cross-terms in the planar restriction, so about the $z$-axis the accents are inert and $\hat{(\cdot)} = \bar{(\cdot)} = (\cdot)$. For $3 \leq i < N_j$ the model of \cite{Al-Rawashdeh2022_Caracterization} additionally couples body $i$ to every upstream joint through the two-index matrices ${}^0\hat{C}_{i_j,k} = 2m_{i_j}\,[\omega_{(k-1)_j}]$ and ${}^0\hat{K}_{i_j,k} = m_{i_j}\,B_{(k-1)_j}$ for $2 \leq k < i$, omitted above.
+
+Every one of these corrections is proportional to $\dot{\theta}_z$ or $\ddot{\theta}_z$ of a parent body. At the nominal operating condition $\dot{\theta}_z = \ddot{\theta}_z = 0$ --- the regulated step-and-scan regime studied throughout this work --- they vanish identically: the accented matrices reduce to the frame-rotated ${}^0K_{i_j}$ and ${}^0C_{i_j}$, the inertial accelerations of \eqref{eq:acc_expanded} reduce to sums of relative accelerations, and the equations of motion coincide with Eqs.~(2.6)--(2.8) of \cite{Al-Rawashdeh2022_Caracterization} and become linear time-invariant. Away from the nominal condition, the corrections re-enter as the parameter-varying part $A_1(\Omega,\dot{\Omega})$ of the decomposition given in \cite{Al-Rawashdeh2022_Caracterization}. Note that the scheduling variables $\Omega$ are themselves state variables --- the $\dot{\theta}_z$ of each body --- so the cross-terms are quadratic in the state (and the rotated matrices ${}^0K_{i_j}$, ${}^0C_{i_j}$ carry a further state dependence through ${}^0R_{i_j}(\theta_z)$): the machine model is, strictly, nonlinear, a \emph{quasi}-LPV system whose frozen nominal dynamics are the LTI model above. Of the two realizations of the machine used in this work, the reduced two-body-per-chain model integrates this nominal LTI form directly, while the MuJoCo test bed assembles the full nonlinear multibody dynamics from the same lumped topology and therefore retains these couplings without approximation.
 
 \subsection{State-space formulation}
 
