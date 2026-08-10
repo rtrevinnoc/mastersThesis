@@ -62,7 +62,7 @@ Tag & Function \\
 \end{tabular}
 \end{table}
 
-The mechanical properties of the couplings, represented by the Kelvin-Voigt elements, are implemented via the \texttt{stiffness} and \texttt{damping} attributes of the \texttt{<joint>} tags. To begin, the common base frame ($\mathcal{F}_1$) is anchored to the world frame ($\mathcal{F}_0$) via a 3-DOF joint (two prismatic, one revolute) representing the isolation system with stiffness $K_1$ and damping $C_1$, as seen in Eq.~\eqref{eq:baseframeeq} and~\eqref{eq:baseframerot}. For actuated stages, where the physical stiffness is replaced by the controller's active response, the simulation uses high \texttt{kp} values ($K_P = 10^7$\,N/m, to approximate the stiffness of a rigid servo motor while maintaining numerical stability with the implicit integrator at a timestep of $dt = 10^{-4}$\,s).
+The mechanical properties of the couplings, represented by the Kelvin-Voigt elements, are implemented via the \texttt{stiffness} and \texttt{damping} attributes of the \texttt{<joint>} tags. To begin, the common base frame ($\mathcal{F}_1$) is anchored to the world frame ($\mathcal{F}_0$) via a 3-DOF joint (two prismatic, one revolute) representing the isolation system with stiffness $K_1$ and damping $C_1$, as seen in Eq.~\eqref{eq:baseframeeq} and~\eqref{eq:baseframerot}. For actuated stages, where the physical stiffness is replaced by the controller's active response, the simulation uses high $K_P$ values ($\texttt{kp} = 10^7$\,N/m, to approximate the stiffness of a rigid servo motor while maintaining numerical stability with the implicit integrator at a timestep of $dt = 10^{-4}$\,s).
 
 Tables~\ref{tab:param_matrix_wafer},~\ref{tab:param_matrix_reticle}, and~\ref{tab:param_matrix_optics} illustrate the distribution of these variables for the three chains.
 
@@ -78,7 +78,6 @@ Floor $\rightarrow$ Base Frame   & \texttt{K1}       & \texttt{C1} \\
 Base $\rightarrow$ LS Stage      & \texttt{KP\_ACT}  & \texttt{KV\_ACT\_TRANS} \\
 LS Stage $\rightarrow$ LS Flex   & \texttt{K\_LS\_F} & \texttt{C\_LS\_F} \\
 SS Stage $\rightarrow$ SS Flex   & \texttt{K\_SS\_F} & \texttt{C\_SS\_F} \\
-Fine Stage $\rightarrow$ Flex    & \texttt{K\_ST\_F} & \texttt{C\_ST\_F} \\
 Stage $\rightarrow$ Die          & \texttt{K8\_W}    & \texttt{C8\_W} \\
 \bottomrule
 \end{tabular}
@@ -96,7 +95,6 @@ Floor $\rightarrow$ Base Frame   & \texttt{K1}       & \texttt{C1} \\
 Base $\rightarrow$ LS Stage      & \texttt{KP\_ACT}  & \texttt{KV\_ACT\_TRANS} \\
 LS Stage $\rightarrow$ LS Flex   & \texttt{K\_LS\_F} & \texttt{C\_LS\_F} \\
 SS Stage $\rightarrow$ SS Flex   & \texttt{K\_SS\_F} & \texttt{C\_SS\_F} \\
-Fine Stage $\rightarrow$ Flex    & \texttt{K\_ST\_F} & \texttt{C\_ST\_F} \\
 Stage $\rightarrow$ Mask         & \texttt{K8\_R}    & \texttt{C8\_R} \\
 \bottomrule
 \end{tabular}
@@ -137,17 +135,25 @@ The trajectories commanded to the stages are \textbf{fourth-order profiles}: pie
     p(t) = p_0 + v_0 t + \frac{a_0}{2}t^2 + \frac{j_0}{6}t^3 + \frac{s}{24}t^4,
     \label{eq:fourth_order_poly}
 \end{equation}
-where $(p_0, v_0, a_0, j_0)$ are the boundary conditions inherited from the previous segment and $s \in \{-s_{\max}, 0, +s_{\max}\}$. A symmetric point-to-point motion consists of fifteen such segments, arranged so that none of the kinematic bounds $(v_{\max}, a_{\max}, j_{\max}, s_{\max})$ is exceeded.
+where ($p_0$, $v_0$, $a_0$, $j_0$) are the boundary conditions inherited from the previous segment and $s \in \{-s_{\max}, 0, +s_{\max}\}$. A symmetric point-to-point motion consists of fifteen such segments, arranged so that none of the kinematic bounds ($v_{\max}$, $a_{\max}$, $j_{\max}$, $s_{\max}$) is exceeded.
 
-Two generators are implemented in this work, and the distinction matters for interpreting the experiments. The \textit{first} is a polynomial approximation: the acceleration ramp is a sixth-order smoothstep whose duration is computed from $(v_{\max}, a_{\max}, j_{\max})$ and the travel distance. Its motion is continuous through jerk with bounded snap, but the snap bound is \textit{implied} by the ramp duration ($s_{peak} = 60\, v_{\max}/t_{accel}^3$) rather than imposed by $s_{\max}$; the pipeline experiments of Chapter~\ref{ch:experiments} that predate this observation (Experiments 3 and 5) use this generator, whose effective parameterization is $(v_{\max}, a_{\max}, j_{\max})$.
+% Two generators are implemented in this work, and the distinction matters for interpreting the experiments. The \textit{first} is a polynomial approximation: the acceleration ramp is a sixth-order smoothstep whose duration is computed from ($v_{\max}$, $a_{\max}$, $j_{\max}$) and the travel distance. Its motion is continuous through jerk with bounded snap, but the snap bound is \textit{implied} by the ramp duration ($s_{peak} = 60\, v_{\max}/t_{accel}^3$) rather than imposed by $s_{\max}$; the pipeline experiments of Chapter~\ref{ch:experiments} that predate this observation (Experiments 3 and 5) use this generator, whose effective parameterization is ($v_{\max}$, $a_{\max}$, $j_{\max}$).
 
-The \textit{second} is the exact generator: a segment-planning implementation that constructs the profile from piecewise-constant snap --- seven segments per acceleration ramp, fifteen in total --- with the feasibility cascade of~\cite{Lambrechts2003_Trajectories}: if the jerk plateau is unreachable the effective jerk reduces to $\sqrt{a_{\max} s_{\max}}$, if the acceleration plateau is unreachable the effective acceleration follows from the corresponding quadratic, and if the travel distance cannot accommodate the ramps the cruise velocity is reduced by bisection. The same machinery instantiates the lower-order profiles used for comparison: a trapezoidal acceleration-bounded profile (second order) and a jerk-bounded S-curve (third order, seven segments). All generators were verified over a grid of parameter combinations, including degenerate short-move and tight-snap cases, for exact travel distance, terminal rest, and respect of every kinematic bound. The trajectory-order study and the optimization scenarios (Experiments 6 and 7) use the exact generators, restoring $s_{\max}$ as a live parameter of the search space. All profiles expose the full kinematic state $(p, v, a, j, s)$ at any time instant.
+% The \textit{second} is the exact generator: a segment-planning implementation that constructs the profile from piecewise-constant snap --- seven segments per acceleration ramp, fifteen in total --- with the feasibility cascade of~\cite{Lambrechts2003_Trajectories}: if the jerk plateau is unreachable the effective jerk reduces to $\sqrt{a_{\max} s_{\max}}$, if the acceleration plateau is unreachable the effective acceleration follows from the corresponding quadratic, and if the travel distance cannot accommodate the ramps the cruise velocity is reduced by bisection. The same machinery instantiates the lower-order profiles used for comparison: a trapezoidal acceleration-bounded profile (second order) and a jerk-bounded S-curve (third order, seven segments). All generators were verified over a grid of parameter combinations, including degenerate short-move and tight-snap cases, for exact travel distance, terminal rest, and respect of every kinematic bound. The trajectory-order study and the optimization scenarios (Experiments 6 and 7) use the exact generators, restoring $s_{\max}$ as a live parameter of the search space. All profiles expose the full kinematic state ($p$, $v$, $a$, $j$, $s$) at any time instant.
+
+We implement an analytical trajectory generator that structures the motion profile across fifteen segments (seven per acceleration ramp) where snap is held constant. Physical limitations are addressed by the following considerations from~\cite{Lambrechts2003_Trajectories}:
+\begin{itemize}
+    \item When the jerk plateau cannot be reached, the effective jerk reduces to $\sqrt{a_{\max} s_{\max}}$
+    \item If the acceleration limit is unreachable, then the effective acceleration follows from the corresponding quadratic equation
+    \item If the total travel distance is too short to accommodate the required transition ramps, then the cruise velocity is iteratively reduced via bisection.
+\end{itemize}
+To streamline the trials, this same algorithmic structure is used to derive the lower order profiles: i.e., a second-order, acceleration-bounded trapezoidal profile and a third-order, seven-segment jerk-bounded S-curve.
 
 The order of the profile determines the high-frequency content of the force commanded to the stage. A second-order (trapezoidal-velocity) profile demands instantaneous jumps in acceleration, injecting energy across a broad frequency band; a third-order profile bounds the jerk but still steps it discontinuously~\cite{Dong2023_SCurve}. Bounding the snap rolls off the excitation spectrum at $-80$\,dB per decade, which suppresses the response of poorly damped structural modes --- such as the reticle end-effector resonance identified in Chapter~\ref{ch:model} --- and shortens the residual settling tail after each step~\cite{Lambrechts2003_Trajectories, Al-Rawashdeh2023_Trajectories}. The scanning phase itself takes place inside the constant-velocity segment of the profile, where ideally no force beyond the viscous terms is required.
 
 \section{Stage Feedback Control}\label{sec:methodology_control}
 
-The control architecture is organized as a ladder of configurations of increasing capability, mirroring the case structure of the characterization study~\cite{Al-Rawashdeh2022_Caracterization}. Each configuration adds one mechanism on top of the previous, so that the contribution of every element to the exposure indices can be isolated experimentally in Chapter~\ref{ch:experiments}.
+The control architecture is organized as a ladder of configurations of increasing capability, in the spirit of the incremental study of~\cite{Al-Rawashdeh2022_Caracterization}. Each configuration adds one mechanism on top of the previous, so that the contribution of every element to the exposure indices can be isolated experimentally in Chapter~\ref{ch:experiments}.
 
 \textbf{Case 1 --- collocated long-stroke control.} Each coarse stage is closed with a collocated PID controller with inertia feedforward,
 \begin{equation}
@@ -183,7 +189,7 @@ with inertia $\omega = 0.6$, cognitive and social weights $c_1 = c_2 = 1.4$, and
     \mathcal{J}_{map} = \big(1 - P_{none}\big) + \sum_{c\, \in\, \mathcal{C}_{ood}} P_c,
     \label{eq:cost_corrected}
 \end{equation}
-where $\mathcal{C}_{ood}$ is the set of classes that scanner motion cannot plausibly produce. The first term prices every predicted defect; the second penalizes maps whose morphology the classifier attributes to non-scanner mechanisms, closing the blind spot identified in Chapter~\ref{ch:experiments} where saturated maps concentrate probability outside the plausible subset and a plausible-classes-only cost would vanish. Both scenarios share a soft throughput constraint, $\mathcal{J} = \mathcal{J}_{map} + \beta \max(0, T_{wafer} - T_{budget})/T_{budget}$ with $\beta = 4$, where $T_{wafer}$ follows from the scan-profile duration, the settling budget, and the die count.
+where $\mathcal{C}_{ood}$ is the set of classes that scanner motion cannot plausibly produce. The first term prices any departure from a clean map, so that the optimizer can spend an \textit{acceptable-pattern} yield loss when it is worth it; the second is a hard wall that keeps it from cheapening the wafer into a morphology the classifier attributes to non-scanner mechanisms. Both scenarios share a throughput reward $\mathcal{J} = \mathcal{J}_{map} + \gamma\, T_{wafer}/T_{ref}$ with $\gamma = 1$ and $T_{ref} = 15$\,s, so that a faster wafer is cheaper and the search trades cycle time against the map cost rather than merely respecting a budget; $T_{wafer}$ follows from the scan-profile duration, the settling budget, and the die count.
 
 \section{From Synchronization Error to Wafer Maps}\label{sec:methodology_cnn}
 

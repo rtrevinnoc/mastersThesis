@@ -26,9 +26,10 @@ accuracy) classifies into nine defect morphologies. The probability
 distribution estimated by the CNN, restricted to the classes plausibly caused
 by scanner motion, defines a cost function that links trajectory parameters
 directly to expected yield, closing the loop for data-driven trajectory
-optimization under a throughput constraint. A recurrent surrogate model trained
-on randomized simulation runs accelerates the evaluation of candidate
-trajectories during the search.
+optimization under a throughput constraint. As a secondary study, a recurrent
+surrogate model trained on randomized simulation runs is examined as a fast
+approximation of the exposure error, together with the conditions under which
+it is and is not justified.
 
 \textbf{Keywords:} photolithography, step-and-scan, trajectory generation,
 fourth-order profiles, multi-body dynamics, convolutional neural networks,

@@ -2,7 +2,7 @@ PWD /Users/rtrevinnoc/maestria/tesis/fullThesis
 INPUT /usr/local/texlive/2026/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-var/web2c/xetex/xelatex.fmt
-INPUT /Users/rtrevinnoc/maestria/tesis/fullThesis/TesisPrincipal.tex
+INPUT TesisPrincipal.tex
 OUTPUT TesisPrincipal.log
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/report.cls
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/report.cls
@@ -389,8 +389,8 @@ INPUT ./pictures/controllers_esyn.png
 INPUT ./pictures/controllers_esyn.png
 INPUT ./pictures/transition_map_200ms.png
 INPUT ./pictures/transition_map_200ms.png
-INPUT ./pictures/transition_map_180ms.png
-INPUT ./pictures/transition_map_180ms.png
+INPUT ./pictures/transition_map_165ms.png
+INPUT ./pictures/transition_map_165ms.png
 INPUT ./pictures/transition_map_150ms.png
 INPUT ./pictures/transition_map_150ms.png
 INPUT ./pictures/transition_map_120ms.png
