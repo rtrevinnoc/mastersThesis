@@ -59,7 +59,7 @@ The optics chain is attached to the base frame through a metrology frame which i
 
 The physical connections between these stages, which constitute the primary transmission path for vibration, are represented by lumped-parameter spring-damper systems, according to the Kelvin-Voigt model. As its proponents state, this low-fidelity modeling choice is sufficient to study the dynamics between the multiple bodies during \textit{step-and-scan} motion\cite{Al-Rawashdeh2022_Caracterization}.
 
-Figure \ref{fig:litho_model_full} illustrates the structural topology and hierarchical arrangement within each chain. Horizontal Kelvin–Voigt elements $(K_{i,j},C_{i,j})$ couple each stage laterally to the fixed structural reference depicted as a solid line in the color of the corresponding chain; in particular, elements $(K_1,C_1)$ provide passive vibration isolation between $\mathcal{F}_0\!\rightarrow\!\mathcal{F}_1$ through the solid green line that extends the base frame ($i=1$) into the coupling to the first body ($i=2$) in any $j$ chain. The in-plane deviations $f_{i,j}$ represented by the horizontal blue double-headed arrows measure the relative displacement between each body. The dashed vertical centerline represents the nominal reference for $f^0_{i,j}$, when all relative coordinates are zero.
+Figure~\ref{fig:litho_model_full} illustrates the structural topology and hierarchical arrangement within each chain. Horizontal Kelvin–Voigt elements $(K_{i,j},C_{i,j})$ couple each stage laterally to the fixed structural reference depicted as a solid line in the color of the corresponding chain; in particular, elements $(K_1,C_1)$ provide passive vibration isolation between $\mathcal{F}_0\!\rightarrow\!\mathcal{F}_1$ through the solid green line that extends the base frame ($i=1$) into the coupling to the first body ($i=2$) in any $j$ chain. The in-plane deviations $f_{i,j}$ represented by the horizontal blue double-headed arrows measure the relative displacement between each body. The dashed vertical centerline represents the nominal reference for $f^0_{i,j}$, when all relative coordinates are zero.
 
 \begin{figure}[htbp]
 \centering
@@ -332,7 +332,7 @@ The full 6-DOF model is here restricted to in-plane motions\cite{Al-Rawashdeh202
 \begin{equation}
     q_{i_j} = \begin{bmatrix} f_{i_j} \\ \theta_{z_{i_j}} \end{bmatrix} \in \mathbb{R}^{3\times1}
 \end{equation}
-where $f_{i_j} = [f_{x,i_j},\, f_{y,i_j}]^T \in \mathbb{R}^{2}$ collects the in-plane translational displacements of stage $i$ relative to its parent body in chain $j$, and $\theta_{z_{i_j}} \in \mathbb{R}$ is the corresponding rotation about the out-of-plane $z$-axis. The joints between bodies within a chain are modeled using a spring-damper system \cite{Al-Rawashdeh2022_Caracterization}. The associated generalized mass-inertia matrix for each body is
+where $f_{i_j} = [f_{x,i_j},\, f_{y,i_j}]^T \in \mathbb{R}^{2}$ collects the in-plane translational displacements of stage $i$ relative to its parent body in chain $j$, and $\theta_{z_{i_j}} \in \mathbb{R}$ is the corresponding rotation about the out-of-plane $z$-axis. The joints between bodies within a chain are modeled using a spring-damper system~\cite{Al-Rawashdeh2022_Caracterization}. The associated generalized mass-inertia matrix for each body is
 \begin{equation}
     M_{i_j} = \begin{bmatrix} m_{i_j}\,\mathbf{I}_2 & 0 \\ 0 & I_{z_{i_j}} \end{bmatrix} \in \mathbb{R}^{3\times3}
 \end{equation}
@@ -442,7 +442,7 @@ so that $\omega_{(i-1)_j} \times [\omega_{(i-1)_j} \times f_{i_j}] =
         \label{eq:acc_expanded}
 \end{align}
 
-Since the rotation $\theta_{z_{i_j}}$ is a scalar, no Coriolis or centripetal cross-terms arise in the angular kinematics. Expanding \eqref{eq:angleref} recursively from the floor frame gives the rotational analogues:
+Since the rotation $\theta_{z_{i_j}}$ is a scalar, no Coriolis or centripetal cross-terms arise in the angular kinematics. Expanding~\eqref{eq:angleref} recursively from the floor frame gives the rotational analogues:
 \begin{align}
     \theta^{0}_{z_{i_j}}
         &= \theta^{0}_{z_1} + \sum^{i}_{k=2} \theta_{z_{k_j}}
@@ -495,10 +495,10 @@ The parallel axis (Steiner's) theorem states that the moment of inertia of a rig
 \begin{equation} \label{eq:steiner}
     I_z = \tilde{I}_z + m\,\|f\|^2,
 \end{equation}
-where $\tilde{I}_z$ is the body's own moment of inertia about the $z$-axis through its CoG, $m$ is its mass, and $\|f\|^2 = f_x^2 + f_y^2$ is the squared in-plane distance between the two parallel axes. In a serial chain, the inertia of every downstream body must be shifted to the frame of the current body using \eqref{eq:steiner}. Following the characterization article\cite{Al-Rawashdeh2022_Caracterization} (Algorithm~1 therein), the aggregated inertia for the $j$th chain is computed recursively from the end-effector inward. In the planar restriction, the full $3\times3$ inertia matrix of the original algorithm reduces to a scalar $z$-axis inertia:
+where $\tilde{I}_z$ is the body's own moment of inertia about the $z$-axis through its CoG, $m$ is its mass, and $\|f\|^2 = f_x^2 + f_y^2$ is the squared in-plane distance between the two parallel axes. In a serial chain, the inertia of every downstream body must be shifted to the frame of the current body using~\eqref{eq:steiner}. Following the characterization article\cite{Al-Rawashdeh2022_Caracterization} (Algorithm~1 therein), the aggregated inertia for the $j$th chain is computed recursively from the end-effector inward. In the planar restriction, the full $3\times3$ inertia matrix of the original algorithm reduces to a scalar $z$-axis inertia:
 
 \begin{algorithm}[H]
-\caption{Planar inertia aggregation for the $j$th chain — planar reduction of Algorithm~1 in \cite{Al-Rawashdeh2022_Caracterization}}
+\caption{Planar inertia aggregation for the $j$th chain — planar reduction of Algorithm~1 in~\cite{Al-Rawashdeh2022_Caracterization}}
 \begin{algorithmic}[1]
 \Require{CoG inertias $\tilde{I}_{z_{i_j}}$, masses $m_{i_j}$, relative positions $f_{k_j}$ for $i = 2,\ldots,N_j$}
 \Ensure{Aggregated inertias $^0I_{z_{i_j}}$ for $i = 2,\ldots,N_j$}
@@ -522,9 +522,9 @@ The aggregated inertia of the base frame (body~1) applies the same shift one mor
     + \sum_{j=1}^{3}\!\Bigl({}^0I_{z_{2_j}}
       + \tilde{m}_{1_j}\bigl(f_{x,2_j}^2 + f_{y,2_j}^2\bigr)\Bigr),
 \end{equation}
-where $\tilde{m}_{1_j} = \sum_{b=2}^{N_j} m_{b_j}$ is the total mass of chain $j$. This is the quantity denoted $I_{z_0}$ in \eqref{eq:baseframerot}.
+where $\tilde{m}_{1_j} = \sum_{b=2}^{N_j} m_{b_j}$ is the total mass of chain $j$. This is the quantity denoted $I_{z_0}$ in~\eqref{eq:baseframerot}.
 
-Expanding $\ddot{\theta}^0_{z_{i_j}}$ using \eqref{eq:angacc_expanded}:
+Expanding $\ddot{\theta}^0_{z_{i_j}}$ using~\eqref{eq:angacc_expanded}:
 \begin{equation} \label{eq:torqueeq_expanded}
     I_{z_{i_j}}\ddot{\theta}^{0}_{z_1} 
     + I_{z_{i_j}}\sum^{i}_{k=2}\ddot{\theta}_{z_{k_j}}
@@ -552,7 +552,7 @@ To write the equations that govern the base frame, we start from Newton's equati
     \end{split}
 \end{align}
 
-Summing \eqref{eq:forceeq} over all bodies in a chain (taking the optics chain $j=2$, bodies $i=2,3,4$ as a representative example), the internal spring forces cancel by Newton's third law:
+Summing~\eqref{eq:forceeq} over all bodies in a chain (taking the optics chain $j=2$, bodies $i=2,3,4$ as a representative example), the internal spring forces cancel by Newton's third law:
 \begin{align}
     &- K_2(f^0_1 - f^0_2) - C_2(\dot{f}^0_1 - \dot{f}^0_2) \notag \\
     &\quad \cancelto{0}{
@@ -565,7 +565,7 @@ Summing \eqref{eq:forceeq} over all bodies in a chain (taking the optics chain $
     } \notag
 \end{align}
 
-Only the boundary term $- K_2(f^0_1 - f^0_2) - C_2(\dot{f}^0_1 - \dot{f}^0_2)$ survives, which corresponds to the connection between body $i = 2$ and the base frame. This extends to any $N_j$-body chain. Recalling \eqref{eq:frameref}, $f^{0}_{1} - f^{0}_{2_j} = -f_{2_j}$, and following \cite{Al-Rawashdeh2022_Caracterization} with ${}^0K_{i_j}={}^0R_{i_j} K_{i_j} {}^0R^T_{i_j}$ and ${}^0C_{i_j}={}^0R_{i_j} C_{i_j} {}^0R^T_{i_j}$, the total translational equation of the base frame (absorbing the balance masses and collecting all chain contributions) is:
+Only the boundary term $- K_2(f^0_1 - f^0_2) - C_2(\dot{f}^0_1 - \dot{f}^0_2)$ survives, which corresponds to the connection between body $i = 2$ and the base frame. This extends to any $N_j$-body chain. Recalling~\eqref{eq:frameref}, $f^{0}_{1} - f^{0}_{2_j} = -f_{2_j}$, and following~\cite{Al-Rawashdeh2022_Caracterization} with ${}^0K_{i_j}={}^0R_{i_j} K_{i_j} {}^0R^T_{i_j}$ and ${}^0C_{i_j}={}^0R_{i_j} C_{i_j} {}^0R^T_{i_j}$, the total translational equation of the base frame (absorbing the balance masses and collecting all chain contributions) is:
 \begin{align} \label{eq:baseframeeq}
     \begin{split}
         m_0\,\ddot{f}^{0}_{1}
@@ -577,7 +577,7 @@ Only the boundary term $- K_2(f^0_1 - f^0_2) - C_2(\dot{f}^0_1 - \dot{f}^0_2)$ s
         &= u^0_{1}
     \end{split}
 \end{align}
-where $m_0 = m_{1} + \sum_{j=1}^{3}\!\left(m^j_{B} + \sum_{i=2}^{N_j} m_{i_j}\right)$ is the total system mass, and the stiffness and damping matrices denote the $2\times2$ translational block. Following \cite{Al-Rawashdeh2022_Caracterization}, ${}^0\bar{K}_1 = {}^0K_1$ and ${}^0\bar{C}_1 = {}^0C_1$, while the hatted chain couplings are ${}^0\hat{C}_{2_j} = {}^0C_{2_j}$ and ${}^0\hat{K}_{2_j} = {}^0K_{2_j} + {}^0C_{2_j}[\omega_1]$; the accents are defined in general in \eqref{eq:accented} below.
+where $m_0 = m_{1} + \sum_{j=1}^{3}\!\left(m^j_{B} + \sum_{i=2}^{N_j} m_{i_j}\right)$ is the total system mass, and the stiffness and damping matrices denote the $2\times2$ translational block. Following~\cite{Al-Rawashdeh2022_Caracterization}, ${}^0\bar{K}_1 = {}^0K_1$ and ${}^0\bar{C}_1 = {}^0C_1$, while the hatted chain couplings are ${}^0\hat{C}_{2_j} = {}^0C_{2_j}$ and ${}^0\hat{K}_{2_j} = {}^0K_{2_j} + {}^0C_{2_j}[\omega_1]$; the accents are defined in general in~\eqref{eq:accented} below.
 
 By the exact same cancellation argument applied to the moment balance about the $z$-axis — the moment exerted by the spring connecting body $i$ to body $i-1$ is $-K_{i_j}\,\theta_{z_{i_j}}$, so internal moments cancel identically — the rotational equation of the base frame is:
 \begin{align} \label{eq:baseframerot}
@@ -596,7 +596,7 @@ where $I_{z_0} = I_{z_1} + \sum_{j=1}^{3}\!\left(I^j_{z_B} + \sum_{i=2}^{N_j} I_
 
 \subsection{For each chain}
 
-Recalling \eqref{eq:forceeq} and \eqref{eq:torqueeq_expanded}, for the first body in the chain ($i=2$), which connects to the base frame above and to body $i=3$ below, the translational equation is:
+Recalling~\eqref{eq:forceeq} and~\eqref{eq:torqueeq_expanded}, for the first body in the chain ($i=2$), which connects to the base frame above and to body $i=3$ below, the translational equation is:
 \begin{equation}
         \bar{m}_{2_j}
         \ddot{f}^{0}_{2_j}
@@ -656,7 +656,7 @@ Finally, for body $i = N_j$ (the end effector), there is no subsequent body in t
 
 \subsection{Accented matrices and the nominal condition}
 
-Following Appendix~A of \cite{Al-Rawashdeh2022_Caracterization}, the accented matrices appearing in the equations above are not merely rotated joint matrices: they absorb the rotational cross-terms of \eqref{eq:acc_expanded} into effective damping and stiffness. With $[\omega]$ the planar skew form of \eqref{eq:skew} and $B_{i_j} = [\dot{\omega}_{i_j}] + [\omega_{i_j}]^2$:
+Following Appendix~A of~\cite{Al-Rawashdeh2022_Caracterization}, the accented matrices appearing in the equations above are not merely rotated joint matrices: they absorb the rotational cross-terms of~\eqref{eq:acc_expanded} into effective damping and stiffness. With $[\omega]$ the planar skew form of~\eqref{eq:skew} and $B_{i_j} = [\dot{\omega}_{i_j}] + [\omega_{i_j}]^2$:
 \begin{align}
     \bar{m}_{i_j} &= \sum_{k=i}^{N_j} m_{k_j} \notag \\
     {}^0\bar{C}_{i_j} &= {}^0C_{i_j} + 2m_{i_j}\,[\omega_{(i-1)_j}] \notag \\
@@ -664,13 +664,13 @@ Following Appendix~A of \cite{Al-Rawashdeh2022_Caracterization}, the accented ma
     {}^0\hat{C}_{(i+1)_j} &= {}^0C_{(i+1)_j} \notag \\
     {}^0\hat{K}_{(i+1)_j} &= {}^0K_{(i+1)_j} + {}^0C_{(i+1)_j}\,[\omega_{i_j}] \notag
 \end{align}
-The bar thus marks the matrices acting on the body's \emph{own} joint coordinates, which collect the Coriolis ($2m[\omega]$), damper-convection ($C[\omega]$), and Euler--centripetal ($mB$) contributions, while the hat marks the coupling to the \emph{downstream} joint coordinates, which inherits only the convective damper term: the damper reacts to the inertial velocity $\dot{f} + [\omega]f$ of \eqref{eq:vel_expanded}, so part of its force is proportional to position and migrates into the effective stiffness. The scalar rotational entries admit no such cross-terms in the planar restriction, so about the $z$-axis the accents are inert and $\hat{(\cdot)} = \bar{(\cdot)} = (\cdot)$. For $3 \leq i < N_j$ the model of \cite{Al-Rawashdeh2022_Caracterization} additionally couples body $i$ to every upstream joint through the two-index matrices ${}^0\hat{C}_{i_j,k} = 2m_{i_j}\,[\omega_{(k-1)_j}]$ and ${}^0\hat{K}_{i_j,k} = m_{i_j}\,B_{(k-1)_j}$ for $2 \leq k < i$, omitted above.
+The bar thus marks the matrices acting on the body's \emph{own} joint coordinates, which collect the Coriolis ($2m[\omega]$), damper-convection ($C[\omega]$), and Euler--centripetal ($mB$) contributions, while the hat marks the coupling to the \emph{downstream} joint coordinates, which inherits only the convective damper term: the damper reacts to the inertial velocity $\dot{f} + [\omega]f$ of~\eqref{eq:vel_expanded}, so part of its force is proportional to position and migrates into the effective stiffness. The scalar rotational entries admit no such cross-terms in the planar restriction, so about the $z$-axis the accents are inert and $\hat{(\cdot)} = \bar{(\cdot)} = (\cdot)$. For $3 \leq i < N_j$ the model of~\cite{Al-Rawashdeh2022_Caracterization} additionally couples body $i$ to every upstream joint through the two-index matrices ${}^0\hat{C}_{i_j,k} = 2m_{i_j}\,[\omega_{(k-1)_j}]$ and ${}^0\hat{K}_{i_j,k} = m_{i_j}\,B_{(k-1)_j}$ for $2 \leq k < i$, omitted above.
 
-Every one of these corrections is proportional to $\dot{\theta}_z$ or $\ddot{\theta}_z$ of a parent body. At the nominal operating condition $\dot{\theta}_z = \ddot{\theta}_z = 0$ --- the regulated step-and-scan regime studied throughout this work --- they vanish identically: the accented matrices reduce to the frame-rotated ${}^0K_{i_j}$ and ${}^0C_{i_j}$, the inertial accelerations of \eqref{eq:acc_expanded} reduce to sums of relative accelerations, and the equations of motion coincide with Eqs.~(2.6)--(2.8) of \cite{Al-Rawashdeh2022_Caracterization} and become linear time-invariant. Away from the nominal condition, the corrections re-enter as the parameter-varying part $A_1(\Omega,\dot{\Omega})$ of the decomposition given in \cite{Al-Rawashdeh2022_Caracterization}. Note that the scheduling variables $\Omega$ are themselves state variables --- the $\dot{\theta}_z$ of each body --- so the cross-terms are quadratic in the state (and the rotated matrices ${}^0K_{i_j}$, ${}^0C_{i_j}$ carry a further state dependence through ${}^0R_{i_j}(\theta_z)$): the machine model is, strictly, nonlinear, a \emph{quasi}-LPV system whose frozen nominal dynamics are the LTI model above. Of the two realizations of the machine used in this work, the reduced two-body-per-chain model integrates this nominal LTI form directly, while the MuJoCo test bed assembles the full nonlinear multibody dynamics from the same lumped topology and therefore retains these couplings without approximation.
+Every one of these corrections is proportional to $\dot{\theta}_z$ or $\ddot{\theta}_z$ of a parent body. At the nominal operating condition $\dot{\theta}_z = \ddot{\theta}_z = 0$ --- the regulated step-and-scan regime studied throughout this work --- they vanish identically: the accented matrices reduce to the frame-rotated ${}^0K_{i_j}$ and ${}^0C_{i_j}$, the inertial accelerations of~\eqref{eq:acc_expanded} reduce to sums of relative accelerations, and the equations of motion coincide with Eqs.~(2.6)--(2.8) of~\cite{Al-Rawashdeh2022_Caracterization} and become linear time-invariant. Away from the nominal condition, the corrections re-enter as the parameter-varying part $A_1(\Omega,\dot{\Omega})$ of the decomposition given in~\cite{Al-Rawashdeh2022_Caracterization}. Note that the scheduling variables $\Omega$ are themselves state variables --- the $\dot{\theta}_z$ of each body --- so the cross-terms are quadratic in the state (and the rotated matrices ${}^0K_{i_j}$, ${}^0C_{i_j}$ carry a further state dependence through ${}^0R_{i_j}(\theta_z)$): the machine model is, strictly, nonlinear, a \emph{quasi}-LPV system whose frozen nominal dynamics are the LTI model above. Of the two realizations of the machine used in this work, the reduced two-body-per-chain model integrates this nominal LTI form directly, while the MuJoCo test bed assembles the full nonlinear multibody dynamics from the same lumped topology and therefore retains these couplings without approximation.
 
 \subsection{State-space formulation}
 
-Because each body possesses three planar degrees of freedom ($f_x$, $f_y$, $\theta_z$) along with their corresponding time derivatives, it contributes exactly six states to the system. Following the framework outlined in Appendix~B of \cite{Al-Rawashdeh2022_Caracterization}, the complete machine model comprises 6 bodies in the reticle chain ($N_1 = 7$), 3 bodies in the optics chain ($N_2 = 4$), and 6 bodies in the wafer chain ($N_3 = 7$). Including the common base frame (body 1), the system features a total of $1 + (N_1-1) + (N_2-1) + (N_3-1) = 16$ bodies. Consequently, the global state vector $x$ encompasses $6 \times 16 = 96$ states:
+Because each body possesses three planar degrees of freedom ($f_x$, $f_y$, $\theta_z$) along with their corresponding time derivatives, it contributes exactly six states to the system. Following the framework outlined in Appendix~B of~\cite{Al-Rawashdeh2022_Caracterization}, the complete machine model comprises 6 bodies in the reticle chain ($N_1 = 7$), 3 bodies in the optics chain ($N_2 = 4$), and 6 bodies in the wafer chain ($N_3 = 7$). Including the common base frame (body 1), the system features a total of $1 + (N_1-1) + (N_2-1) + (N_3-1) = 16$ bodies. Consequently, the global state vector $x$ encompasses $6 \times 16 = 96$ states:
 
 \begin{equation}
     x =
@@ -682,7 +682,7 @@ Because each body possesses three planar degrees of freedom ($f_x$, $f_y$, $\the
     \end{bmatrix}^T
 \end{equation}
 
-The explicit mapping for each state is detailed in the table below. Here, $p$ denotes the global sequential index of the $i$-th body in the $j$-th chain within the concatenated list of all bodies (starting with the base frame, followed sequentially by chains 1, 2, and 3). It is crucial to note that every positional entry within the state vector represents a \emph{relative} joint displacement; the corresponding absolute inertial position $f^0_{i_j}$ can be reconstructed using the recursive summations from \eqref{eq:pos_expanded} to \eqref{eq:angle_expanded}.
+The explicit mapping for each state is detailed in the table below. Here, $p$ denotes the global sequential index of the $i$-th body in the $j$-th chain within the concatenated list of all bodies (starting with the base frame, followed sequentially by chains 1, 2, and 3). It is crucial to note that every positional entry within the state vector represents a \emph{relative} joint displacement; the corresponding absolute inertial position $f^0_{i_j}$ can be reconstructed using the recursive summations from~\eqref{eq:pos_expanded} to~\eqref{eq:angle_expanded}.
 
 \begin{table}[htbp]
 \centering
@@ -716,7 +716,7 @@ $\vdots$    & $\vdots$                   & $\vdots$ \\
 \end{tabular}
 \end{table}
 
-Solving \eqref{eq:baseframeeq} and \eqref{eq:baseframerot} for the base-frame accelerations yields:
+Solving~\eqref{eq:baseframeeq} and~\eqref{eq:baseframerot} for the base-frame accelerations yields:
 \begin{align}
     \ddot{f}^{0}_{1}
     &= -\frac{{}^0\bar{C}_1}{m_0}\,\dot{f}_1
@@ -772,7 +772,7 @@ x
 
 To systematically construct the global state-space matrices, we must reframe the equations of motion for the chain bodies in terms of the state vector variables. We map the physical planar coordinates of the $p$-th sequential body to the local state vectors: translational position $\mathbf{x}_{2p-1} = [x_{6p-5},\, x_{6p-4}]^T$, translational velocity $\dot{\mathbf{x}}_{2p-1} = [x_{6p-2},\, x_{6p-1}]^T$, rotational position $\mathbf{x}_{2p} = x_{6p-3}$, and rotational velocity $\dot{\mathbf{x}}_{2p} = x_{6p}$.
 
-The state derivatives are dictated by the relative accelerations between adjacent bodies. By applying the kinematic identity $\ddot{f}_{i_j} = \ddot{f}^0_{i_j} - \ddot{f}^0_{(i-1)_j}$ from \eqref{eq:acc_expanded}, we determine the interactive forces acting on each body within its parent's reference frame. Let $p$ represent the global index of body $i$ in chain $j$, while $p-1$ and $p+1$ denote the indices of its immediate upstream and downstream neighbors respectively (with the base frame positioned at $p=1$). 
+The state derivatives are dictated by the relative accelerations between adjacent bodies. By applying the kinematic identity $\ddot{f}_{i_j} = \ddot{f}^0_{i_j} - \ddot{f}^0_{(i-1)_j}$ from~\eqref{eq:acc_expanded}, we determine the interactive forces acting on each body within its parent's reference frame. Let $p$ represent the global index of body $i$ in chain $j$, while $p-1$ and $p+1$ denote the indices of its immediate upstream and downstream neighbors respectively (with the base frame positioned at $p=1$). 
 
 
 For the \textbf{first body in each chain} ($i=2$, index $p$, upstream index $1$), the translational state derivatives ($\ddot{\mathbf{x}}_{2p-1} = \ddot{f}_{2_j}$) and rotational state derivatives ($\ddot{\mathbf{x}}_{2p} = \ddot{\theta}_{z_{2_j}}$) take the form:
