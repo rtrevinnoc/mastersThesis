@@ -26,7 +26,7 @@
 \contentsline {chapter}{\numberline {4}Methodology}{28}{}%
 \contentsline {section}{\numberline {4.1}Introduction}{28}{}%
 \contentsline {section}{\numberline {4.2}Simulation}{28}{}%
-\contentsline {section}{\numberline {4.3}Reference Trajectory Generation}{33}{}%
+\contentsline {section}{\numberline {4.3}Reference Trajectory Generation}{34}{}%
 \contentsline {section}{\numberline {4.4}Stage Feedback Control}{35}{}%
 \contentsline {section}{\numberline {4.5}Population-Based Trajectory Search}{37}{}%
 \contentsline {section}{\numberline {4.6}From Synchronization Error to Wafer Maps}{38}{}%
@@ -34,17 +34,18 @@
 \contentsline {chapter}{\numberline {5}Experiments and Results}{41}{}%
 \contentsline {section}{\numberline {5.1}Introduction}{41}{}%
 \contentsline {section}{\numberline {5.2}Experiment 1: Reproduction of the Case 1 Study}{42}{}%
-\contentsline {section}{\numberline {5.3}Experiment 2: CNN Training and Evaluation on WM-811K}{48}{}%
+\contentsline {section}{\numberline {5.3}Experiment 2: CNN Training and Evaluation on WM-811K}{47}{}%
 \contentsline {section}{\numberline {5.4}Experiment 3: Trajectory-to-Defect Pipeline}{50}{}%
 \contentsline {subsection}{\numberline {5.4.1}Disturbance signatures}{50}{}%
 \contentsline {subsection}{\numberline {5.4.2}Kinematic-bound sweep}{52}{}%
-\contentsline {section}{\numberline {5.5}Experiment 4: Climbing the Control Ladder}{54}{}%
-\contentsline {section}{\numberline {5.6}Experiment 5: The Throughput--Yield Transition}{57}{}%
-\contentsline {section}{\numberline {5.7}Experiment 6: Optimization Scenarios E3 and E4}{60}{}%
-\contentsline {section}{\numberline {5.8}Experiment 7: Does Trajectory Smoothness Matter Without a Good Controller?}{62}{}%
-\contentsline {section}{\numberline {5.9}A Recurrent Surrogate Model (Secondary Study)}{65}{}%
-\contentsline {subsection}{\numberline {5.9.1}Is a recurrent surrogate the right tool?}{66}{}%
-\contentsline {section}{\numberline {5.10}Discussion}{67}{}%
-\contentsline {chapter}{Conclusion}{69}{}%
-\contentsline {chapter}{\numberline {A}Full-State Space Model}{75}{}%
-\contentsline {section}{\numberline {A.1}State-Space Equations for the Wafer Chain}{75}{}%
+\contentsline {subsection}{\numberline {5.4.3}The snap bound versus the exposure specification}{54}{}%
+\contentsline {section}{\numberline {5.5}Experiment 4: Climbing the Control Ladder}{56}{}%
+\contentsline {section}{\numberline {5.6}Experiment 5: The Throughput--Yield Transition}{59}{}%
+\contentsline {section}{\numberline {5.7}Experiment 6: Optimization Scenarios E3 and E4}{63}{}%
+\contentsline {section}{\numberline {5.8}Experiment 7: Does Trajectory Smoothness Matter Without a Good Controller?}{65}{}%
+\contentsline {section}{\numberline {5.9}A Recurrent Surrogate Model (Secondary Study)}{68}{}%
+\contentsline {subsection}{\numberline {5.9.1}Is a recurrent surrogate the right tool?}{69}{}%
+\contentsline {section}{\numberline {5.10}Discussion}{71}{}%
+\contentsline {chapter}{Conclusion}{73}{}%
+\contentsline {chapter}{\numberline {A}Full-State Space Model}{80}{}%
+\contentsline {section}{\numberline {A.1}State-Space Equations for the Wafer Chain}{80}{}%
