@@ -9,13 +9,12 @@
 \contentsline {table}{\numberline {4.2.4}{\ignorespaces Reticle chain stiffness ($K$) and damping ($C$) parameters}}{31}{}%
 \contentsline {table}{\numberline {4.2.5}{\ignorespaces Optics chain stiffness ($K$) and damping ($C$) parameters}}{31}{}%
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.3.1}{\ignorespaces Per-class evaluation of the CNN on the WM-811K hold-out set (34{,}590 maps).}}{48}{}%
-\contentsline {table}{\numberline {5.4.2}{\ignorespaces Disturbance-injection campaign over 241 dies. Expected class refers to the scanner-plausible morphology the disturbance emulates.}}{51}{}%
-\contentsline {table}{\numberline {5.4.3}{\ignorespaces Kinematic-bound sweep over the full 49-die wafer. $T_{scan}$ is the duration of one scan profile; the failure threshold is the baseline median MSD (101.8\,\textmu m); cost is the total CNN probability of the scanner-plausible defect classes.}}{53}{}%
-\contentsline {table}{\numberline {5.4.4}{\ignorespaces Snap bound versus the 7\,nm exposure-window specification, full 49-die wafer under Case 3b. The die criterion is the exposure-window (cruise) MSD; $T_{wafer}$ is the wafer cycle time.}}{55}{}%
-\contentsline {table}{\numberline {5.5.5}{\ignorespaces Controller ladder on the baseline trajectory (cruise-window indices of $e_{syn}$, worst die).}}{58}{}%
-\contentsline {table}{\numberline {5.6.6}{\ignorespaces Onset-referenced throughput--yield transition (baseline trajectory, Case 3b, 241 dies): as the settling budget shrinks, the first failures concentrate at the row-change dies. Threshold = twice the settled (200\,ms) median MSD.}}{61}{}%
-\contentsline {table}{\numberline {5.7.7}{\ignorespaces Optimization scenarios against the third- and fourth-order baselines at the same operating point ($t_{step} = 150$\,ms, Case 3b). Failing dies, CNN class, and $\mathcal {J}_{map}$ are evaluated on each trajectory's full-wafer map; $s$ is not a parameter of the third-order profile.}}{63}{}%
-\contentsline {table}{\numberline {5.8.8}{\ignorespaces Profile order $\times $ controller. Cruise indices of $e_{syn}$ (worst die); full-scan MSD includes the post-step entry transient.}}{66}{}%
-\contentsline {table}{\numberline {5.9.9}{\ignorespaces Surrogate predictions of the exposure indices for three candidate trajectories.}}{69}{}%
+\contentsline {table}{\numberline {5.3.1}{\ignorespaces Per-class evaluation of the CNN on the WM-811K hold-out set (34{,}590 maps).}}{46}{}%
+\contentsline {table}{\numberline {5.4.2}{\ignorespaces Disturbance-injection campaign over 241 dies. Expected class refers to the scanner-plausible morphology the disturbance emulates.}}{49}{}%
+\contentsline {table}{\numberline {5.4.3}{\ignorespaces Kinematic-bound sweep over the full 49-die wafer. $T_{scan}$ is the duration of one scan profile; the failure threshold is the baseline median MSD (101.8\,\textmu m); cost is the total CNN probability of the scanner-plausible defect classes.}}{51}{}%
+\contentsline {table}{\numberline {5.4.4}{\ignorespaces Snap bound versus the 7\,nm exposure-window specification, full 49-die wafer under Case 3b. The die criterion is the exposure-window (cruise) MSD; $T_{wafer}$ is the wafer cycle time.}}{53}{}%
+\contentsline {table}{\numberline {5.5.5}{\ignorespaces Synchronization error indices under progressive control configurations on the baseline trajectory (cruise-window indices of $e_{syn}$, worst die).}}{54}{}%
+\contentsline {table}{\numberline {5.6.6}{\ignorespaces Onset-referenced throughput--yield transition (baseline trajectory, Case 3b, 241 dies): as the settling budget shrinks, the first failures concentrate at the row-change dies. Threshold = twice the settled (200\,ms) median MSD.}}{58}{}%
+\contentsline {table}{\numberline {5.7.7}{\ignorespaces Optimization scenarios against the third- and fourth-order baselines at the same operating point ($t_{step} = 150$\,ms, Case 3b). Failing dies, CNN class, and $\mathcal {J}_{map}$ are evaluated on each trajectory's full-wafer map; $s$ is not a parameter of the third-order profile.}}{60}{}%
+\contentsline {table}{\numberline {5.8.8}{\ignorespaces Profile order $\times $ controller. Cruise indices of $e_{syn}$ (worst die); full-scan MSD includes the post-step entry transient.}}{64}{}%
 \addvspace {10\p@ }

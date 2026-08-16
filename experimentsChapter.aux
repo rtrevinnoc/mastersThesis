@@ -1,84 +1,77 @@
 \relax 
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Experiments and Results}{41}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Experiments and Results}{39}{}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:experiments}{{5}{41}{}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Introduction}{41}{}\protected@file@percent }
-\newlabel{sec:experiments_introduction}{{5.1}{41}{}{section.5.1}{}}
+\newlabel{ch:experiments}{{5}{39}{}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Introduction}{39}{}\protected@file@percent }
+\newlabel{sec:experiments_introduction}{{5.1}{39}{}{section.5.1}{}}
 \citation{Al-Rawashdeh2022_Caracterization}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Experiment 1: Reproduction of the Case 1 Study}{42}{}\protected@file@percent }
-\newlabel{sec:exp_case1}{{5.2}{42}{}{section.5.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Commanded step-and-scan references for the wafer stage ($x$: stepping, $y$: scanning) over the four-die sequence.}}{43}{}\protected@file@percent }
-\newlabel{fig:exp1_trajectories}{{5.1}{43}{}{figure.5.1}{}}
-\newlabel{eq:exp1_ma_msd}{{5.2.1}{43}{}{equation.5.2.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Wafer, reticle, and synchronization errors during the four-die sequence. Shaded bands mark the exposure windows.}}{44}{}\protected@file@percent }
-\newlabel{fig:exp1_tracking}{{5.2}{44}{}{figure.5.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Stage velocities and spring-coupling lag during the scan. The reticle end-effector, four times faster and an order of magnitude more softly coupled, dominates the synchronization error.}}{45}{}\protected@file@percent }
-\newlabel{fig:exp1_velocity_lag}{{5.3}{45}{}{figure.5.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces MA and MSD performance indices of the synchronization error over the four-die sequence.}}{45}{}\protected@file@percent }
-\newlabel{fig:exp1_ma_msd}{{5.4}{45}{}{figure.5.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Detail of the first exposure window: synchronization error, MA, MSD, and coupling lag.}}{46}{}\protected@file@percent }
-\newlabel{fig:exp1_zoom}{{5.5}{46}{}{figure.5.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Experiment 2: CNN Training and Evaluation on WM-811K}{47}{}\protected@file@percent }
-\newlabel{sec:exp_cnn}{{5.3}{47}{}{section.5.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.3.1}{\ignorespaces Per-class evaluation of the CNN on the WM-811K hold-out set (34{,}590 maps).}}{48}{}\protected@file@percent }
-\newlabel{tab:exp2_metrics}{{5.3.1}{48}{}{table.5.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Row-normalized confusion matrix of the CNN on the WM-811K hold-out set.}}{49}{}\protected@file@percent }
-\newlabel{fig:exp2_confmat}{{5.6}{49}{}{figure.5.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Experiment 3: Trajectory-to-Defect Pipeline}{50}{}\protected@file@percent }
-\newlabel{sec:exp_pipeline}{{5.4}{50}{}{section.5.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}Disturbance signatures}{50}{}\protected@file@percent }
-\newlabel{sec:exp_perturb}{{5.4.1}{50}{}{subsection.5.4.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.4.2}{\ignorespaces Disturbance-injection campaign over 241 dies. Expected class refers to the scanner-plausible morphology the disturbance emulates.}}{51}{}\protected@file@percent }
-\newlabel{tab:exp3_perturb}{{5.4.2}{51}{}{table.5.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Simulated wafer maps under the four disturbance conditions (yellow: failing dies, blue: passing dies). The spatial signatures --- clean, scattered, ring, line --- correspond to the injected disturbances.}}{51}{}\protected@file@percent }
-\newlabel{fig:exp3_perturb_maps}{{5.7}{51}{}{figure.5.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}Kinematic-bound sweep}{52}{}\protected@file@percent }
-\newlabel{sec:exp_sweep}{{5.4.2}{52}{}{subsection.5.4.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.4.3}{\ignorespaces Kinematic-bound sweep over the full 49-die wafer. $T_{scan}$ is the duration of one scan profile; the failure threshold is the baseline median MSD (101.8\,\textmu m); cost is the total CNN probability of the scanner-plausible defect classes.}}{53}{}\protected@file@percent }
-\newlabel{tab:exp3_sweep}{{5.4.3}{53}{}{table.5.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Simulated wafer maps under the scaled MSD criterion for three points of the sweep (yellow: failing dies, blue: passing dies). The failing-die population collapses from full-wafer to a single die as the kinematic bounds are relaxed.}}{54}{}\protected@file@percent }
-\newlabel{fig:exp3_sweep_maps}{{5.8}{54}{}{figure.5.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.3}The snap bound versus the exposure specification}{54}{}\protected@file@percent }
-\newlabel{sec:exp_specsweep}{{5.4.3}{54}{}{subsection.5.4.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.4.4}{\ignorespaces Snap bound versus the 7\,nm exposure-window specification, full 49-die wafer under Case 3b. The die criterion is the exposure-window (cruise) MSD; $T_{wafer}$ is the wafer cycle time.}}{55}{}\protected@file@percent }
-\newlabel{tab:exp3_specsweep}{{5.4.4}{55}{}{table.5.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Experiment 1: Reproduction of the Case 1 Study}{40}{}\protected@file@percent }
+\newlabel{sec:exp_case1}{{5.2}{40}{}{section.5.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Commanded step-and-scan references for the wafer stage ($x$: stepping, $y$: scanning) over the four-die sequence.}}{41}{}\protected@file@percent }
+\newlabel{fig:exp1_trajectories}{{5.1}{41}{}{figure.5.1}{}}
+\newlabel{eq:exp1_ma_msd}{{5.2.1}{41}{}{equation.5.2.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Wafer, reticle, and synchronization errors during the four-die sequence. Shaded bands mark the exposure windows.}}{42}{}\protected@file@percent }
+\newlabel{fig:exp1_tracking}{{5.2}{42}{}{figure.5.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Stage velocities and spring-coupling lag during the scan. The reticle end-effector, four times faster and an order of magnitude more softly coupled, dominates the synchronization error.}}{43}{}\protected@file@percent }
+\newlabel{fig:exp1_velocity_lag}{{5.3}{43}{}{figure.5.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces MA and MSD performance indices of the synchronization error over the four-die sequence.}}{43}{}\protected@file@percent }
+\newlabel{fig:exp1_ma_msd}{{5.4}{43}{}{figure.5.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Detail of the first exposure window: synchronization error, MA, MSD, and coupling lag.}}{44}{}\protected@file@percent }
+\newlabel{fig:exp1_zoom}{{5.5}{44}{}{figure.5.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Experiment 2: CNN Training and Evaluation on WM-811K}{45}{}\protected@file@percent }
+\newlabel{sec:exp_cnn}{{5.3}{45}{}{section.5.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3.1}{\ignorespaces Per-class evaluation of the CNN on the WM-811K hold-out set (34{,}590 maps).}}{46}{}\protected@file@percent }
+\newlabel{tab:exp2_metrics}{{5.3.1}{46}{}{table.5.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Row-normalized confusion matrix of the CNN on the WM-811K hold-out set.}}{47}{}\protected@file@percent }
+\newlabel{fig:exp2_confmat}{{5.6}{47}{}{figure.5.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Experiment 3: Trajectory-to-Defect Pipeline}{48}{}\protected@file@percent }
+\newlabel{sec:exp_pipeline}{{5.4}{48}{}{section.5.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}Disturbance signatures}{48}{}\protected@file@percent }
+\newlabel{sec:exp_perturb}{{5.4.1}{48}{}{subsection.5.4.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4.2}{\ignorespaces Disturbance-injection campaign over 241 dies. Expected class refers to the scanner-plausible morphology the disturbance emulates.}}{49}{}\protected@file@percent }
+\newlabel{tab:exp3_perturb}{{5.4.2}{49}{}{table.5.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Simulated wafer maps under the four disturbance conditions (yellow: failing dies, blue: passing dies). The spatial signatures --- clean, scattered, ring, line --- correspond to the injected disturbances.}}{49}{}\protected@file@percent }
+\newlabel{fig:exp3_perturb_maps}{{5.7}{49}{}{figure.5.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}Kinematic-bound sweep}{50}{}\protected@file@percent }
+\newlabel{sec:exp_sweep}{{5.4.2}{50}{}{subsection.5.4.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4.3}{\ignorespaces Kinematic-bound sweep over the full 49-die wafer. $T_{scan}$ is the duration of one scan profile; the failure threshold is the baseline median MSD (101.8\,\textmu m); cost is the total CNN probability of the scanner-plausible defect classes.}}{51}{}\protected@file@percent }
+\newlabel{tab:exp3_sweep}{{5.4.3}{51}{}{table.5.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Simulated wafer maps under the scaled MSD criterion for three points of the sweep (yellow: failing dies, blue: passing dies). The failing-die population collapses from full-wafer to a single die as the kinematic bounds are relaxed.}}{52}{}\protected@file@percent }
+\newlabel{fig:exp3_sweep_maps}{{5.8}{52}{}{figure.5.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.3}The snap bound versus the exposure specification}{52}{}\protected@file@percent }
+\newlabel{sec:exp_specsweep}{{5.4.3}{52}{}{subsection.5.4.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4.4}{\ignorespaces Snap bound versus the 7\,nm exposure-window specification, full 49-die wafer under Case 3b. The die criterion is the exposure-window (cruise) MSD; $T_{wafer}$ is the wafer cycle time.}}{53}{}\protected@file@percent }
+\newlabel{tab:exp3_specsweep}{{5.4.4}{53}{}{table.5.4}{}}
 \citation{Al-Rawashdeh2022_Caracterization}
-\@writefile{toc}{\contentsline {section}{\numberline {5.5}Experiment 4: Climbing the Control Ladder}{56}{}\protected@file@percent }
-\newlabel{sec:exp_ladder}{{5.5}{56}{}{section.5.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces Synchronization error during one scan under the four control configurations. Shaded band: cruise (exposure) segment.}}{57}{}\protected@file@percent }
-\newlabel{fig:exp4_ladder}{{5.9}{57}{}{figure.5.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.5.5}{\ignorespaces Controller ladder on the baseline trajectory (cruise-window indices of $e_{syn}$, worst die).}}{58}{}\protected@file@percent }
-\newlabel{tab:exp4_ladder}{{5.5.5}{58}{}{table.5.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.6}Experiment 5: The Throughput--Yield Transition}{59}{}\protected@file@percent }
-\newlabel{sec:exp_transition}{{5.6}{59}{}{section.5.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.6.6}{\ignorespaces Onset-referenced throughput--yield transition (baseline trajectory, Case 3b, 241 dies): as the settling budget shrinks, the first failures concentrate at the row-change dies. Threshold = twice the settled (200\,ms) median MSD.}}{61}{}\protected@file@percent }
-\newlabel{tab:exp5_transition}{{5.6.6}{61}{}{table.5.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces Wafer maps across the throughput--yield transition. By 180\,ms the first failures form an eight-die edge cluster at the row-change dies; the cluster persists unchanged through 160\,ms; at 150\,ms the bulk of the wafer has crossed into a \textit  {Loc}-classified failure population; by 120\,ms failure is near-total and the map saturates to \textit  {Center}.}}{61}{}\protected@file@percent }
-\newlabel{fig:exp5_transition_maps}{{5.10}{61}{}{figure.5.10}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.7}Experiment 6: Optimization Scenarios E3 and E4}{63}{}\protected@file@percent }
-\newlabel{sec:exp_pso}{{5.7}{63}{}{section.5.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.7.7}{\ignorespaces Optimization scenarios against the third- and fourth-order baselines at the same operating point ($t_{step} = 150$\,ms, Case 3b). Failing dies, CNN class, and $\mathcal  {J}_{map}$ are evaluated on each trajectory's full-wafer map; $s$ is not a parameter of the third-order profile.}}{63}{}\protected@file@percent }
-\newlabel{tab:exp6_pso}{{5.7.7}{63}{}{table.5.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.8}Experiment 7: Does Trajectory Smoothness Matter Without a Good Controller?}{65}{}\protected@file@percent }
-\newlabel{sec:exp_order}{{5.8}{65}{}{section.5.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.8.8}{\ignorespaces Profile order $\times $ controller. Cruise indices of $e_{syn}$ (worst die); full-scan MSD includes the post-step entry transient.}}{66}{}\protected@file@percent }
-\newlabel{tab:exp7_order}{{5.8.8}{66}{}{table.5.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.11}{\ignorespaces Synchronization error during one scan for the four profile orders, under bare PID (top) and under the full controller ladder (bottom). Note the vertical scales.}}{67}{}\protected@file@percent }
-\newlabel{fig:exp7_order}{{5.11}{67}{}{figure.5.11}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.9}A Recurrent Surrogate Model (Secondary Study)}{68}{}\protected@file@percent }
-\newlabel{sec:exp_surrogate}{{5.9}{68}{}{section.5.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.9.9}{\ignorespaces Surrogate predictions of the exposure indices for three candidate trajectories.}}{69}{}\protected@file@percent }
-\newlabel{tab:exp4_lstm}{{5.9.9}{69}{}{table.5.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.9.1}Is a recurrent surrogate the right tool?}{69}{}\protected@file@percent }
-\newlabel{sec:exp_surrogate_critique}{{5.9.1}{69}{}{subsection.5.9.1}{}}
-\citation{Heertjes2025_NonlinearControl}
-\@writefile{toc}{\contentsline {section}{\numberline {5.10}Discussion}{71}{}\protected@file@percent }
-\newlabel{sec:exp_discussion}{{5.10}{71}{}{section.5.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}Experiment 4: Evaluation of Control Configurations}{54}{}\protected@file@percent }
+\newlabel{sec:exp_controllers}{{5.5}{54}{}{section.5.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.5.5}{\ignorespaces Synchronization error indices under progressive control configurations on the baseline trajectory (cruise-window indices of $e_{syn}$, worst die).}}{54}{}\protected@file@percent }
+\newlabel{tab:exp4_controllers}{{5.5.5}{54}{}{table.5.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces Synchronization error during one scan under the four control configurations. Shaded band: cruise (exposure) segment.}}{55}{}\protected@file@percent }
+\newlabel{fig:exp4_controllers}{{5.9}{55}{}{figure.5.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.6}Experiment 5: The Throughput--Yield Transition}{57}{}\protected@file@percent }
+\newlabel{sec:exp_transition}{{5.6}{57}{}{section.5.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.6.6}{\ignorespaces Onset-referenced throughput--yield transition (baseline trajectory, Case 3b, 241 dies): as the settling budget shrinks, the first failures concentrate at the row-change dies. Threshold = twice the settled (200\,ms) median MSD.}}{58}{}\protected@file@percent }
+\newlabel{tab:exp5_transition}{{5.6.6}{58}{}{table.5.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces Wafer maps across the throughput--yield transition. By 180\,ms the first failures form an eight-die edge cluster at the row-change dies; the cluster persists unchanged through 160\,ms; at 150\,ms the bulk of the wafer has crossed into a \textit  {Loc}-classified failure population; by 120\,ms failure is near-total and the map saturates to \textit  {Center}.}}{59}{}\protected@file@percent }
+\newlabel{fig:exp5_transition_maps}{{5.10}{59}{}{figure.5.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.7}Experiment 6: Optimization Scenarios E3 and E4}{60}{}\protected@file@percent }
+\newlabel{sec:exp_pso}{{5.7}{60}{}{section.5.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.7.7}{\ignorespaces Optimization scenarios against the third- and fourth-order baselines at the same operating point ($t_{step} = 150$\,ms, Case 3b). Failing dies, CNN class, and $\mathcal  {J}_{map}$ are evaluated on each trajectory's full-wafer map; $s$ is not a parameter of the third-order profile.}}{60}{}\protected@file@percent }
+\newlabel{tab:exp6_pso}{{5.7.7}{60}{}{table.5.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.8}Experiment 7: Does Trajectory Smoothness Matter Without a Good Controller?}{62}{}\protected@file@percent }
+\newlabel{sec:exp_order}{{5.8}{62}{}{section.5.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.11}{\ignorespaces Synchronization error during one scan for the four profile orders, under bare PID (top) and under the full control setup with HIGS (bottom). Note the vertical scales.}}{63}{}\protected@file@percent }
+\newlabel{fig:exp7_order}{{5.11}{63}{}{figure.5.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.8.8}{\ignorespaces Profile order $\times $ controller. Cruise indices of $e_{syn}$ (worst die); full-scan MSD includes the post-step entry transient.}}{64}{}\protected@file@percent }
+\newlabel{tab:exp7_order}{{5.8.8}{64}{}{table.5.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.9}Discussion}{65}{}\protected@file@percent }
+\newlabel{sec:exp_discussion}{{5.9}{65}{}{section.5.9}{}}
 \@setckpt{experimentsChapter}{
-\setcounter{page}{73}
+\setcounter{page}{67}
 \setcounter{equation}{0}
-\setcounter{enumi}{0}
+\setcounter{enumi}{2}
 \setcounter{enumii}{0}
 \setcounter{enumiii}{0}
 \setcounter{enumiv}{0}
@@ -86,13 +79,13 @@
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
 \setcounter{chapter}{5}
-\setcounter{section}{10}
+\setcounter{section}{9}
 \setcounter{subsection}{0}
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{11}
-\setcounter{table}{9}
+\setcounter{table}{8}
 \setcounter{parentequation}{0}
 \setcounter{float@type}{8}
 \setcounter{algorithm}{1}
