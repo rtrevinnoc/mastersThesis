@@ -185,11 +185,11 @@ The error remaining after feedforward is a non-repeatable transient response tha
     \qquad x_1 = k_h\, e_f \quad \text{otherwise},
     \label{eq:higs}
 \end{equation}
-with output $u_f = k_p e_f + \omega_i \int x_1\, dt$. By resetting its state to the gain line $k_h e_f$ whenever the sector condition is violated, the HIGS element provides integral action with roughly $38^\circ$ less phase lag than a linear integrator, relaxing the overshoot-versus-stiffness limitation of linear designs --- the property that motivates nonlinear integrators for wafer stages. Both fine loops saturate at the physical travel of the short stroke, with conditional integration preventing windup during large transients. The loop gains are tuned empirically over a grid up to the stability boundary of the simulated plant: the PI loop uses $k_p = 16$, $k_i = 480$\,s$^{-1}$, and the HIGS loop $k_p = 16$, $\omega_i = 2\pi \cdot 200$\,rad/s, $\omega_h = 2\pi \cdot 80$\,rad/s, $k_h = 1$; one step further in gain destabilizes both loops against the $180$\,Hz flexible-chain modes. The HIGS element sustains an integrator frequency roughly $42\times$ above the PI's equivalent $k_i/k_p$ before reaching that boundary --- the phase advantage of the nonlinear integrator expressed as usable gain. The fine-stage authority is ultimately bounded by the short-stroke actuator's own velocity loop (pole at $K_P/K_V = 100$\,rad/s), a structural property of this generic replication that Chapter~\ref{ch:experiments} quantifies.
+with output $u_f = k_p e_f + \omega_i \int x_1\, dt$. By resetting its state to the gain line $k_h e_f$ whenever the sector condition is violated, the HIGS element provides integral action with roughly $38^\circ$ less phase lag than a linear integrator, relaxing the overshoot-versus-stiffness limitation of linear designs --- the property that motivates nonlinear integrators for wafer stages. The loop gains are tuned empirically over a grid up to the stability boundary of the simulated plant: the PI loop uses $k_p = 16$, $k_i = 480$\,s$^{-1}$, and the HIGS loop $k_p = 16$, $\omega_i = 2\pi \cdot 200$\,rad/s, $\omega_h = 2\pi \cdot 80$\,rad/s, $k_h = 1$; one step further in gain destabilizes both loops against the $180$\,Hz flexible-chain modes. The HIGS element sustains an integrator frequency roughly $42\times$ above the PI's equivalent $k_i/k_p$ before reaching that boundary --- the phase advantage of the nonlinear integrator expressed as usable gain. The fine-stage authority is ultimately bounded by the short-stroke actuator's own velocity loop (pole at $K_P/K_V = 100$\,rad/s), a structural property of this generic replication that Chapter~\ref{ch:experiments} quantifies.
 
 \section{Population-Based Trajectory Search}\label{sec:methodology_pso}
 
-The optimization problem~\eqref{eq:problem} is searched with particle swarm optimization (PSO) over the four kinematic bounds. Each particle holds a position $\mathbf{x} = (v_{\max}, a_{\max}, j_{\max}, s_{\max})$ and is updated by the standard rule
+The optimization problem~\eqref{eq:problem} is explored with particle swarm optimization (PSO) over the four kinematic bounds. Each particle holds a position $\mathbf{x} = (v_{\max}, a_{\max}, j_{\max}, s_{\max})$ and is updated by the standard rule
 \begin{equation}
     \mathbf{u}_{k+1} = \omega\, \mathbf{u}_k + c_1 r_1 (\mathbf{p}_k - \mathbf{x}_k) + c_2 r_2 (\mathbf{g}_k - \mathbf{x}_k), \qquad \mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{u}_{k+1},
     \label{eq:pso}
@@ -207,9 +207,195 @@ The link between trajectory parameters and yield is established in three steps: 
 
 The CNN classifier is trained on WM-811K~\cite{Wu2015_WM811K}, a public dataset of 811{,}457 wafer maps collected from real fabrication lines, of which 172{,}950 carry a manually assigned failure label. Each map is a grid of dies marked as pass or fail, annotated with one of nine morphology classes: \textit{none}, \textit{Center}, \textit{Donut}, \textit{Edge-Loc}, \textit{Edge-Ring}, \textit{Loc}, \textit{Near-full}, \textit{Random}, and \textit{Scratch}. The labelled maps are split 80/20 with class stratification, and every map is resized to $64 \times 64$ cells to give the network a uniform input.
 
-The network architecture comprises three convolutional blocks (16, 32, and 64 filters of size $3\times3$, each followed by ReLU activation and $2\times2$ max-pooling) and two fully connected layers (128 hidden units with dropout of 0.5, and a 9-way softmax output). It is trained for 5 epochs with the Adam optimizer (learning rate $10^{-3}$, batch size 32) under a cross-entropy loss, retaining the weights with the highest hold-out accuracy.
+The network architecture (Figure~\ref{fig:wafer_cnn_architecture}) comprises three convolutional blocks (16, 32, and 64 filters of size $3\times3$, each followed by ReLU activation and $2\times2$ max-pooling) and two fully connected layers (128 hidden units with dropout of 0.5, and a 9-way softmax output). It is trained for 5 epochs with the Adam optimizer (learning rate $10^{-3}$, batch size 32) under a cross-entropy loss, retaining the weights with the highest hold-out accuracy.
 
-To generate simulated maps, for each die scanned in simulation, the synchronization error recorded during its exposure is reduced to a scalar criterion --- either the maximum tracking error or the MA/MSD pair of Chapter~\ref{ch:control_objectives} --- and compared against a threshold to declare the die good or failing. The resulting grid, arranged in the same encoding as WM-811K (background, pass, fail), is resized to $64\times64$ and presented to the CNN, which returns the probability distribution $P_c$ used by the cost function~\eqref{eq:cost}.
+\begin{figure}[htbp]
+\centering
+% 3D Architecture Diagram
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}
+\def\ConvColor{rgb:yellow,5;red,2.5;white,5}
+\def\ConvReluColor{rgb:yellow,5;red,5;white,5}
+\def\PoolColor{rgb:red,1;black,0.3}
+\def\FcColor{rgb:blue,5;red,2.5;white,5}
+\def\SoftmaxColor{rgb:magenta,5;black,7}   
 
-For validation, a physically meaningful trajectory-to-defect mapping must activate only the classes plausibly caused by scanner motion: \textit{none}, \textit{Scratch}, \textit{Edge-Loc}, and \textit{Random}. The remaining classes correspond to etching, cleaning, and deposition signatures; if simulated maps systematically activated them, the mapping --- not the machine --- would be at fault. This criterion, together with the requirement that the cost shift reproducibly under sweeps of $(v_{\max}, a_{\max}, j_{\max}, s_{\max})$, defines what constitutes a successful validation in Chapter~\ref{ch:experiments}.
+\tikzstyle{connection}=[ultra thick,every node/.style={sloped,allow upside down},draw=\edgecolor,opacity=0.7]
 
+% Input Map
+\pic[shift={(0,0,0)}] at (0,0,0) 
+    {Box={
+        name=input,
+        caption={{Input}},
+        xlabel={{"",""}},
+        zlabel=64,
+        fill=\ConvColor,
+        height=30,
+        width=1.0,
+        depth=30
+        }
+    };
+
+% Conv1 (larger 3.2 shift to clear the 64x64 input plane)
+\pic[shift={(3.2,0,0)}] at (input-east) 
+    {RightBandedBox={
+        name=conv1,
+        caption={{Conv1}},
+        xlabel={{"",""}},
+        zlabel=64,
+        fill=\ConvColor,
+        bandfill=\ConvReluColor,
+        height=30,
+        width={ 1.4 , 1.4 },
+        depth=30
+        }
+    };
+
+\draw [connection] (input-east) -- node {\midarrow} (conv1-west);
+
+% Pool1 (attached to Conv1, zlabel omitted to prevent label collisions)
+\pic[shift={(0,0,0)}] at (conv1-east) 
+    {Box={
+        name=pool1,
+        caption={ },
+        xlabel={{"",""}},
+        zlabel={ },
+        fill=\PoolColor,
+        opacity=0.5,
+        height=20,
+        width=1.4,
+        depth=20
+        }
+    };
+
+% Conv2
+\pic[shift={(2.4,0,0)}] at (pool1-east) 
+    {RightBandedBox={
+        name=conv2,
+        caption={{Conv2}},
+        xlabel={{"",""}},
+        zlabel=32,
+        fill=\ConvColor,
+        bandfill=\ConvReluColor,
+        height=20,
+        width={ 2.0 , 2.0 },
+        depth=20
+        }
+    };
+
+\draw [connection] (pool1-east) -- node {\midarrow} (conv2-west);
+
+% Pool2 (attached to Conv2)
+\pic[shift={(0,0,0)}] at (conv2-east) 
+    {Box={
+        name=pool2,
+        caption={ },
+        xlabel={{"",""}},
+        zlabel={ },
+        fill=\PoolColor,
+        opacity=0.5,
+        height=13,
+        width=2.0,
+        depth=13
+        }
+    };
+
+% Conv3
+\pic[shift={(2.0,0,0)}] at (pool2-east) 
+    {RightBandedBox={
+        name=conv3,
+        caption={{Conv3}},
+        xlabel={{"",""}},
+        zlabel=16,
+        fill=\ConvColor,
+        bandfill=\ConvReluColor,
+        height=13,
+        width={ 3.0 , 3.0 },
+        depth=13
+        }
+    };
+
+\draw [connection] (pool2-east) -- node {\midarrow} (conv3-west);
+
+% Pool3 (attached to Conv3)
+\pic[shift={(0,0,0)}] at (conv3-east) 
+    {Box={
+        name=pool3,
+        caption={ },
+        xlabel={{"",""}},
+        zlabel={ },
+        fill=\PoolColor,
+        opacity=0.5,
+        height=7,
+        width=3.0,
+        depth=7
+        }
+    };
+
+% FC1 (smaller 1.6 shift to bring closer to Pool3)
+\pic[shift={(1.6,0,0)}] at (pool3-east) 
+    {Box={
+        name=fc1,
+        caption={{FC1}},
+        xlabel={{"",""}},
+        zlabel=128,
+        fill=\FcColor,
+        height=3,
+        width=2.4,
+        depth=24
+        }
+    };
+
+\draw [connection] (pool3-east) -- node {\midarrow} (fc1-west);
+
+% Softmax (smaller 1.4 shift to bring closer to FC1)
+\pic[shift={(1.4,0,0)}] at (fc1-east) 
+    {Box={
+        name=softmax,
+        caption={{Softmax}},
+        xlabel={{"",""}},
+        zlabel=9,
+        fill=\SoftmaxColor,
+        opacity=0.8,
+        height=3,
+        width=2.0,
+        depth=7
+        }
+    };
+
+\draw [connection] (fc1-east) -- node {\midarrow} (softmax-west);
+
+\end{tikzpicture}%
+}
+
+\vspace{0.3cm}
+
+% Detailed Layer Table
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llccc}
+\toprule
+\textbf{Layer} & \textbf{Type} & \textbf{Operation} & \textbf{Shape} & \textbf{Activation} \\
+\midrule
+Input Map & Wafer Grid & --- & $1 \times 64 \times 64$ & --- \\
+Conv1 & 2D Convolution & $16\text{ filters}, 3\times 3, \text{pad } 1$ & $16 \times 64 \times 64$ & ReLU \\
+Pool1 & Max Pooling & $2\times 2\text{ pool}, \text{stride } 2$ & $16 \times 32 \times 32$ & --- \\
+Conv2 & 2D Convolution & $32\text{ filters}, 3\times 3, \text{pad } 1$ & $32 \times 32 \times 32$ & ReLU \\
+Pool2 & Max Pooling & $2\times 2\text{ pool}, \text{stride } 2$ & $32 \times 16 \times 16$ & --- \\
+Conv3 & 2D Convolution & $64\text{ filters}, 3\times 3, \text{pad } 1$ & $64 \times 16 \times 16$ & ReLU \\
+Pool3 & Max Pooling & $2\times 2\text{ pool}, \text{stride } 2$ & $64 \times 8 \times 8$ & Flatten ($4096$) \\
+FC1 & Dense & Linear ($4096 \rightarrow 128$) & $128$ & ReLU + Dropout ($p=0.5$) \\
+Output & Dense & Linear ($128 \rightarrow 9$) & $9$ & Softmax ($9$ classes) \\
+\bottomrule
+\end{tabular}%
+}
+
+\caption{Architecture of the \texttt{WaferCNN} classifier visualised with \texttt{PlotNeuralNet} (top) and detailed layer specification (bottom).}
+\label{fig:wafer_cnn_architecture}
+\end{figure}
+
+To generate synthetic wafer maps, the synchronization error recorded during each die exposure is reduced to the exposure-window MA/MSD metrics of Chapter~\ref{ch:control_objectives} and evaluated against the threshold of Eq.~\eqref{eq:ma_msd_spec} to declare each die as passing ($1$) or failing ($2$). The resulting per-die status values are interleaved with their spatial coordinates, producing an $N \times N$ trinary matrix $W_{\text{raw}}$ (with $0$ for background) of resolution inversely proportional to die dimension $L_{\text{die}}$. 
+
+The variable-resolution wafer defect map is scaled to a uniform $64 \times 64$ grid using OpenCV's \texttt{cv2.resize}. Since values in the grid represent discrete categorical labels, nearest-neighbor interpolation (\texttt{cv2.INTER\_NEAREST}) is employed rather than linear or bicubic interpolation. The resulting $64 \times 64 \times 1$ tensor is presented to the CNN, which returns the probability distribution $P_c$ used by the cost function~\eqref{eq:cost}.
+
+Furthermore, the CNN serves as validation of the underlying multi-body model. For the trajectory-to-defect transformation to be meaningful, only the defect classes that could be caused by scanner motion must be activated: \textit{none}, \textit{Scratch}, \textit{Edge-Loc}, and \textit{Random}. The remaining classes correspond to downstream processes like etching, cleaning, and deposition, if the maps from the simulation activated them systematically, the mapping would be at innacurate.

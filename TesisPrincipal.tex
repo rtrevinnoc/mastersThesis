@@ -9,7 +9,7 @@
 \usepackage{newlfont}
 \usepackage{thesismc} %Thesis Style ONLY FOR MASTERS *********************
 %\usepackage{thesisphd}\phd %Thesis Style ONLY FOR PHD **************
-\usepackage{Xtocinc} %Include Table of Contents as the first entry in TOC
+%\usepackage{Xtocinc} %Include Table of Contents as the first entry in TOC (Broken \@addcontentsline hack)
 \usepackage{graphicx} %allows adding .eps graphics files
 \usepackage{psfrag} %allows modifying eps graphics in latex with the \psfrag{tag}{replacement} command
 \usepackage{float}  %arranges to leave graphics and tables where they were inserted
@@ -19,9 +19,12 @@
 \usepackage{algpseudocode} % or algorithmic, but algpseudocode is better for \State, \If, etc.
 \usepackage{booktabs}      % Fixes \toprule, \midrule, \bottomrule
 \usepackage{cancel}       % Fixes \cancelto
+\usepackage{caption}      % Robust captions for List of Figures / List of Tables
 \usepackage[super]{natbib}
 \usepackage{tikz}
-\usetikzlibrary{decorations.pathmorphing,patterns,arrows.meta,calc,positioning}
+\usetikzlibrary{decorations.pathmorphing,patterns,arrows.meta,calc,positioning,3d}
+\usepackage{import}
+\subimport{../PlotNeuralNet/layers/}{init}
 
 % THEOREM, EQUATION FORMAT, ETC ---------------------------------------------------------------
 \theoremstyle{plain}
