@@ -1,8 +1,8 @@
 \contentsline {chapter}{Agradecimientos}{iv}{}%
 \contentsline {chapter}{Abstract}{v}{}%
-\contentsline {chapter}{Symbols and notation}{vii}{}%
-\contentsline {chapter}{List of Tables}{x}{}%
-\contentsline {chapter}{List of Figures}{xi}{}%
+\contentsline {chapter}{Symbols and notation}{vi}{}%
+\contentsline {chapter}{List of Tables}{ix}{}%
+\contentsline {chapter}{List of Figures}{x}{}%
 \contentsline {chapter}{\numberline {1}Introduction}{1}{}%
 \contentsline {section}{\numberline {1.1}Research Gap}{5}{}%
 \contentsline {section}{\numberline {1.2}Hypothesis}{6}{}%
