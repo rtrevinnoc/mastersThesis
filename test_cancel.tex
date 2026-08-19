@@ -1,0 +1,19 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{cancel}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+\newcommand{\canceltoflat}[2]{%
+    \tikz[baseline=(math.base)] {
+        \node[inner sep=0pt, outer sep=0pt] (math) {$\displaystyle #2$};
+        \draw[-{Stealth[scale=0.8]}, line width=0.5pt] 
+            (math.south west) -- (math.north east) 
+            node[pos=1.05, right, inner sep=0pt, font=\scriptsize] {$#1$};
+    }%
+}
+\begin{align*}
+    &\quad \cancelto{0}{+ K_3(f^0_2 - f^0_3) + C_3(\dot{f}^0_2 - \dot{f}^0_3) - K_3(f^0_2 - f^0_3) - C_3(\dot{f}^0_2 - \dot{f}^0_3)} \\
+    &\quad \canceltoflat{0}{+ K_3(f^0_2 - f^0_3) + C_3(\dot{f}^0_2 - \dot{f}^0_3) - K_3(f^0_2 - f^0_3) - C_3(\dot{f}^0_2 - \dot{f}^0_3)}
+\end{align*}
+\end{document}
