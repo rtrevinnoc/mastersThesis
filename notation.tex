@@ -12,15 +12,20 @@
         $j$ & Chain index: $j=1$ reticle, $j=2$ optics, $j=3$ wafer.\\
         $i_j$ & Body $i$ within chain $j$; $N_j$ is the last body of chain $j$.\\
         $f_{i_j}$ & In-plane displacement of body $i_j$ relative to its parent body.\\
+        $f^0_{i_j}$ & Absolute in-plane displacement of body $i_j$ relative to the inertial frame $\mathcal{F}_0$.\\
         $\theta_{z_{i_j}}$ & Rotation of body $i_j$ about the vertical axis.\\
+        ${}^0R_{i_j}$ & Rotation matrix from the local frame of body $i_j$ to the inertial frame $\mathcal{F}_0$.\\
         $m_{i_j},I_{z_{i_j}}$ & Mass and $z$-axis moment of inertia of body $i_j$.\\
         $K_{i_j},C_{i_j}$ & Stiffness and damping of the Kelvin--Voigt coupling of body $i_j$.\\
+        $\mathbf{x}, \mathbf{u}$ & State and input vectors in the state-space representation.\\
+        $u_{i_j}, \tau_{i_j}$ & Control forces and torques applied to body $i_j$.\\
         $\alpha$ & Projection demagnification factor, $\alpha = 0.25$.\\
         $e_{syn}$ & Synchronization error between wafer and reticle stages.\\
         $\mathrm{MA},\mathrm{MSD}$ & Moving average and moving standard deviation of $e_{syn}$\\
         & over the exposure window.\\
         $v_{\max},a_{\max}$ & Velocity and acceleration bounds of the reference trajectory.\\
         $j_{\max},s_{\max}$ & Jerk and snap bounds of the reference trajectory.\\
+        $t_s$ & Settling time.\\
         $\mathrm{CD}$ & Critical dimension: minimum printable feature size.\\
         $\mathrm{NA}$ & Numerical aperture of the projection lens.\\
         $\lambda$ & Illumination wavelength.\\
@@ -28,6 +33,6 @@
         $w_c$ & Economic weight of defect class $c$ in the cost function.\\
         $\mathcal{J}$ & Trajectory cost: expected yield loss, $\mathcal{J}=\sum_c w_c P_c$.\\
         $\mathrm{WPH}$ & Throughput in wafers per hour.\\
-        \textit{Italics} & Italics denote terms in a language other than English.\\
+        \textit{Italics} & Italics denote defect class names and emphasis on key concepts.\\
         \textbf{Boldface} & Boldface denotes technical terms at first use.
 \end{tabular}
