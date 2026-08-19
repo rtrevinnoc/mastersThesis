@@ -124,7 +124,16 @@
     \draw[line width=0.5pt, mnnwInk] (-0.11,-0.18) rectangle (0.11,0.18);
     \draw[line width=0.5pt, mnnwInk] (-0.11,0)            -- (0.11,0);
     \draw[line width=0.5pt, mnnwInk] (0,0.18)             -- (0,0.45);
-  },
+}, }
+
+% --- Flat Cancellation Macro -----------------------------------------------
+\newcommand{\canceltoflat}[2]{%
+    \tikz[baseline=(math.base)] {
+        \node[inner sep=0pt, outer sep=0pt] (math) {$\displaystyle #2$};
+        \draw[-{Stealth[scale=0.8]}, line width=0.5pt, mnnwInk] 
+            (math.south west) -- (math.north east) 
+            node[pos=1.03, above right, inner sep=0pt, font=\scriptsize] {$#1$};
+    }%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

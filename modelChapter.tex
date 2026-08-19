@@ -551,11 +551,11 @@ To write the equations that govern the base frame, we start from Newton's equati
 Summing~\eqref{eq:forceeq} over all bodies in a chain (taking the optics chain $j=2$, bodies $i=2,3,4$ as a representative example), the internal spring forces cancel by Newton's third law:
 \begin{align}
     &- K_2(f^0_1 - f^0_2) - C_2(\dot{f}^0_1 - \dot{f}^0_2) \notag \\
-    &\quad \cancelto{0}{
+    &\quad \canceltoflat{0}{
         + K_3(f^0_2 - f^0_3) + C_3(\dot{f}^0_2 - \dot{f}^0_3)
         - K_3(f^0_2 - f^0_3) - C_3(\dot{f}^0_2 - \dot{f}^0_3)
     } \notag \\
-    &\quad \cancelto{0}{
+    &\quad \canceltoflat{0}{
         + K_4(f^0_3 - f^0_4) + C_4(\dot{f}^0_3 - \dot{f}^0_4)
         - K_4(f^0_3 - f^0_4) - C_4(\dot{f}^0_3 - \dot{f}^0_4)
     } \notag
