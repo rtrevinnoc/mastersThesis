@@ -2,28 +2,11 @@
 \def\baselinestretch{1.0}
 \setlinespacing{1.4}
 
-Step-and-scan photolithography scanners expose the layers of an integrated
-circuit by sweeping a reticle and a silicon wafer through a projection slit in
-opposite directions, synchronized to nanometer-level accuracy. The reference
-trajectories that command these motions determine how much energy is injected
-into the poorly damped structural modes of the machine, and therefore how large
-the residual synchronization error is during exposure. Trajectory design is
-conventionally evaluated through positioning metrics none of which describes the morphology of the
-defects that those errors ultimately imprint on the wafer.
+Step-and-scan photolithography scanners expose the layers of an integrated circuit by sweeping a reticle and a silicon wafer through a projection slit in opposite directions, synchronized to nanometer-level accuracy. The reference trajectories that command these motions determine how much energy is injected into the poorly damped structural modes of the machine, and therefore how large the residual synchronization error is during exposure. Trajectory design is conventionally evaluated through positioning metrics none of which describes the morphology of the defects that those errors ultimately imprint on the wafer.
 
-This work proposes a yield-aware framework for optimizing the kinematic bounds
-$(v_{\max}, a_{\max}, j_{\max}, s_{\max})$ of fourth-order (snap-limited)
-reference trajectories. A planar multi-body model of a generic lithography
-machine is implemented in the MuJoCo physics
-engine and validated against the characterization study it derives from. The
-synchronization error produced during scanning is transformed into a simulated
-wafer defect map, which a convolutional neural network (CNN) trained on the WM-811K dataset classifies into nine defect morphologies. The probability
-distribution estimated by the CNN, restricted to the classes plausibly caused
-by scanner motion, defines a cost function that links trajectory parameters
-directly to expected yield, closing the loop for data-driven trajectory optimization under a throughput constraint.
+This work proposes a yield-aware framework for optimizing the kinematic bounds of fourth-order (snap-limited) reference trajectories. A planar multi-body model of a generic lithography machine is implemented in the MuJoCo physics engine and validated against the characterization study it derives from. The synchronization error produced during scanning is transformed into a simulated wafer defect map, which a convolutional neural network (CNN) trained on the WM-811K dataset classifies into nine defect morphologies. The probability distribution estimated by the CNN, restricted to the classes plausibly caused by scanner motion, defines a cost function that links trajectory parameters directly to expected yield, closing the loop for data-driven trajectory optimization under a throughput constraint.
 
 \textbf{Keywords:} photolithography, step-and-scan, trajectory generation,
-fourth-order profiles, multi-body dynamics, convolutional neural networks,
-wafer maps, yield.
+fourth-order profiles, multi-body dynamics, convolutional neural networks, wafer maps, yield.
 
 % ----------------------------------------------------------------------

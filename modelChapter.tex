@@ -11,13 +11,12 @@
 % Cylinder anchors at left, piston rod exits to the right.
 %   #1 = full length (cm).  Piston-rod length is half of total.
 \tikzset{
-  vdamper/.pic={
+vdamper/.pic={
     \draw[line width=0.5pt, mnnwInk] (0,-0.45)            -- (0,-0.18);
     \draw[line width=0.5pt, mnnwInk] (-0.11,-0.18) rectangle (0.11,0.18);
     \draw[line width=0.5pt, mnnwInk] (-0.11,0)            -- (0.11,0);
     \draw[line width=0.5pt, mnnwInk] (0,0.18)             -- (0,0.45);
-  },
-}
+}, }
 % Long horizontal damper between (xa, y) and (xb, y).
 % Cylinder is the LEFT 60%, piston rod the RIGHT 40%.
 \newcommand{\hdamperLong}[3]{%
@@ -410,19 +409,16 @@ Clearly, here we can set $\omega_x = 0$ and $\omega_y = 0$, thus $\omega = [0,\,
     \notag
 \end{equation}
 
-Considering our 2D displacement vector, we only take the upper-left $2\times2$ 
-sub-matrix, and factoring out the scalar $\dot{\theta}^{0}_{z_{(i-1)_j}}$:
+Considering our 2D displacement vector, we only take the upper-left $2\times2$ sub-matrix, and factoring out the scalar $\dot{\theta}^{0}_{z_{(i-1)_j}}$:
 \begin{equation} \label{eq:skew}
     [\omega_{(i-1)_j}] = \dot{\theta}^{0}_{z_{(i-1)_j}}
     \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}
 \end{equation}
-such that $\omega_{(i-1)_j} \times f_{i_j} = [\omega_{(i-1)_j}]\,f_{i_j}$. 
-Applying this matrix twice gives the centripetal term:
+such that $\omega_{(i-1)_j} \times f_{i_j} = [\omega_{(i-1)_j}]\,f_{i_j}$. Applying this matrix twice gives the centripetal term:
 \begin{equation}
     [\omega_{(i-1)_j}]^2 = -\left(\dot{\theta}^{0}_{z_{(i-1)_j}}\right)^2 \mathbf{I}_2
 \end{equation}
-so that $\omega_{(i-1)_j} \times [\omega_{(i-1)_j} \times f_{i_j}] =
-[\omega_{(i-1)_j}]^2\,f_{i_j}$. Substituting and expanding
+so that $\omega_{(i-1)_j} \times [\omega_{(i-1)_j} \times f_{i_j}] = [\omega_{(i-1)_j}]^2\,f_{i_j}$. Substituting and expanding
 \eqref{eq:frameref} recursively from the floor frame, the translational kinematics become:
 \begin{align}
     f^{0}_{i_j}
@@ -772,7 +768,7 @@ x
 
 To systematically construct the global state-space matrices, we must reframe the equations of motion for the chain bodies in terms of the state vector variables. We map the physical planar coordinates of the $p$-th sequential body to the local state vectors: translational position $\mathbf{x}_{2p-1} = [x_{6p-5},\, x_{6p-4}]^T$, translational velocity $\dot{\mathbf{x}}_{2p-1} = [x_{6p-2},\, x_{6p-1}]^T$, rotational position $\mathbf{x}_{2p} = x_{6p-3}$, and rotational velocity $\dot{\mathbf{x}}_{2p} = x_{6p}$.
 
-The state derivatives are dictated by the relative accelerations between adjacent bodies. By applying the kinematic identity $\ddot{f}_{i_j} = \ddot{f}^0_{i_j} - \ddot{f}^0_{(i-1)_j}$ from~\eqref{eq:acc_expanded}, we determine the interactive forces acting on each body within its parent's reference frame. Let $p$ represent the global index of body $i$ in chain $j$, while $p-1$ and $p+1$ denote the indices of its immediate upstream and downstream neighbors respectively (with the base frame positioned at $p=1$). 
+The state derivatives are dictated by the relative accelerations between adjacent bodies. By applying the kinematic identity $\ddot{f}_{i_j} = \ddot{f}^0_{i_j} - \ddot{f}^0_{(i-1)_j}$ from~\eqref{eq:acc_expanded}, we determine the interactive forces acting on each body within its parent's reference frame. Let $p$ represent the global index of body $i$ in chain $j$, while $p-1$ and $p+1$ denote the indices of its immediate upstream and downstream neighbors respectively (with the base frame positioned at $p=1$).
 
 
 For the \textbf{first body in each chain} ($i=2$, index $p$, upstream index $1$), the translational state derivatives ($\ddot{\mathbf{x}}_{2p-1} = \ddot{f}_{2_j}$) and rotational state derivatives ($\ddot{\mathbf{x}}_{2p} = \ddot{\theta}_{z_{2_j}}$) take the form:

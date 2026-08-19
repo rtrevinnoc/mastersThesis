@@ -2,7 +2,7 @@ PWD /Users/rtrevinnoc/maestria/tesis/fullThesis
 INPUT /usr/local/texlive/2026/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-var/web2c/xetex/xelatex.fmt
-INPUT /Users/rtrevinnoc/maestria/tesis/fullThesis/TesisPrincipal.tex
+INPUT TesisPrincipal.tex
 OUTPUT TesisPrincipal.log
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/report.cls
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/base/report.cls
@@ -286,6 +286,12 @@ OUTPUT resumen.aux
 INPUT ./resumen.tex
 INPUT ./resumen.tex
 INPUT resumen.tex
+INPUT ./notation.tex
+INPUT ./notation.tex
+OUTPUT notation.aux
+INPUT ./notation.tex
+INPUT ./notation.tex
+INPUT notation.tex
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmmi8.tfm
@@ -317,12 +323,6 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/latex-fonts/lasy6.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmr8.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
-INPUT ./notation.tex
-INPUT ./notation.tex
-OUTPUT notation.aux
-INPUT ./notation.tex
-INPUT ./notation.tex
-INPUT notation.tex
 INPUT ./TesisPrincipal.toc
 INPUT ./TesisPrincipal.toc
 INPUT TesisPrincipal.toc

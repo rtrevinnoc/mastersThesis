@@ -126,7 +126,7 @@ Optics Box $\rightarrow$ Lens Element & \texttt{K4\_O} & \texttt{C4\_O} \\
     \label{fig:scanning_simulation}
 \end{figure}
 
-To successfully adapt our planar reduction of the reference model~\cite{Al-Rawashdeh2022_Caracterization} into MuJoCo's multibody solver, two numerical adaptations are in order: 
+To successfully adapt our planar reduction of the reference model~\cite{Al-Rawashdeh2022_Caracterization} into MuJoCo's multibody solver, two numerical adaptations are in order:
 
 \begin{enumerate}
     \item Native joint damping against absolute velocity would exert artificial drag ($K_V/K_P = 10$\,mm per m/s) during cruise, so we apply the velocity gain $K_V$ to the tracking-error velocity $(\dot{r} - \dot{y})$ within the control loop to represent the frictionless air bearings.
@@ -394,7 +394,7 @@ Output & Dense & Linear ($128 \rightarrow 9$) & $9$ & Softmax ($9$ classes) \\
 \label{fig:wafer_cnn_architecture}
 \end{figure}
 
-To generate synthetic wafer maps, the synchronization error recorded during each die exposure is reduced to the exposure-window MA/MSD metrics of Chapter~\ref{ch:control_objectives} and evaluated against the threshold of Eq.~\eqref{eq:ma_msd_spec} to declare each die as passing ($1$) or failing ($2$). The resulting per-die status values are interleaved with their spatial coordinates, producing an $N \times N$ trinary matrix $W_{\text{raw}}$ (with $0$ for background) of resolution inversely proportional to die dimension $L_{\text{die}}$. 
+To generate synthetic wafer maps, the synchronization error recorded during each die exposure is reduced to the exposure-window MA/MSD metrics of Chapter~\ref{ch:control_objectives} and evaluated against the threshold of Eq.~\eqref{eq:ma_msd_spec} to declare each die as passing ($1$) or failing ($2$). The resulting per-die status values are interleaved with their spatial coordinates, producing an $N \times N$ trinary matrix $W_{\text{raw}}$ (with $0$ for background) of resolution inversely proportional to die dimension $L_{\text{die}}$.
 
 The variable-resolution wafer defect map is scaled to a uniform $64 \times 64$ grid using OpenCV's \texttt{cv2.resize}. Since values in the grid represent discrete categorical labels, nearest-neighbor interpolation (\texttt{cv2.INTER\_NEAREST}) is employed rather than linear or bicubic interpolation. The resulting $64 \times 64 \times 1$ tensor is presented to the CNN, which returns the probability distribution $P_c$ used by the cost function~\eqref{eq:cost}.
 
