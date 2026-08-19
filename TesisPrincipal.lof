@@ -15,6 +15,6 @@
 \contentsline {figure}{\numberline {5.7}{\ignorespaces Simulated wafer maps under the four conditions (yellow: failing, blue: passing).}}{49}{}%
 \contentsline {figure}{\numberline {5.8}{\ignorespaces Simulated wafer maps under the representative setups (yellow: failing, blue: passing).}}{51}{}%
 \contentsline {figure}{\numberline {5.9}{\ignorespaces Synchronization error during one scan under the four control configurations (shaded band: exposure).}}{53}{}%
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Wafer maps across the throughput--yield transition. By 180\,ms the first failures form an eight-die edge cluster at the row-change dies; the cluster persists unchanged through 160\,ms; at 150\,ms the bulk of the wafer has crossed into a \textit {Loc}-classified failure population; by 120\,ms failure is near-total and the map saturates to \textit {Center}.}}{58}{}%
-\contentsline {figure}{\numberline {5.11}{\ignorespaces Synchronization error during one scan for the four profile orders, under bare PID (top) and under the full control setup with HIGS (bottom). Note the vertical scales.}}{63}{}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Wafer maps across the throughput--yield transition.}}{57}{}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Synchronization error during one scan for the four profile orders, under bare Case~1 (top) and Case~2 (bottom).}}{60}{}%
 \addvspace {10\p@ }
