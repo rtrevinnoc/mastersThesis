@@ -7,7 +7,7 @@
 \contentsline {table}{\numberline {4.2.2}{\ignorespaces MuJoCo XML tag functions in the scanner simulation}}{30}{}%
 \contentsline {table}{\numberline {4.2.3}{\ignorespaces Wafer chain stiffness ($K$) and damping ($C$) parameters}}{31}{}%
 \contentsline {table}{\numberline {4.2.4}{\ignorespaces Reticle chain stiffness ($K$) and damping ($C$) parameters}}{31}{}%
-\contentsline {table}{\numberline {4.2.5}{\ignorespaces Optics chain stiffness ($K$) and damping ($C$) parameters}}{31}{}%
+\contentsline {table}{\numberline {4.2.5}{\ignorespaces Optics chain stiffness ($K$) and damping ($C$) parameters}}{32}{}%
 \addvspace {10\p@ }
 \contentsline {table}{\numberline {5.3.1}{\ignorespaces Per-class evaluation on the test set.}}{46}{}%
 \contentsline {table}{\numberline {5.4.2}{\ignorespaces Disturbance-injection campaign.}}{49}{}%

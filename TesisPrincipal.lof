@@ -4,7 +4,7 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Screenshot of the MuJoCo simulation in the midst of the scanning motion, showing the wafer and the optics chain under the metrology frame}}{32}{}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Architecture of the \texttt {WaferCNN} classifier visualised with \texttt {PlotNeuralNet} (top) and detailed layer specification (bottom).}}{39}{}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Architecture of the CNN (top) and detailed layer specification (bottom).}}{38}{}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces References trajectories for the wafer stage ($x$: stepping, $y$: scanning).}}{41}{}%
 \contentsline {figure}{\numberline {5.2}{\ignorespaces Wafer, reticle, and synchronization errors. Shaded bands mark the exposure windows.}}{42}{}%
