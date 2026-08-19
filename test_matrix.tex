@@ -1,0 +1,60 @@
+\documentclass[12pt,letterpaper]{report}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{oddsidemargin=0.5cm, evensidemargin=0.5cm, textwidth=17.2cm}
+\begin{document}
+Expressed in the standard matrix form $\dot{x} = Ax + Bu$, the first six rows governing the base-frame dynamics are:
+\setcounter{MaxMatrixCols}{20}
+\begin{equation}
+\begin{bmatrix}\dot{x}_1\\\dot{x}_2\\\dot{x}_3\\\dot{x}_4\\\dot{x}_5\\\dot{x}_6\end{bmatrix}
+=
+\begin{bmatrix}
+    0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & \cdots \\
+    -\frac{K_{1,xx}}{m_0} & -\frac{K_{1,xy}}{m_0} & 0 & -\frac{C_{1,xx}}{m_0} & -\frac{C_{1,xy}}{m_0} & 0 & \frac{K_{2_1,xx}}{m_0} & \frac{K_{2_1,xy}}{m_0} & 0 & \frac{C_{2_1,xx}}{m_0} & \cdots \\
+    -\frac{K_{1,yx}}{m_0} & -\frac{K_{1,yy}}{m_0} & 0 & -\frac{C_{1,yx}}{m_0} & -\frac{C_{1,yy}}{m_0} & 0 & \frac{K_{2_1,yx}}{m_0} & \frac{K_{2_1,yy}}{m_0} & 0 & \frac{C_{2_1,yx}}{m_0} & \cdots \\
+    0 & 0 & -\frac{K_{1,zz}}{I_{z_0}} & 0 & 0 & -\frac{C_{1,zz}}{I_{z_0}} & 0 & 0 & \frac{K_{2_1,zz}}{I_{z_0}} & 0 & \cdots \\
+\end{bmatrix}
+x
++
+\begin{bmatrix}
+    0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & \cdots \\
+    \frac{1}{m_0} & 0 & 0 & \cdots \\
+    0 & \frac{1}{m_0} & 0 & \cdots \\
+    0 & 0 & \frac{1}{I_{z_0}} & \cdots
+\end{bmatrix}
+\begin{bmatrix}u^0_{x,1}\\u^0_{y,1}\\\tau^0_1\\\vdots\end{bmatrix}
+\end{equation}
+
+And here is the smaller version:
+
+{\small
+\setlength{\arraycolsep}{3pt}
+\begin{equation}
+\begin{bmatrix}\dot{x}_1\\\dot{x}_2\\\dot{x}_3\\\dot{x}_4\\\dot{x}_5\\\dot{x}_6\end{bmatrix}
+=
+\begin{bmatrix}
+    0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & \cdots \\
+    -\frac{K_{1,xx}}{m_0} & -\frac{K_{1,xy}}{m_0} & 0 & -\frac{C_{1,xx}}{m_0} & -\frac{C_{1,xy}}{m_0} & 0 & \frac{K_{2_1,xx}}{m_0} & \frac{K_{2_1,xy}}{m_0} & 0 & \frac{C_{2_1,xx}}{m_0} & \cdots \\
+    -\frac{K_{1,yx}}{m_0} & -\frac{K_{1,yy}}{m_0} & 0 & -\frac{C_{1,yx}}{m_0} & -\frac{C_{1,yy}}{m_0} & 0 & \frac{K_{2_1,yx}}{m_0} & \frac{K_{2_1,yy}}{m_0} & 0 & \frac{C_{2_1,yx}}{m_0} & \cdots \\
+    0 & 0 & -\frac{K_{1,zz}}{I_{z_0}} & 0 & 0 & -\frac{C_{1,zz}}{I_{z_0}} & 0 & 0 & \frac{K_{2_1,zz}}{I_{z_0}} & 0 & \cdots \\
+\end{bmatrix}
+x
++
+\begin{bmatrix}
+    0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & \cdots \\
+    0 & 0 & 0 & \cdots \\
+    \frac{1}{m_0} & 0 & 0 & \cdots \\
+    0 & \frac{1}{m_0} & 0 & \cdots \\
+    0 & 0 & \frac{1}{I_{z_0}} & \cdots
+\end{bmatrix}
+\begin{bmatrix}u^0_{x,1}\\u^0_{y,1}\\\tau^0_1\\\vdots\end{bmatrix}
+\end{equation}
+}
+\end{document}
