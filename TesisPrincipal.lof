@@ -6,15 +6,15 @@
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Screenshot of the MuJoCo simulation in the midst of the scanning motion, showing the wafer and the optics chain under the metrology frame}}{32}{}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Architecture of the \texttt {WaferCNN} classifier visualised with \texttt {PlotNeuralNet} (top) and detailed layer specification (bottom).}}{39}{}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Commanded step-and-scan references for the wafer stage ($x$: stepping, $y$: scanning) over the four-die sequence.}}{41}{}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Wafer, reticle, and synchronization errors during the four-die sequence. Shaded bands mark the exposure windows.}}{42}{}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Stage velocities and spring-coupling lag during the scan. The reticle end-effector, four times faster and an order of magnitude more softly coupled, dominates the synchronization error.}}{43}{}%
-\contentsline {figure}{\numberline {5.4}{\ignorespaces MA and MSD performance indices of the synchronization error over the four-die sequence.}}{44}{}%
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Detail of the first exposure window: synchronization error, MA, MSD, and coupling lag.}}{45}{}%
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Row-normalized confusion matrix of the CNN on the WM-811K hold-out set.}}{47}{}%
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Simulated wafer maps under the four disturbance conditions (yellow: failing dies, blue: passing dies). The spatial signatures --- clean, scattered, ring, line --- correspond to the injected disturbances.}}{50}{}%
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Simulated wafer maps under the scaled MSD criterion for three points of the sweep (yellow: failing dies, blue: passing dies). The failing-die population collapses from full-wafer to a single die as the kinematic bounds are relaxed.}}{51}{}%
-\contentsline {figure}{\numberline {5.9}{\ignorespaces Synchronization error during one scan under the four control configurations. Shaded band: cruise (exposure) segment.}}{55}{}%
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Wafer maps across the throughput--yield transition. By 180\,ms the first failures form an eight-die edge cluster at the row-change dies; the cluster persists unchanged through 160\,ms; at 150\,ms the bulk of the wafer has crossed into a \textit {Loc}-classified failure population; by 120\,ms failure is near-total and the map saturates to \textit {Center}.}}{59}{}%
-\contentsline {figure}{\numberline {5.11}{\ignorespaces Synchronization error during one scan for the four profile orders, under bare PID (top) and under the full control setup with HIGS (bottom). Note the vertical scales.}}{64}{}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces References trajectories for the wafer stage ($x$: stepping, $y$: scanning).}}{41}{}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Wafer, reticle, and synchronization errors. Shaded bands mark the exposure windows.}}{42}{}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Stage velocities and spring-coupling lag during the scan.}}{43}{}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces MA and MSD performance indices of the synchronization error.}}{44}{}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Detail of the first exposure window.}}{45}{}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Row-normalized confusion matrix.}}{47}{}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Simulated wafer maps under the four conditions (yellow: failing, blue: passing).}}{49}{}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Simulated wafer maps under the representative setups (yellow: failing, blue: passing).}}{51}{}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Synchronization error during one scan under the four control configurations (shaded band: exposure).}}{53}{}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Wafer maps across the throughput--yield transition. By 180\,ms the first failures form an eight-die edge cluster at the row-change dies; the cluster persists unchanged through 160\,ms; at 150\,ms the bulk of the wafer has crossed into a \textit {Loc}-classified failure population; by 120\,ms failure is near-total and the map saturates to \textit {Center}.}}{58}{}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Synchronization error during one scan for the four profile orders, under bare PID (top) and under the full control setup with HIGS (bottom). Note the vertical scales.}}{63}{}%
 \addvspace {10\p@ }
