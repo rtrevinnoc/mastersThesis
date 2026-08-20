@@ -142,7 +142,7 @@ scratch     & 15/241  & one die column  & Scratch   & Loc (63.1\,\%) \\
     \includegraphics[width=0.22\textwidth]{perturb_map_scratch.png} \\
     (a) none & (b) vibration & (c) drift & (d) scratch \\
     \end{tabular}
-    \caption{Simulated wafer maps under the four conditions (yellow: failing, blue: passing).}
+    \caption{Simulated wafer maps under the four conditions (green: passing, red: failing).}
     \label{fig:exp3_perturb_maps}
 \end{figure}
 
@@ -183,7 +183,7 @@ Conservative & 0.2 & 5  & 200  & $5\times10^3$ & 333.6 & 40.0  & 1/49  & none (0
     \includegraphics[width=0.28\textwidth]{sweep_map_conservative.png} \\
     (a) aggressive & (b) baseline & (c) conservative \\
     \end{tabular}
-    \caption{Simulated wafer maps under the representative setups (yellow: failing, blue: passing).}
+    \caption{Simulated wafer maps under the representative setups (green: passing, red: failing).}
     \label{fig:exp3_sweep_maps}
 \end{figure}
 
@@ -201,9 +201,9 @@ Experiments prior to this section ran under long-stroke-only control (Case~1), w
 \toprule
 Configuration & max $|\mathrm{MA}|$ & max MSD \\
 \midrule
-Case 1: long-stroke PID only          & 955.0\,\textmu m   & 25.0\,\textmu m \\
+Case 1: long-stroke PD only          & 955.0\,\textmu m   & 25.0\,\textmu m \\
 Case 2: + lag-compensation FF          & 99.8\,\textmu m  & 6.54\,\textmu m \\
-Case 3a: + short-stroke PI             & 7.65\,\textmu m  & 0.851\,\textmu m \\
+Case 3a: + short-stroke PI             & 7.68\,\textmu m  & 0.851\,\textmu m \\
 Case 3b: + short-stroke HIGS           & 7.48\,\textmu m  & 0.834\,\textmu m \\
 \bottomrule
 \end{tabular}
@@ -314,6 +314,17 @@ Both the third- and fourth-order baselines fail outright, yielding completely fa
 
 By contrast, the yield-aware CNN-cost search (E4) never leaves the \textit{Center}-saturation plateau with 49 failing dies, across both tested random seeds. Because the corrected cost~\eqref{eq:cost_corrected} assigns every saturated map a uniform ceiling of $\mathcal{J}_{\mathrm{map}} = 2.000$ regardless of failure severity, it provides no optimization gradient to guide the swarm out of saturation. This exposes a fundamental duality in the yield-aware cost, while its flatness on the near side of the specification allows the optimizer to trade acceptable-pattern yield loss for throughput (Sections~\ref{sec:exp_specsweep} and~\ref{sec:exp_transition}), that same flatness on the far side becomes a major liability when the swarm starts entirely within the saturated region.
 
+\begin{figure}[htbp]
+    \centering
+    \begin{tabular}{cc}
+    \includegraphics[width=0.4\textwidth]{pso_best_map_e3.png} &
+    \includegraphics[width=0.4\textwidth]{pso_best_map_e4.png} \\
+    (a) E3: servo cost & (b) E4: CNN cost (seed 0) \\
+    \end{tabular}
+    \caption{Best-particle wafer maps found by the two optimization scenarios (green: passing, red: failing). The servo-cost search (E3) converges to a fully clean wafer; the CNN-cost search (E4) remains fully saturated on the \textit{Center}-classified plateau, identically for both tested random seeds (Table~\ref{tab:exp6_pso}).}
+    \label{fig:exp6_pso_maps}
+\end{figure}
+
 \section{Experiment 7: Does Trajectory Smoothness Matter Without a Good Controller?}\label{sec:exp_order}
 
 The premise of higher-order trajectory design is that bounding higher-order motion derivatives injects less vibration energy into the mechanical structure. A key research question is whether these trajectory refinements survive under simpler controller architectures: if tracking performance is dominated by low-bandwidth servo lag, does smoothing the reference profile provide any tangible benefit? To investigate this, the experiment crosses profile order across two extremes of control capability: bare long-stroke feedback control (Case~1) and feedforward plus short-stroke HIGS control (Case~3b). All profiles are evaluated on the four-die row under identical kinematic bounds ($v_{\max} = 0.8$\,m/s, $a_{\max} = 20$\,m/s$^2$, $j_{\max} = 1600$\,m/s$^3$).
@@ -328,10 +339,10 @@ The premise of higher-order trajectory design is that bounding higher-order moti
 \toprule
 Profile & Controller & $T_{scan}$ & cruise max$|$MA$|$ & cruise max MSD & full-scan MSD \\
 \midrule
-2nd order & Case 1  & 132.5\,ms & 790\,\textmu m & 53.0\,\textmu m & 278\,\textmu m \\
-3rd order & Case 1  & 145.0\,ms & 901\,\textmu m & 34.5\,\textmu m & 187\,\textmu m \\
-4th order & Case 1  & 160.8\,ms & 955\,\textmu m & 25.0\,\textmu m & 99.4\,\textmu m \\
-4th, tight snap & Case 1 & 208.6\,ms & 717\,\textmu m & 11.9\,\textmu m & 63.8\,\textmu m \\
+2nd order & Case 1  & 132.5\,ms & 790\,\textmu m & 53.0\,\textmu m & 66.2\,\textmu m \\
+3rd order & Case 1  & 145.0\,ms & 907\,\textmu m & 34.5\,\textmu m & 39.0\,\textmu m \\
+4th order & Case 1  & 160.8\,ms & 955\,\textmu m & 25.0\,\textmu m & 28.3\,\textmu m \\
+4th, tight snap & Case 1 & 208.6\,ms & 717\,\textmu m & 11.9\,\textmu m & 12.1\,\textmu m \\
 \midrule
 2nd order & Case 3b & 132.5\,ms & 53.2\,\textmu m & 24.0\,\textmu m & 30.6\,\textmu m \\
 3rd order & Case 3b & 145.0\,ms & 15.6\,\textmu m & 3.27\,\textmu m & 5.26\,\textmu m \\
@@ -348,6 +359,6 @@ Profile & Controller & $T_{scan}$ & cruise max$|$MA$|$ & cruise max MSD & full-s
     \label{fig:exp7_order}
 \end{figure}
 
-Without active short-stroke compensation (Case~1), the moving-average error remains large across all profile orders due to the unrejected acceleration transient tail, as established in Section~\ref{sec:exp_case1}. However, the initial transient magnitude depends directly on reference trajectory smoothness. Consequently, cruise $\mathrm{MSD}$ improves monotonically with profile order ($4.4\times$ reduction from second-order to tight-snap), and full-scan $\mathrm{MSD}$ exhibits a corresponding decrease ($278 \rightarrow 63.8$\,\textmu m). Higher profile order thus achieves a genuine reduction in structural excitation, even though absolute tracking precision remains constrained by uncompensated servo lag.
+Without active short-stroke compensation (Case~1), the moving-average error remains large across all profile orders due to the unrejected acceleration transient tail, as established in Section~\ref{sec:exp_case1}. However, the initial transient magnitude depends directly on reference trajectory smoothness. Consequently, cruise $\mathrm{MSD}$ improves monotonically with profile order ($4.4\times$ reduction from second-order to tight-snap), and full-scan $\mathrm{MSD}$ exhibits a corresponding decrease ($66.2 \rightarrow 12.1$\,\textmu m). Higher profile order thus achieves a genuine reduction in structural excitation, even though absolute tracking precision remains constrained by uncompensated servo lag.
 
 Under full active control (Case~3b), feedforward cancels quasi-static lag while the HIGS loop suppresses in-band disturbances, allowing reference smoothness to directly reduce out-of-band structural excitation. Consequently, cruise $\mathrm{MSD}$ exhibits a $29\times$ error reduction from second- to fourth-order, reaching a $77\times$ reduction under the tight-snap profile. This accuracy gain carries a throughput penalty: scan duration $T_{\mathrm{scan}}$ increases by $21\,\%$ for fourth-order and an additional $30\,\%$ for tight-snap. Despite tight-snap achieving the lowest cruise error, its full-scan $\mathrm{MSD}$ saturates near the closed-loop entry transient floor, offering no advantage over standard fourth-order despite spending $30\,\%$ more scan time.

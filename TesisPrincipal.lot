@@ -10,11 +10,11 @@
 \contentsline {table}{\numberline {4.2.5}{\ignorespaces Optics chain stiffness ($K$) and damping ($C$) parameters}}{32}{}%
 \addvspace {10\p@ }
 \contentsline {table}{\numberline {5.3.1}{\ignorespaces Per-class evaluation on the test set.}}{46}{}%
-\contentsline {table}{\numberline {5.4.2}{\ignorespaces Disturbance-injection campaign.}}{49}{}%
-\contentsline {table}{\numberline {5.4.3}{\ignorespaces Kinematic-bound sweep.}}{51}{}%
-\contentsline {table}{\numberline {5.5.4}{\ignorespaces Synchronization error indices under progressive control configurations on the baseline trajectory.}}{52}{}%
-\contentsline {table}{\numberline {5.5.5}{\ignorespaces Snap bound versus the 7\,nm exposure-window specification}}{55}{}%
-\contentsline {table}{\numberline {5.6.6}{\ignorespaces Throughput--yield transition}}{56}{}%
-\contentsline {table}{\numberline {5.7.7}{\ignorespaces Optimization scenarios against the third- and fourth-order baselines at the same operating point.}}{58}{}%
-\contentsline {table}{\numberline {5.8.8}{\ignorespaces Profile order $\times $ controller.}}{59}{}%
+\contentsline {table}{\numberline {5.4.1}{\ignorespaces Disturbance-injection campaign.}}{48}{}%
+\contentsline {table}{\numberline {5.4.2}{\ignorespaces Kinematic-bound sweep.}}{50}{}%
+\contentsline {table}{\numberline {5.5.1}{\ignorespaces Synchronization error indices under progressive control configurations on the baseline trajectory.}}{51}{}%
+\contentsline {table}{\numberline {5.5.2}{\ignorespaces Snap bound versus the 7\,nm exposure-window specification}}{54}{}%
+\contentsline {table}{\numberline {5.6.1}{\ignorespaces Throughput--yield transition}}{55}{}%
+\contentsline {table}{\numberline {5.7.1}{\ignorespaces Optimization scenarios against the third- and fourth-order baselines at the same operating point.}}{57}{}%
+\contentsline {table}{\numberline {5.8.1}{\ignorespaces Profile order $\times $ controller.}}{59}{}%
 \addvspace {10\p@ }

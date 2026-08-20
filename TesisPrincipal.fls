@@ -421,6 +421,10 @@ INPUT ./pictures/transition_map_150ms.png
 INPUT ./pictures/transition_map_150ms.png
 INPUT ./pictures/transition_map_120ms.png
 INPUT ./pictures/transition_map_120ms.png
+INPUT ./pictures/pso_best_map_e3.png
+INPUT ./pictures/pso_best_map_e3.png
+INPUT ./pictures/pso_best_map_e4.png
+INPUT ./pictures/pso_best_map_e4.png
 INPUT ./pictures/order_comparison_esyn.png
 INPUT ./pictures/order_comparison_esyn.png
 INPUT ./conclusion.tex

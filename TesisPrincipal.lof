@@ -12,9 +12,10 @@
 \contentsline {figure}{\numberline {5.4}{\ignorespaces MA and MSD performance indices of the synchronization error.}}{44}{}%
 \contentsline {figure}{\numberline {5.5}{\ignorespaces Detail of the first exposure window.}}{45}{}%
 \contentsline {figure}{\numberline {5.6}{\ignorespaces Row-normalized confusion matrix.}}{47}{}%
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Simulated wafer maps under the four conditions (yellow: failing, blue: passing).}}{49}{}%
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Simulated wafer maps under the representative setups (yellow: failing, blue: passing).}}{51}{}%
-\contentsline {figure}{\numberline {5.9}{\ignorespaces Synchronization error during one scan under the four control configurations (shaded band: exposure).}}{53}{}%
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Wafer maps across the throughput--yield transition.}}{57}{}%
-\contentsline {figure}{\numberline {5.11}{\ignorespaces Synchronization error during one scan for the four profile orders, under bare Case~1 (top) and Case~3b (bottom).}}{60}{}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Simulated wafer maps under the four conditions (green: passing, red: failing).}}{49}{}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Simulated wafer maps under the representative setups (green: passing, red: failing).}}{50}{}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Synchronization error during one scan under the four control configurations (shaded band: exposure).}}{52}{}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Wafer maps across the throughput--yield transition.}}{56}{}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Best-particle wafer maps found by the two optimization scenarios (green: passing, red: failing). The servo-cost search (E3) converges to a fully clean wafer; the CNN-cost search (E4) remains fully saturated on the \textit {Center}-classified plateau, identically for both tested random seeds (Table~\ref {tab:exp6_pso}).}}{58}{}%
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Synchronization error during one scan for the four profile orders, under bare Case~1 (top) and Case~3b (bottom).}}{60}{}%
 \addvspace {10\p@ }
