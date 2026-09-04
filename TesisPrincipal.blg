@@ -9,13 +9,12 @@ A level-1 auxiliary file: modelChapter.aux
 A level-1 auxiliary file: controlObjectivesChapter.aux
 A level-1 auxiliary file: methodologyChapter.aux
 A level-1 auxiliary file: experimentsChapter.aux
-A level-1 auxiliary file: conclusion.aux
 The style file: amsplain.bst
 A level-1 auxiliary file: apendice1.aux
 Database file #1: bibliografia.bib
 You've used 17 entries,
             2213 wiz_defined-function locations,
-            635 strings with 9138 characters,
+            634 strings with 9124 characters,
 and the built_in function-call counts, 8088 in all, are:
 = -- 687
 > -- 588

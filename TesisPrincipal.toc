@@ -1,8 +1,8 @@
 \contentsline {chapter}{Agradecimientos}{iv}{}%
 \contentsline {chapter}{Abstract}{v}{}%
-\contentsline {chapter}{Symbols and notation}{vi}{}%
-\contentsline {chapter}{List of Tables}{ix}{}%
-\contentsline {chapter}{List of Figures}{x}{}%
+\contentsline {chapter}{Symbols and notation}{vii}{}%
+\contentsline {chapter}{List of Tables}{x}{}%
+\contentsline {chapter}{List of Figures}{xi}{}%
 \contentsline {chapter}{\numberline {1}Introduction}{1}{}%
 \contentsline {section}{\numberline {1.1}Research Gap}{5}{}%
 \contentsline {section}{\numberline {1.2}Hypothesis}{6}{}%
@@ -41,6 +41,5 @@
 \contentsline {section}{\numberline {5.6}Experiment 5: The Throughput--Yield Transition}{54}{}%
 \contentsline {section}{\numberline {5.7}Experiment 6: Optimization Scenarios E3 and E4}{56}{}%
 \contentsline {section}{\numberline {5.8}Experiment 7: Does Trajectory Smoothness Matter Without a Good Controller?}{59}{}%
-\contentsline {chapter}{Conclusion}{62}{}%
-\contentsline {chapter}{\numberline {A}Full-State Space Model}{68}{}%
-\contentsline {section}{\numberline {A.1}State-Space Equations for the Wafer Chain}{68}{}%
+\contentsline {chapter}{\numberline {A}Full-State Space Model}{64}{}%
+\contentsline {section}{\numberline {A.1}State-Space Equations for the Wafer Chain}{64}{}%
