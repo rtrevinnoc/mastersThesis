@@ -22,6 +22,11 @@ Yazan~M. Al-Rawashdeh, Mohammad~Al Janaideh, and Marcel Heertjes, \emph{On
 Hans Butler, \emph{Position control in lithographic equipment [applications of
   control]}, IEEE Control Systems Magazine \textbf{31} (2011), no.~5, 28--47.
 
+\bibitem{Chen2025_MetaheuristicRecipe}
+Zhen-Yin~Annie Chen, Chun-Cheng Lin, and Ke-Wen Lu, \emph{Optimizing
+  semiconductor process recipe settings using hybrid meta-learning and
+  metaheuristic approaches}, Inf. Sci. \textbf{706} (2025), no.~C.
+
 \bibitem{Dong2023_SCurve}
 Yue Dong, Yu~Wan, Shuo Song, and Li~Li, \emph{Lithographic stepping trajectory
   planning for residual vibration suppression: An asymmetric s-curve method},
@@ -44,6 +49,12 @@ Sung-Ju Jang, Jee-Hyong Lee, Tae-Woo Kim, Jong-Seong Kim, Hyun-Jin Lee, and
   Jong-Bae Lee, \emph{A wafer map yield model based on deep learning for wafer
   productivity enhancement}, 2018 29th Annual SEMI Advanced Semiconductor
   Manufacturing Conference (ASMC), 2018, pp.~29--34.
+
+\bibitem{Jeong2023_GeometricCNN}
+Iljoo Jeong, Soo~Young Lee, Keonhyeok Park, Iljeok Kim, Hyunsuk Huh, and
+  Seungchul Lee, \emph{Wafer map failure pattern classification using geometric
+  transformation-invariant convolutional neural network}, Scientific Reports
+  \textbf{13} (2023), no.~1, 8127.
 
 \bibitem{Kim2017_Market}
 Jong-Seong Kim, Chang~Wook Ahn, Tae-Woo Kim, Hyun-Jin Lee, and Jong-Bae Lee,
@@ -70,9 +81,20 @@ Paul~F. Lambrechts, \emph{Trajectory planning and feedforward design for
   electromechanical motion systems}, Tech. Report DCT 2003-08, Technische
   Universiteit Eindhoven, 2003.
 
+\bibitem{Lin2014_PSOMinJerk}
+Hsien-I Lin, \emph{A fast and unified method to find a minimum-jerk robot joint
+  trajectory using particle swarm optimization}, Journal of Intelligent {\&}
+  Robotic Systems \textbf{75} (2014), no.~3, 379--392.
+
 \bibitem{McLellan2019_IEDM3}
 Paul McLellan, \emph{{IEDM} 2019: {TSMC} 5nm}, Cadence Breakfast Bytes blog,
   2019.
+
+\bibitem{Nakazawa2018_WaferCNN}
+Takeshi Nakazawa and Deepak~V. Kulkarni, \emph{Wafer map defect pattern
+  classification and image retrieval using convolutional neural network}, IEEE
+  Transactions on Semiconductor Manufacturing \textbf{31} (2018), no.~2,
+  309--314.
 
 \bibitem{Schmidt2012_UltraPrecision}
 Robert-H.~Munnig Schmidt, \emph{Ultra-precision engineering in lithographic

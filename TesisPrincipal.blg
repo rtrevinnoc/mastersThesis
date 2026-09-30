@@ -12,44 +12,46 @@ A level-1 auxiliary file: experimentsChapter.aux
 The style file: amsplain.bst
 A level-1 auxiliary file: apendice1.aux
 Database file #1: bibliografia.bib
-You've used 17 entries,
+Warning--missing pages in Chen2025_MetaheuristicRecipe
+You've used 21 entries,
             2213 wiz_defined-function locations,
-            634 strings with 9124 characters,
-and the built_in function-call counts, 8088 in all, are:
-= -- 687
-> -- 588
+            664 strings with 10053 characters,
+and the built_in function-call counts, 9379 in all, are:
+= -- 797
+> -- 659
 < -- 2
-+ -- 236
-- -- 216
-* -- 730
-:= -- 1334
-add.period$ -- 17
-call.type$ -- 17
-change.case$ -- 158
++ -- 265
+- -- 240
+* -- 860
+:= -- 1550
+add.period$ -- 21
+call.type$ -- 21
+change.case$ -- 182
 chr.to.int$ -- 0
-cite$ -- 17
-duplicate$ -- 264
-empty$ -- 514
-format.name$ -- 216
-if$ -- 1641
+cite$ -- 22
+duplicate$ -- 308
+empty$ -- 615
+format.name$ -- 240
+if$ -- 1901
 int.to.chr$ -- 0
-int.to.str$ -- 17
-missing$ -- 32
-newline$ -- 61
-num.names$ -- 36
-pop$ -- 185
+int.to.str$ -- 21
+missing$ -- 40
+newline$ -- 73
+num.names$ -- 44
+pop$ -- 210
 preamble$ -- 1
-purify$ -- 141
+purify$ -- 161
 quote$ -- 0
-skip$ -- 198
+skip$ -- 219
 stack$ -- 0
-substring$ -- 397
-swap$ -- 73
+substring$ -- 472
+swap$ -- 78
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 66
-warning$ -- 0
-while$ -- 58
-width$ -- 19
-write$ -- 165
+type$ -- 82
+warning$ -- 1
+while$ -- 69
+width$ -- 23
+write$ -- 200
+(There was 1 warning)

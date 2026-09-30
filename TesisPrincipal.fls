@@ -1,4 +1,4 @@
-PWD /Users/rtrevinnoc/maestria/tesis/fullThesis
+PWD /Users/rtrevinnoc/UANL/FIME/maestria/tesis/fullThesis
 INPUT /usr/local/texlive/2026/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2026/texmf-var/web2c/xetex/xelatex.fmt
@@ -422,6 +422,8 @@ INPUT ./pictures/pso_best_map_e3.png
 INPUT ./pictures/pso_best_map_e3.png
 INPUT ./pictures/pso_best_map_e4.png
 INPUT ./pictures/pso_best_map_e4.png
+INPUT ./pictures/pso_best_map_e4_spread_g0.5.png
+INPUT ./pictures/pso_best_map_e4_spread_g0.5.png
 INPUT ./pictures/order_comparison_esyn.png
 INPUT ./pictures/order_comparison_esyn.png
 INPUT ./TesisPrincipal.bbl

@@ -65,15 +65,14 @@ As in the reference study~\cite{Al-Rawashdeh2022_Caracterization}, a machine ope
 
 \section{Experiment 2: CNN Training and Evaluation on WM-811K}\label{sec:exp_cnn}
 
-This experiment consists of the training and evaluation of the Convolutional Neural Network (Section~\ref{sec:methodology_cnn}). From the overall WM-811K dataset, the 172{,}950 labeled maps are partitioned using a stratified 80/20 split, leaving 34{,}590 maps for evaluation.
+This experiment consists of the training and evaluation of the Convolutional Neural Network (Section~\ref{sec:methodology_cnn}). From the overall WM-811K dataset, the 172{,}950 labeled maps are partitioned using a stratified 80/20 split, leaving 34{,}591 maps for evaluation.
 
-The network achieves an overall accuracy of \textbf{96.88\,\%} on the test set with a macro-averaged F1 score of 0.77. Table~\ref{tab:exp2_metrics} reports the per-class precision, recall, and F1, and Figure~\ref{fig:exp2_confmat} shows the row-normalized confusion matrix.
-
+Trained under a plain (unweighted) cross-entropy loss, the network reaches 96.88\,\% overall accuracy but assigns zero recall to \textit{Scratch} (Table~\ref{tab:exp2_metrics_unweighted}): with only 239 \textit{Scratch} maps against 29{,}486 \textit{none} maps in the test set, the loss is dominated by the majority classes and thin-line scratch morphologies are absorbed into neighboring classes. \textit{Scratch} is one of the four scanner-plausible classes the trajectory-to-defect mapping (Section~\ref{sec:methodology_cnn}) depends on, so this recall floor limits the classifier's usefulness as a cost function. Retraining under a class-weighted cross-entropy loss, with weight $w_c$ inversely proportional to class support, yields the model reported in Table~\ref{tab:exp2_metrics} and Figure~\ref{fig:exp2_confmat}, used throughout Experiments 3, 6, and 7.
 
 \begin{table}[htbp]
 \centering
-\caption{Per-class evaluation on the test set.}
-\label{tab:exp2_metrics}
+\caption{Per-class evaluation of the unweighted model (superseded by the weighted model below).}
+\label{tab:exp2_metrics_unweighted}
 \begin{tabular}{lcccc}
 \toprule
 Class & Precision & Recall & F1 & Support \\
@@ -94,14 +93,40 @@ macro avg & 0.80 & 0.74 & 0.77 & 34{,}590 \\
 \end{tabular}
 \end{table}
 
+The class-weighted model trades overall accuracy for balanced per-class recall: \textbf{92.90\,\%} accuracy, macro-averaged F1 of 0.74, against 96.88\,\% and 0.77 unweighted. Table~\ref{tab:exp2_metrics} reports the per-class precision, recall, and F1; Figure~\ref{fig:exp2_confmat} shows the row-normalized confusion matrix.
+
+\begin{table}[htbp]
+\centering
+\caption{Per-class evaluation of the class-weighted model on the test set.}
+\label{tab:exp2_metrics}
+\begin{tabular}{lcccc}
+\toprule
+Class & Precision & Recall & F1 & Support \\
+\midrule
+none      & 0.99 & 0.94 & 0.96 & 29{,}486 \\
+Center    & 0.80 & 0.94 & 0.86 & 859 \\
+Donut     & 0.67 & 0.87 & 0.76 & 111 \\
+Edge-Loc  & 0.61 & 0.85 & 0.71 & 1{,}038 \\
+Edge-Ring & 0.96 & 0.98 & 0.97 & 1{,}936 \\
+Loc       & 0.57 & 0.70 & 0.63 & 719 \\
+Near-full & 1.00 & 0.63 & 0.78 & 30 \\
+Random    & 0.66 & 0.94 & 0.78 & 173 \\
+Scratch   & 0.14 & 0.61 & 0.22 & 239 \\
+\midrule
+accuracy  & \multicolumn{4}{c}{0.9290} \\
+macro avg & 0.71 & 0.83 & 0.74 & 34{,}591 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.75\textwidth]{confusion_matrix.png}
-    \caption{Row-normalized confusion matrix.}
+    \caption{Row-normalized confusion matrix of the class-weighted model.}
     \label{fig:exp2_confmat}
 \end{figure}
 
-The confusion matrix exhibits a strong diagonal pattern for eight of the nine classes, with the exception of \textit{Scratch}, which yields zero recall. Given the severe class imbalance of the dataset (239 against e.g. 29{,}486 \textit{none} samples), the cross-entropy loss is dominated by the majority classes, causing the network to absorb thin-line scratch morphologies into neighboring classes.
+The confusion matrix exhibits a strong diagonal pattern across all nine classes, including \textit{Scratch}, whose recall rises from 0.00 to 0.61 (33\,\% of held-out \textit{Scratch} maps remain absorbed into \textit{Loc}), at the cost of \textit{Scratch} precision (0.14) and a drop in \textit{none} recall from 1.00 to 0.94. All four scanner-plausible classes (\textit{none}, \textit{Scratch}, \textit{Edge-Loc}, \textit{Random}) gain recall under the weighted loss (0.94, 0.61, 0.85, 0.94, versus 1.00, 0.00, 0.75, 0.76 unweighted); this weighted model is adopted for the cost function of Eq.~\eqref{eq:cost_corrected} throughout the remaining experiments.
 
 \section{Experiment 3: Trajectory-to-Defect Pipeline}\label{sec:exp_pipeline}
 
@@ -297,6 +322,7 @@ This experiment bridges the multibody simulation pipeline with the synthetic waf
 \caption{Optimization scenarios against the third- and fourth-order baselines at the same operating point.}
 \label{tab:exp6_pso}
 \setlength{\tabcolsep}{0.12cm}
+\small
 \begin{tabular}{lcccccccc}
 \toprule
 Scenario & $v$ [m/s] & $a$ [m/s$^2$] & $j$ [m/s$^3$] & $s$ [m/s$^4$] & Failing & CNN class & $\mathcal{J}_{map}$ & $T_{wafer}$ \\
@@ -306,22 +332,26 @@ Scenario & $v$ [m/s] & $a$ [m/s$^2$] & $j$ [m/s$^3$] & $s$ [m/s$^4$] & Failing &
 E3: servo cost     & 0.67 & 44.9 & 5000 & $170$ & 0/49  & none   & 0.043 & 37.6\,s \\
 E4: CNN cost (seed 0) & 0.82 & 45.0 & 5000 & $5\times10^5$ & 49/49 & Center & 2.000 & 12.4\,s \\
 E4: CNN cost (seed 1) & 0.77 & 34.8 & 5000 & $4.4\times10^5$ & 49/49  & Center   & 2.000 & 12.8\,s \\
+E4$'$: CNN cost (log-init) & 0.95 & 28.8 & 2713 & 717 & 0/49 & none & 0.524 & 30.8\,s \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Both the third- and fourth-order baselines fail outright, yielding completely failing wafers classified as \textit{Center} (Table~\ref{tab:exp6_pso}). Conversely, the search guided by the conventional positioning cost (E3) converges on a trajectory with zero failing dies ($\mathcal{J}_{\mathrm{map}} = 0.043$). The optimizer tightens snap near its lower bound ($s \approx 170$\,m/s$^4$) while pushing acceleration and jerk to the upper limits of their search space, yielding a $37.6$\,s wafer cycle time.
+Both the third- and fourth-order baselines fail outright, yielding completely failing wafers classified as \textit{Center} (Table~\ref{tab:exp6_pso}). The search guided by the conventional positioning cost (E3) converges on a trajectory with zero failing dies ($\mathcal{J}_{\mathrm{map}} = 0.043$). The optimizer tightens snap near its lower bound ($s \approx 170$\,m/s$^4$) while pushing acceleration and jerk to the upper limits of their search space, yielding a $37.6$\,s wafer cycle time.
 
-By contrast, the yield-aware CNN-cost search (E4) never leaves the \textit{Center}-saturation plateau with 49 failing dies, across both tested random seeds. Because the corrected cost~\eqref{eq:cost_corrected} assigns every saturated map a uniform ceiling of $\mathcal{J}_{\mathrm{map}} = 2.000$ regardless of failure severity, it provides no optimization gradient to guide the swarm out of saturation. This exposes a fundamental duality in the yield-aware cost, while its flatness on the near side of the specification allows the optimizer to trade acceptable-pattern yield loss for throughput (Sections~\ref{sec:exp_specsweep} and~\ref{sec:exp_transition}), that same flatness on the far side becomes a major liability when the swarm starts entirely within the saturated region.
+The yield-aware CNN-cost search (E4), under the same linear-uniform initialization and throughput weight $\gamma = 1$, never leaves the \textit{Center}-saturation plateau with 49 failing dies, across both tested random seeds. Because the corrected cost~\eqref{eq:cost_corrected} assigns every saturated map a uniform ceiling of $\mathcal{J}_{\mathrm{map}} = 2.000$ regardless of failure severity, it provides no optimization gradient to guide the swarm out of saturation.
+
+Two changes together escape the plateau (scenario E4$'$): log-uniform initialization of the swarm --- spreading particles across the search box's orders of magnitude rather than clustering them near its linear-scale center --- together with halving the throughput weight to $\gamma = 0.5$. Log-uniform initialization alone, at $\gamma = 1$, still saturates: every clean candidate trajectory has $T_{wafer} \geq 35$\,s, and its throughput penalty $\gamma\, T_{wafer}/T_{ref}$ then exceeds $\mathcal{J}_{map}$'s own ceiling of 2.000, so the saturated baseline remains cheaper. At $\gamma = 0.5$ the penalty no longer dominates, and E4$'$ converges to a fully clean, \textit{none}-classified wafer, tightening snap to $s \approx 717$\,m/s$^4$ while pushing acceleration toward its upper bound, for a $30.8$\,s wafer cycle time ($\mathcal{J}_{\mathrm{map}} = 0.524$). The near-side flatness of the cost still lets the optimizer trade acceptable-pattern yield loss for throughput (Sections~\ref{sec:exp_specsweep} and~\ref{sec:exp_transition}); the far-side plateau of Table~\ref{tab:exp6_pso} is an initialization and weighting artifact of the search, not an intrinsic property of the cost surface.
 
 \begin{figure}[htbp]
     \centering
-    \begin{tabular}{cc}
-    \includegraphics[width=0.4\textwidth]{pso_best_map_e3.png} &
-    \includegraphics[width=0.4\textwidth]{pso_best_map_e4.png} \\
-    (a) E3: servo cost & (b) E4: CNN cost (seed 0) \\
+    \begin{tabular}{ccc}
+    \includegraphics[width=0.3\textwidth]{pso_best_map_e3.png} &
+    \includegraphics[width=0.3\textwidth]{pso_best_map_e4.png} &
+    \includegraphics[width=0.3\textwidth]{pso_best_map_e4_spread_g0.5.png} \\
+    (a) E3 & (b) E4 (seed 0) & (c) E4$'$ (log-init, $\gamma{=}0.5$) \\
     \end{tabular}
-    \caption{Best-particle wafer maps found by the two optimization scenarios (green: passing, red: failing). The servo-cost search (E3) converges to a fully clean wafer; the CNN-cost search (E4) remains fully saturated on the \textit{Center}-classified plateau, identically for both tested random seeds (Table~\ref{tab:exp6_pso}).}
+    \caption{Best-particle wafer maps found by the optimization scenarios (green: passing, red: failing). The servo-cost search (E3) converges to a fully clean wafer; the CNN-cost search under the original linear-uniform initialization and $\gamma=1$ (E4) remains fully saturated on the \textit{Center}-classified plateau, identically for both tested random seeds; log-uniform initialization with $\gamma=0.5$ (E4$'$) converges to a fully clean wafer as well (Table~\ref{tab:exp6_pso}).}
     \label{fig:exp6_pso_maps}
 \end{figure}
 

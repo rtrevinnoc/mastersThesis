@@ -189,25 +189,66 @@ with output $u_f = k_p e_f + \omega_i \int x_1\, dt$. By resetting its state to 
 
 \section{Population-Based Trajectory Search}\label{sec:methodology_pso}
 
-The optimization problem~\eqref{eq:problem} is explored with particle swarm optimization (PSO) over the four kinematic bounds. Each particle holds a position $\mathbf{x} = (v_{\max}, a_{\max}, j_{\max}, s_{\max})$ and is updated by the standard rule
+The optimization problem~\eqref{eq:problem} is explored with particle swarm optimization (PSO) over the four kinematic bounds~\citep{Lin2014_PSOMinJerk, Chen2025_MetaheuristicRecipe}. Each particle holds a position $\mathbf{x} = (v_{\max}, a_{\max}, j_{\max}, s_{\max})$ and is updated by the standard rule
 \begin{equation}
     \mathbf{u}_{k+1} = \omega\, \mathbf{u}_k + c_1 r_1 (\mathbf{p}_k - \mathbf{x}_k) + c_2 r_2 (\mathbf{g}_k - \mathbf{x}_k), \qquad \mathbf{x}_{k+1} = \mathbf{x}_k + \mathbf{u}_{k+1},
     \label{eq:pso}
 \end{equation}
-with inertia $\omega = 0.6$, cognitive and social weights $c_1 = c_2 = 1.4$, velocities clamped to $\pm 0.5$ of the search-box span per dimension, and positions clipped to the search box. Evaluating one particle runs the full step-and-scan sequence over the wafer under the candidate trajectory, converts the per-die exposure indices into a wafer map, and prices the map. Two cost definitions are compared as the scenarios E3 and E4 of the evaluation plan: a conventional servo cost (the wafer-average exposure MSD, normalized by the failure threshold) and the yield-aware cost built on the CNN. For the latter, the weighted form~\eqref{eq:cost} is instantiated as
+with inertia $\omega = 0.6$, cognitive and social weights $c_1 = c_2 = 1.4$, velocities clamped to $\pm 0.5$ of the search-box span per dimension, and positions clipped to the search box. The swarm is initialized either linear-uniformly across the search box, or log-uniformly, spreading particles across the box's orders of magnitude rather than clustering them near its linear-scale center. Evaluating one particle runs the full step-and-scan sequence over the wafer under the candidate trajectory, converts the per-die exposure indices into a wafer map, and prices the map. Two cost definitions are compared as the scenarios E3 and E4 of the evaluation plan: a conventional servo cost (the wafer-average exposure MSD, normalized by the failure threshold) and the yield-aware cost built on the CNN. For the latter, the weighted form~\eqref{eq:cost} is instantiated as
 \begin{equation}
     \mathcal{J}_{map} = \big(1 - P_{none}\big) + \sum_{c\, \in\, \mathcal{C}_{ood}} P_c,
     \label{eq:cost_corrected}
 \end{equation}
-where $\mathcal{C}_{ood}$ is the set of classes that scanner motion cannot plausibly produce. The first term prices any departure from a clean map, so that the optimizer can spend an \textit{acceptable-pattern} yield loss when it is worth it; the second is a hard wall that keeps it from cheapening the wafer into a morphology the classifier attributes to non-scanner mechanisms. Both scenarios share a throughput reward $\mathcal{J} = \mathcal{J}_{map} + \gamma\, T_{wafer}/T_{ref}$ with $\gamma = 1$ and $T_{ref} = 15$\,s, so that a faster wafer is cheaper and the search trades cycle time against the map cost rather than merely respecting a budget; $T_{wafer}$ follows from the scan-profile duration, the settling budget, and the die count.
+where $\mathcal{C}_{ood}$ is the set of classes that scanner motion cannot plausibly produce. The first term prices any departure from a clean map, so that the optimizer can spend an \textit{acceptable-pattern} yield loss when it is worth it; the second is a hard wall that keeps it from cheapening the wafer into a morphology the classifier attributes to non-scanner mechanisms. Both scenarios share a throughput reward $\mathcal{J} = \mathcal{J}_{map} + \gamma\, T_{wafer}/T_{ref}$ with $T_{ref} = 15$\,s, so that a faster wafer is cheaper and the search trades cycle time against the map cost rather than merely respecting a budget; $T_{wafer}$ follows from the scan-profile duration, the settling budget, and the die count. The default throughput weight is $\gamma = 1$; Experiment 6 also reports a scenario at $\gamma = 0.5$, which relaxes the throughput penalty against the map cost.
 
 \section{From Synchronization Error to Wafer Maps}\label{sec:methodology_cnn}
 
 The link between trajectory parameters and yield is established in three steps: the simulated synchronization error is aggregated per die, the resulting pass/fail pattern forms a simulated wafer map, and a convolutional neural network classifies that map into a defect-morphology class.
 
-The CNN classifier is trained on WM-811K~\cite{Wu2015_WM811K}, a public dataset of 811{,}457 wafer maps collected from real fabrication lines, of which 172{,}950 carry a manually assigned failure label. Each map is a grid of dies marked as pass or fail, annotated with one of nine morphology classes: \textit{none}, \textit{Center}, \textit{Donut}, \textit{Edge-Loc}, \textit{Edge-Ring}, \textit{Loc}, \textit{Near-full}, \textit{Random}, and \textit{Scratch}. The labelled maps are split 80/20 with class stratification, and every map is resized to $64 \times 64$ cells to give the network a uniform input.
+The CNN classifier is trained on WM-811K~\cite{Wu2015_WM811K}, a public dataset of 811{,}457 wafer maps collected from real fabrication lines, of which 172{,}950 carry a manually assigned failure label. Each map is a grid of dies marked as pass or fail, annotated with one of nine morphology classes: \textit{none}, \textit{Center}, \textit{Donut}, \textit{Edge-Loc}, \textit{Edge-Ring}, \textit{Loc}, \textit{Near-full}, \textit{Random}, and \textit{Scratch}. The labelled maps are split 80/20 with class stratification, and every map is resized to $64 \times 64$ cells to give the network a uniform input. Table~\ref{tab:dataset} details the per-class composition of the labelled subset.
 
-The network architecture (Figure~\ref{fig:wafer_cnn_architecture}) comprises three convolutional blocks (16, 32, and 64 filters of size $3\times3$, each followed by ReLU activation and $2\times2$ max-pooling) and two fully connected layers (128 hidden units with dropout of 0.5, and a 9-way softmax output). It is trained for 5 epochs with the Adam optimizer (learning rate $10^{-3}$, batch size 32) under a cross-entropy loss, retaining the weights with the highest hold-out accuracy.
+\begin{table}[htbp]
+\centering
+\caption{WM-811K labelled subset used for training and evaluation.}
+\label{tab:dataset}
+\begin{tabular}{lr}
+\toprule
+Class & Count \\
+\midrule
+none      & 147{,}431 \\
+Edge-Ring & 9{,}680 \\
+Edge-Loc  & 5{,}189 \\
+Center    & 4{,}294 \\
+Loc       & 3{,}593 \\
+Scratch   & 1{,}193 \\
+Random    & 866 \\
+Donut     & 555 \\
+Near-full & 149 \\
+\midrule
+Total     & 172{,}950 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The network architecture (Figure~\ref{fig:wafer_cnn_architecture}) comprises three convolutional blocks (16, 32, and 64 filters of size $3\times3$, each followed by ReLU activation and $2\times2$ max-pooling) and two fully connected layers (128 hidden units with dropout of 0.5, and a 9-way softmax output), for a total of 549{,}873 trainable parameters. It is trained for 5 epochs with the Adam optimizer (learning rate $10^{-3}$, batch size 32) under a class-weighted cross-entropy loss, with per-class weight inversely proportional to support, and retains the weights with the highest hold-out accuracy. Table~\ref{tab:hw} lists the training hardware and hyperparameters. Test accuracy rises from 76.88\,\% after epoch 1 to 92.28\,\% after epoch 2 and 92.90\,\% after epoch 5, a 0.62-point gain over the last three epochs for roughly three times the training cost. The class weighting trades overall accuracy for balanced per-class recall, in particular on the scanner-plausible \textit{Scratch} class (Experiment 2, Section~\ref{sec:exp_cnn}).
+
+\begin{table}[htbp]
+\centering
+\caption{Training hardware and hyperparameters.}
+\label{tab:hw}
+\begin{tabular}{ll}
+\toprule
+Item & Value \\
+\midrule
+Hardware          & Apple M1, 8\,GB RAM \\
+Framework         & PyTorch 2.13, \texttt{mps} backend \\
+Optimizer         & Adam, learning rate $10^{-3}$ \\
+Batch size        & 32 \\
+Loss              & Class-weighted cross-entropy \\
+Train/test split  & 80/20, stratified \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure}[htbp]
 \centering
@@ -373,24 +414,24 @@ The network architecture (Figure~\ref{fig:wafer_cnn_architecture}) comprises thr
 % Detailed Layer Table
 \small
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{llccc}
+\begin{tabular}{llcccc}
 \toprule
-\textbf{Layer} & \textbf{Type} & \textbf{Operation} & \textbf{Shape} & \textbf{Activation} \\
+\textbf{Layer} & \textbf{Type} & \textbf{Operation} & \textbf{Shape} & \textbf{Activation} & \textbf{Params} \\
 \midrule
-Input Map & Wafer Grid & --- & $1 \times 64 \times 64$ & --- \\
-Conv1 & 2D Convolution & $16\text{ filters}, 3\times 3, \text{pad } 1$ & $16 \times 64 \times 64$ & ReLU \\
-Pool1 & Max Pooling & $2\times 2\text{ pool}, \text{stride } 2$ & $16 \times 32 \times 32$ & --- \\
-Conv2 & 2D Convolution & $32\text{ filters}, 3\times 3, \text{pad } 1$ & $32 \times 32 \times 32$ & ReLU \\
-Pool2 & Max Pooling & $2\times 2\text{ pool}, \text{stride } 2$ & $32 \times 16 \times 16$ & --- \\
-Conv3 & 2D Convolution & $64\text{ filters}, 3\times 3, \text{pad } 1$ & $64 \times 16 \times 16$ & ReLU \\
-Pool3 & Max Pooling & $2\times 2\text{ pool}, \text{stride } 2$ & $64 \times 8 \times 8$ & Flatten ($4096$) \\
-FC1 & Dense & Linear ($4096 \rightarrow 128$) & $128$ & ReLU + Dropout ($p=0.5$) \\
-Output & Dense & Linear ($128 \rightarrow 9$) & $9$ & Softmax ($9$ classes) \\
+Input Map & Wafer Grid & --- & $1 \times 64 \times 64$ & --- & --- \\
+Conv1 & 2D Convolution & $16\text{ filters}, 3\times 3, \text{pad } 1$ & $16 \times 64 \times 64$ & ReLU & 160 \\
+Pool1 & Max Pooling & $2\times 2\text{ pool}, \text{stride } 2$ & $16 \times 32 \times 32$ & --- & --- \\
+Conv2 & 2D Convolution & $32\text{ filters}, 3\times 3, \text{pad } 1$ & $32 \times 32 \times 32$ & ReLU & 4{,}640 \\
+Pool2 & Max Pooling & $2\times 2\text{ pool}, \text{stride } 2$ & $32 \times 16 \times 16$ & --- & --- \\
+Conv3 & 2D Convolution & $64\text{ filters}, 3\times 3, \text{pad } 1$ & $64 \times 16 \times 16$ & ReLU & 18{,}496 \\
+Pool3 & Max Pooling & $2\times 2\text{ pool}, \text{stride } 2$ & $64 \times 8 \times 8$ & Flatten ($4096$) & --- \\
+FC1 & Dense & Linear ($4096 \rightarrow 128$) & $128$ & ReLU + Dropout ($p=0.5$) & 524{,}416 \\
+Output & Dense & Linear ($128 \rightarrow 9$) & $9$ & Softmax ($9$ classes) & 1{,}161 \\
 \bottomrule
 \end{tabular}%
 }
 
-\caption{Architecture of the CNN (top) and detailed layer specification (bottom).}
+\caption{Architecture of the CNN (top) and detailed layer specification with parameter counts (bottom); 549{,}873 parameters total.}
 \label{fig:wafer_cnn_architecture}
 \end{figure}
 
